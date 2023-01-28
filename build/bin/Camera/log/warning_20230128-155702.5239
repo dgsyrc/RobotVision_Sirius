@@ -1,0 +1,5 @@
+Log file created at: 2023/01/28 15:57:02
+Running on machine: ccong-ubuntu
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W0128 15:57:02.608386  5264 MVCameraBase.cpp:98] Device:(name:MV-SUA134GC#0 sn:042051320364)Lost
+W0128 15:57:05.668062  5264 MVCameraBase.cpp:118] Device:(name:MV-SUA134GC#0 sn:042051320364)ReConnected, TolCount:1

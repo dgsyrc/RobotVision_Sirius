@@ -1,0 +1,13 @@
+git
+gcc
+g++
+gdb
+cmake
+ninja-build
+libpthread-stubs0-dev
+libopencv-dev
+libfmt-dev
+clang-format
+python3-dev
+mawk
+grep
