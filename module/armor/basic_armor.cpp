@@ -212,9 +212,7 @@ bool Detector::findLight() {
         box.points(vertex);
 
         for (size_t l = 0; l != 4; ++l) {
-          cv::line(draw_img_,
-                   vertex[l], vertex[(l + 1) % 4],
-                   cv::Scalar(0, 255, 255), 3, 8);
+          cv::line(draw_img_, vertex[l], vertex[(l + 1) % 4], cv::Scalar(0, 255, 255), 3, 8);
         }
       }
     }

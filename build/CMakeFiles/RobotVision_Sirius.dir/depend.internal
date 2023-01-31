@@ -20,6 +20,8 @@ CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o
  ../module/buff/abstract_object.hpp
  ../module/buff/abstract_target.hpp
  ../module/buff/basic_buff.hpp
+ ../module/buff/new_buff.hpp
+ ../module/camera/camera_calibration.hpp
  ../module/filter/abstract_kalman.hpp
  ../module/filter/basic_kalman.hpp
  ../module/ml/onnx_inferring.hpp

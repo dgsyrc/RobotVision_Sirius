@@ -53,17 +53,18 @@ CMAKE_BINARY_DIR = /home/ccong/Desktop/RobotVision_Sirius/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/rvs-basic-roi.dir/all
-all: CMakeFiles/rvs-video-record.dir/all
-all: CMakeFiles/rvs-basic-buff.dir/all
-all: CMakeFiles/rvs-fan-armor.dir/all
-all: CMakeFiles/RobotVision_Sirius.dir/all
-all: CMakeFiles/rvs-basic-kalman.dir/all
-all: CMakeFiles/rvs-basic-armor.dir/all
-all: CMakeFiles/rvs-basic-pnp.dir/all
-all: CMakeFiles/rvs-onnx-inferring.dir/all
-all: CMakeFiles/rvs-uart-serial.dir/all
 all: CMakeFiles/rvs-mv-video-capture.dir/all
+all: CMakeFiles/rvs-uart-serial.dir/all
+all: CMakeFiles/rvs-onnx-inferring.dir/all
+all: CMakeFiles/rvs-basic-pnp.dir/all
+all: CMakeFiles/rvs-basic-kalman.dir/all
+all: CMakeFiles/RobotVision_Sirius.dir/all
+all: CMakeFiles/rvs-fan-armor.dir/all
+all: CMakeFiles/rvs-basic-buff.dir/all
+all: CMakeFiles/rvs-video-record.dir/all
+all: CMakeFiles/rvs-basic-roi.dir/all
+all: CMakeFiles/rvs-basic-armor.dir/all
+all: CMakeFiles/rvs-camera-calibration.dir/all
 all: 3rdparty/fmt/all
 
 .PHONY : all
@@ -74,17 +75,18 @@ preinstall: 3rdparty/fmt/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/rvs-basic-roi.dir/clean
-clean: CMakeFiles/rvs-video-record.dir/clean
-clean: CMakeFiles/rvs-basic-buff.dir/clean
-clean: CMakeFiles/rvs-fan-armor.dir/clean
-clean: CMakeFiles/RobotVision_Sirius.dir/clean
-clean: CMakeFiles/rvs-basic-kalman.dir/clean
-clean: CMakeFiles/rvs-basic-armor.dir/clean
-clean: CMakeFiles/rvs-basic-pnp.dir/clean
-clean: CMakeFiles/rvs-onnx-inferring.dir/clean
-clean: CMakeFiles/rvs-uart-serial.dir/clean
 clean: CMakeFiles/rvs-mv-video-capture.dir/clean
+clean: CMakeFiles/rvs-uart-serial.dir/clean
+clean: CMakeFiles/rvs-onnx-inferring.dir/clean
+clean: CMakeFiles/rvs-basic-pnp.dir/clean
+clean: CMakeFiles/rvs-basic-kalman.dir/clean
+clean: CMakeFiles/RobotVision_Sirius.dir/clean
+clean: CMakeFiles/rvs-fan-armor.dir/clean
+clean: CMakeFiles/rvs-basic-buff.dir/clean
+clean: CMakeFiles/rvs-video-record.dir/clean
+clean: CMakeFiles/rvs-basic-roi.dir/clean
+clean: CMakeFiles/rvs-basic-armor.dir/clean
+clean: CMakeFiles/rvs-camera-calibration.dir/clean
 clean: 3rdparty/fmt/clean
 
 .PHONY : clean
@@ -108,203 +110,85 @@ clean: 3rdparty/fmt/clean
 .PHONY : 3rdparty/fmt/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/rvs-basic-roi.dir
+# Target rules for target CMakeFiles/rvs-mv-video-capture.dir
 
 # All Build rule for target.
-CMakeFiles/rvs-basic-roi.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=14,15 "Built target rvs-basic-roi"
-.PHONY : CMakeFiles/rvs-basic-roi.dir/all
+CMakeFiles/rvs-mv-video-capture.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=20,21 "Built target rvs-mv-video-capture"
+.PHONY : CMakeFiles/rvs-mv-video-capture.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/rvs-basic-roi.dir/rule: cmake_check_build_system
+CMakeFiles/rvs-mv-video-capture.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-roi.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-mv-video-capture.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-basic-roi.dir/rule
+.PHONY : CMakeFiles/rvs-mv-video-capture.dir/rule
 
 # Convenience name for target.
-rvs-basic-roi: CMakeFiles/rvs-basic-roi.dir/rule
+rvs-mv-video-capture: CMakeFiles/rvs-mv-video-capture.dir/rule
 
-.PHONY : rvs-basic-roi
+.PHONY : rvs-mv-video-capture
 
 # clean rule for target.
-CMakeFiles/rvs-basic-roi.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/clean
-.PHONY : CMakeFiles/rvs-basic-roi.dir/clean
+CMakeFiles/rvs-mv-video-capture.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/clean
+.PHONY : CMakeFiles/rvs-mv-video-capture.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/rvs-video-record.dir
+# Target rules for target CMakeFiles/rvs-uart-serial.dir
 
 # All Build rule for target.
-CMakeFiles/rvs-video-record.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=24,25 "Built target rvs-video-record"
-.PHONY : CMakeFiles/rvs-video-record.dir/all
+CMakeFiles/rvs-uart-serial.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-uart-serial.dir/build.make CMakeFiles/rvs-uart-serial.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-uart-serial.dir/build.make CMakeFiles/rvs-uart-serial.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=24,25 "Built target rvs-uart-serial"
+.PHONY : CMakeFiles/rvs-uart-serial.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/rvs-video-record.dir/rule: cmake_check_build_system
+CMakeFiles/rvs-uart-serial.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-video-record.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-uart-serial.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-video-record.dir/rule
+.PHONY : CMakeFiles/rvs-uart-serial.dir/rule
 
 # Convenience name for target.
-rvs-video-record: CMakeFiles/rvs-video-record.dir/rule
+rvs-uart-serial: CMakeFiles/rvs-uart-serial.dir/rule
 
-.PHONY : rvs-video-record
-
-# clean rule for target.
-CMakeFiles/rvs-video-record.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/clean
-.PHONY : CMakeFiles/rvs-video-record.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/rvs-basic-buff.dir
-
-# All Build rule for target.
-CMakeFiles/rvs-basic-buff.dir/all: CMakeFiles/rvs-fan-armor.dir/all
-	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=8,9 "Built target rvs-basic-buff"
-.PHONY : CMakeFiles/rvs-basic-buff.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/rvs-basic-buff.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-buff.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-basic-buff.dir/rule
-
-# Convenience name for target.
-rvs-basic-buff: CMakeFiles/rvs-basic-buff.dir/rule
-
-.PHONY : rvs-basic-buff
+.PHONY : rvs-uart-serial
 
 # clean rule for target.
-CMakeFiles/rvs-basic-buff.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/clean
-.PHONY : CMakeFiles/rvs-basic-buff.dir/clean
+CMakeFiles/rvs-uart-serial.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-uart-serial.dir/build.make CMakeFiles/rvs-uart-serial.dir/clean
+.PHONY : CMakeFiles/rvs-uart-serial.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/rvs-fan-armor.dir
+# Target rules for target CMakeFiles/rvs-onnx-inferring.dir
 
 # All Build rule for target.
-CMakeFiles/rvs-fan-armor.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=16,17 "Built target rvs-fan-armor"
-.PHONY : CMakeFiles/rvs-fan-armor.dir/all
+CMakeFiles/rvs-onnx-inferring.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=22,23 "Built target rvs-onnx-inferring"
+.PHONY : CMakeFiles/rvs-onnx-inferring.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/rvs-fan-armor.dir/rule: cmake_check_build_system
+CMakeFiles/rvs-onnx-inferring.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-fan-armor.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-onnx-inferring.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-fan-armor.dir/rule
+.PHONY : CMakeFiles/rvs-onnx-inferring.dir/rule
 
 # Convenience name for target.
-rvs-fan-armor: CMakeFiles/rvs-fan-armor.dir/rule
+rvs-onnx-inferring: CMakeFiles/rvs-onnx-inferring.dir/rule
 
-.PHONY : rvs-fan-armor
-
-# clean rule for target.
-CMakeFiles/rvs-fan-armor.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/clean
-.PHONY : CMakeFiles/rvs-fan-armor.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/RobotVision_Sirius.dir
-
-# All Build rule for target.
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-roi.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-video-record.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-buff.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-fan-armor.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-kalman.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-armor.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-pnp.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-onnx-inferring.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-uart-serial.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-mv-video-capture.dir/all
-CMakeFiles/RobotVision_Sirius.dir/all: 3rdparty/fmt/CMakeFiles/fmt.dir/all
-	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/depend
-	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=1,2 "Built target RobotVision_Sirius"
-.PHONY : CMakeFiles/RobotVision_Sirius.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/RobotVision_Sirius.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 25
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/RobotVision_Sirius.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/RobotVision_Sirius.dir/rule
-
-# Convenience name for target.
-RobotVision_Sirius: CMakeFiles/RobotVision_Sirius.dir/rule
-
-.PHONY : RobotVision_Sirius
+.PHONY : rvs-onnx-inferring
 
 # clean rule for target.
-CMakeFiles/RobotVision_Sirius.dir/clean:
-	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/clean
-.PHONY : CMakeFiles/RobotVision_Sirius.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/rvs-basic-kalman.dir
-
-# All Build rule for target.
-CMakeFiles/rvs-basic-kalman.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=10,11 "Built target rvs-basic-kalman"
-.PHONY : CMakeFiles/rvs-basic-kalman.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/rvs-basic-kalman.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-kalman.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-basic-kalman.dir/rule
-
-# Convenience name for target.
-rvs-basic-kalman: CMakeFiles/rvs-basic-kalman.dir/rule
-
-.PHONY : rvs-basic-kalman
-
-# clean rule for target.
-CMakeFiles/rvs-basic-kalman.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/clean
-.PHONY : CMakeFiles/rvs-basic-kalman.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/rvs-basic-armor.dir
-
-# All Build rule for target.
-CMakeFiles/rvs-basic-armor.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=6,7 "Built target rvs-basic-armor"
-.PHONY : CMakeFiles/rvs-basic-armor.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/rvs-basic-armor.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-armor.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-basic-armor.dir/rule
-
-# Convenience name for target.
-rvs-basic-armor: CMakeFiles/rvs-basic-armor.dir/rule
-
-.PHONY : rvs-basic-armor
-
-# clean rule for target.
-CMakeFiles/rvs-basic-armor.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/clean
-.PHONY : CMakeFiles/rvs-basic-armor.dir/clean
+CMakeFiles/rvs-onnx-inferring.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/clean
+.PHONY : CMakeFiles/rvs-onnx-inferring.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/rvs-basic-pnp.dir
@@ -334,85 +218,231 @@ CMakeFiles/rvs-basic-pnp.dir/clean:
 .PHONY : CMakeFiles/rvs-basic-pnp.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/rvs-onnx-inferring.dir
+# Target rules for target CMakeFiles/rvs-basic-kalman.dir
 
 # All Build rule for target.
-CMakeFiles/rvs-onnx-inferring.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=20,21 "Built target rvs-onnx-inferring"
-.PHONY : CMakeFiles/rvs-onnx-inferring.dir/all
+CMakeFiles/rvs-basic-kalman.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=10,11 "Built target rvs-basic-kalman"
+.PHONY : CMakeFiles/rvs-basic-kalman.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/rvs-onnx-inferring.dir/rule: cmake_check_build_system
+CMakeFiles/rvs-basic-kalman.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-onnx-inferring.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-kalman.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-onnx-inferring.dir/rule
+.PHONY : CMakeFiles/rvs-basic-kalman.dir/rule
 
 # Convenience name for target.
-rvs-onnx-inferring: CMakeFiles/rvs-onnx-inferring.dir/rule
+rvs-basic-kalman: CMakeFiles/rvs-basic-kalman.dir/rule
 
-.PHONY : rvs-onnx-inferring
+.PHONY : rvs-basic-kalman
 
 # clean rule for target.
-CMakeFiles/rvs-onnx-inferring.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/clean
-.PHONY : CMakeFiles/rvs-onnx-inferring.dir/clean
+CMakeFiles/rvs-basic-kalman.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/clean
+.PHONY : CMakeFiles/rvs-basic-kalman.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/rvs-uart-serial.dir
+# Target rules for target CMakeFiles/RobotVision_Sirius.dir
 
 # All Build rule for target.
-CMakeFiles/rvs-uart-serial.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-uart-serial.dir/build.make CMakeFiles/rvs-uart-serial.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-uart-serial.dir/build.make CMakeFiles/rvs-uart-serial.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=22,23 "Built target rvs-uart-serial"
-.PHONY : CMakeFiles/rvs-uart-serial.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-mv-video-capture.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-uart-serial.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-onnx-inferring.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-pnp.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-kalman.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-fan-armor.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-buff.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-video-record.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-roi.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-basic-armor.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: CMakeFiles/rvs-camera-calibration.dir/all
+CMakeFiles/RobotVision_Sirius.dir/all: 3rdparty/fmt/CMakeFiles/fmt.dir/all
+	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/depend
+	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=1,2 "Built target RobotVision_Sirius"
+.PHONY : CMakeFiles/RobotVision_Sirius.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/rvs-uart-serial.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-uart-serial.dir/all
+CMakeFiles/RobotVision_Sirius.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 27
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/RobotVision_Sirius.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-uart-serial.dir/rule
+.PHONY : CMakeFiles/RobotVision_Sirius.dir/rule
 
 # Convenience name for target.
-rvs-uart-serial: CMakeFiles/rvs-uart-serial.dir/rule
+RobotVision_Sirius: CMakeFiles/RobotVision_Sirius.dir/rule
 
-.PHONY : rvs-uart-serial
+.PHONY : RobotVision_Sirius
 
 # clean rule for target.
-CMakeFiles/rvs-uart-serial.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-uart-serial.dir/build.make CMakeFiles/rvs-uart-serial.dir/clean
-.PHONY : CMakeFiles/rvs-uart-serial.dir/clean
+CMakeFiles/RobotVision_Sirius.dir/clean:
+	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/clean
+.PHONY : CMakeFiles/RobotVision_Sirius.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/rvs-mv-video-capture.dir
+# Target rules for target CMakeFiles/rvs-fan-armor.dir
 
 # All Build rule for target.
-CMakeFiles/rvs-mv-video-capture.dir/all:
-	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/depend
-	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=18,19 "Built target rvs-mv-video-capture"
-.PHONY : CMakeFiles/rvs-mv-video-capture.dir/all
+CMakeFiles/rvs-fan-armor.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=18,19 "Built target rvs-fan-armor"
+.PHONY : CMakeFiles/rvs-fan-armor.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/rvs-mv-video-capture.dir/rule: cmake_check_build_system
+CMakeFiles/rvs-fan-armor.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-mv-video-capture.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-fan-armor.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
-.PHONY : CMakeFiles/rvs-mv-video-capture.dir/rule
+.PHONY : CMakeFiles/rvs-fan-armor.dir/rule
 
 # Convenience name for target.
-rvs-mv-video-capture: CMakeFiles/rvs-mv-video-capture.dir/rule
+rvs-fan-armor: CMakeFiles/rvs-fan-armor.dir/rule
 
-.PHONY : rvs-mv-video-capture
+.PHONY : rvs-fan-armor
 
 # clean rule for target.
-CMakeFiles/rvs-mv-video-capture.dir/clean:
-	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/clean
-.PHONY : CMakeFiles/rvs-mv-video-capture.dir/clean
+CMakeFiles/rvs-fan-armor.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/clean
+.PHONY : CMakeFiles/rvs-fan-armor.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/rvs-basic-buff.dir
+
+# All Build rule for target.
+CMakeFiles/rvs-basic-buff.dir/all: CMakeFiles/rvs-fan-armor.dir/all
+	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=8,9 "Built target rvs-basic-buff"
+.PHONY : CMakeFiles/rvs-basic-buff.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/rvs-basic-buff.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-buff.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
+.PHONY : CMakeFiles/rvs-basic-buff.dir/rule
+
+# Convenience name for target.
+rvs-basic-buff: CMakeFiles/rvs-basic-buff.dir/rule
+
+.PHONY : rvs-basic-buff
+
+# clean rule for target.
+CMakeFiles/rvs-basic-buff.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/clean
+.PHONY : CMakeFiles/rvs-basic-buff.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/rvs-video-record.dir
+
+# All Build rule for target.
+CMakeFiles/rvs-video-record.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=26,27 "Built target rvs-video-record"
+.PHONY : CMakeFiles/rvs-video-record.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/rvs-video-record.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-video-record.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
+.PHONY : CMakeFiles/rvs-video-record.dir/rule
+
+# Convenience name for target.
+rvs-video-record: CMakeFiles/rvs-video-record.dir/rule
+
+.PHONY : rvs-video-record
+
+# clean rule for target.
+CMakeFiles/rvs-video-record.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/clean
+.PHONY : CMakeFiles/rvs-video-record.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/rvs-basic-roi.dir
+
+# All Build rule for target.
+CMakeFiles/rvs-basic-roi.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=14,15 "Built target rvs-basic-roi"
+.PHONY : CMakeFiles/rvs-basic-roi.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/rvs-basic-roi.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-roi.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
+.PHONY : CMakeFiles/rvs-basic-roi.dir/rule
+
+# Convenience name for target.
+rvs-basic-roi: CMakeFiles/rvs-basic-roi.dir/rule
+
+.PHONY : rvs-basic-roi
+
+# clean rule for target.
+CMakeFiles/rvs-basic-roi.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/clean
+.PHONY : CMakeFiles/rvs-basic-roi.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/rvs-basic-armor.dir
+
+# All Build rule for target.
+CMakeFiles/rvs-basic-armor.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=6,7 "Built target rvs-basic-armor"
+.PHONY : CMakeFiles/rvs-basic-armor.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/rvs-basic-armor.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-basic-armor.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
+.PHONY : CMakeFiles/rvs-basic-armor.dir/rule
+
+# Convenience name for target.
+rvs-basic-armor: CMakeFiles/rvs-basic-armor.dir/rule
+
+.PHONY : rvs-basic-armor
+
+# clean rule for target.
+CMakeFiles/rvs-basic-armor.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/clean
+.PHONY : CMakeFiles/rvs-basic-armor.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/rvs-camera-calibration.dir
+
+# All Build rule for target.
+CMakeFiles/rvs-camera-calibration.dir/all:
+	$(MAKE) -f CMakeFiles/rvs-camera-calibration.dir/build.make CMakeFiles/rvs-camera-calibration.dir/depend
+	$(MAKE) -f CMakeFiles/rvs-camera-calibration.dir/build.make CMakeFiles/rvs-camera-calibration.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles --progress-num=16,17 "Built target rvs-camera-calibration"
+.PHONY : CMakeFiles/rvs-camera-calibration.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/rvs-camera-calibration.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rvs-camera-calibration.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles 0
+.PHONY : CMakeFiles/rvs-camera-calibration.dir/rule
+
+# Convenience name for target.
+rvs-camera-calibration: CMakeFiles/rvs-camera-calibration.dir/rule
+
+.PHONY : rvs-camera-calibration
+
+# clean rule for target.
+CMakeFiles/rvs-camera-calibration.dir/clean:
+	$(MAKE) -f CMakeFiles/rvs-camera-calibration.dir/build.make CMakeFiles/rvs-camera-calibration.dir/clean
+.PHONY : CMakeFiles/rvs-camera-calibration.dir/clean
 
 #=============================================================================
 # Target rules for target 3rdparty/fmt/CMakeFiles/fmt.dir

@@ -89,6 +89,7 @@ bin/RobotVision_Sirius: lib/librvs-basic-kalman.so
 bin/RobotVision_Sirius: lib/librvs-video-record.so
 bin/RobotVision_Sirius: lib/librvs-onnx-inferring.so
 bin/RobotVision_Sirius: lib/librvs-basic-roi.so
+bin/RobotVision_Sirius: lib/librvs-camera-calibration.so
 bin/RobotVision_Sirius: ../3rdparty/mindvision/linux/lib/x64/libMVSDK.so
 bin/RobotVision_Sirius: lib/librvs-fan-armor.so
 bin/RobotVision_Sirius: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.4.2.0

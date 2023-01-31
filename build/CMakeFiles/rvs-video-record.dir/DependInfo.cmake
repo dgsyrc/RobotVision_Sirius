@@ -31,6 +31,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../module/record"
   "../module/ml"
   "../module/roi"
+  "../module/camera"
   "../utils"
   "/usr/include/opencv4"
   )

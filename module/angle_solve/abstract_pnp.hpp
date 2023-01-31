@@ -243,12 +243,9 @@ class PnP {
                       _cameraMatrix, _distcoeffs,
                       reference_Img);
     // 绘制坐标系
-    cv::line(_draw_img, reference_Img[0], reference_Img[1],
-             cv::Scalar(0, 0, 255), 2);
-    cv::line(_draw_img, reference_Img[0], reference_Img[2],
-             cv::Scalar(0, 255, 0), 2);
-    cv::line(_draw_img, reference_Img[0], reference_Img[3],
-             cv::Scalar(255, 0, 0), 2);
+    cv::line(_draw_img, reference_Img[0], reference_Img[1], cv::Scalar(0, 0, 255), 2);
+    cv::line(_draw_img, reference_Img[0], reference_Img[2], cv::Scalar(0, 255, 0), 2);
+    cv::line(_draw_img, reference_Img[0], reference_Img[3], cv::Scalar(255, 0, 0), 2);
 
     cv::imshow("[abstract_pnp] drawCoordinate() -> _draw_img", _draw_img);
   }

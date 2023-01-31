@@ -9,7 +9,7 @@
  */
 
 #include "basic_buff.hpp"
-
+#include "new_buff.hpp"
 
 namespace basic_buff {
 #ifdef DEBUG_STATIC
@@ -99,23 +99,42 @@ inline void Detector::getInput(cv::Mat& _input_img, const int& _my_color) {
   is_find_target_ = false;
 }
 
+inline void Detector::getInput_Action(cv::Mat& _input_img, const int& _my_color) {
+  src_img_action  = _input_img;
+  my_color_ = _my_color;
+  src_img_action.copyTo(dst_img_);
+  is_find_target_ = false;
+}
+
+inline void Detector::getInput_Inaction(cv::Mat& _input_img, const int& _my_color) {
+  src_img_inaction  = _input_img;
+  my_color_ = _my_color;
+  src_img_inaction.copyTo(dst_img_);
+  is_find_target_ = false;
+}
+
 inline void Detector::displayDst() { imshow("[basic_buff] displayDst() -> dst_img_", dst_img_); }
 
 void Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info, uart::Write_Data& _send_info) {
   // 获取基本信息
-  getInput(_input_img, _receive_info.my_color);
-
+  getInput_Action(_input_img, _receive_info.my_color);
+  getInput_Inaction(_input_img, _receive_info.my_color);
   // 预处理
-  imageProcessing(src_img_, bin_img_, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE));
+  //imageProcessing(src_img_, bin_img_, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE));
+  imageProcessing(src_img_, bin_img_action, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
+  //mageProcessing(src_img_inaction, bin_img_inaction, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
+  //bin_img_inaction=bin_img_action.clone();
+
 
   // 查找目标
-  findTarget(dst_img_, bin_img_, target_box_);
+  findTarget(dst_img_, bin_img_action, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
+  findTarget(dst_img_, bin_img_inaction, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
 
   // 判断目标是否为空
   is_find_target_ = isFindTarget(dst_img_, target_box_);
 
   // 查找圆心
-  final_center_r_ = findCircleR(src_img_, bin_img_, dst_img_, is_find_target_);
+  final_center_r_ = findCircleR(src_img_action, bin_img_action, dst_img_, is_find_target_);
 
   // 计算运转状态值：速度、方向、角度
   judgeCondition(is_find_target_);
@@ -156,18 +175,19 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
 
   // 获取基本信息
   getInput(_input_img, _receive_info.my_color);
-
+  //getInput_Action(_input_img, _receive_info.my_color);
+  //getInput_Inaction(_input_img, _receive_info.my_color);
   // 预处理
-  imageProcessing(src_img_, bin_img_, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE));
-
+  imageProcessing(src_img_, bin_img_action, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
+  imageProcessing(src_img_, bin_img_inaction, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
   // 查找目标
-  findTarget(dst_img_, bin_img_, target_box_);
-
+  findTarget(dst_img_, bin_img_action, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
+  findTarget(dst_img_, bin_img_inaction, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
   // 判断目标是否为空
   is_find_target_ = isFindTarget(dst_img_, target_box_);
 
   // 查找圆心
-  final_center_r_ = findCircleR(src_img_, bin_img_, dst_img_, is_find_target_);
+  final_center_r_ = findCircleR(src_img_, bin_img_action, dst_img_, is_find_target_);
 
   // 计算运转状态值：速度、方向、角度
   judgeCondition(is_find_target_);
@@ -310,7 +330,7 @@ void Detector::readBuffConfig(const cv::FileStorage& _fs) {
   fmt::print("✔️ ✔️ ✔️ 🌈 能量机关初始化参数 读取成功 🌈 ✔️ ✔️ ✔️\n");
 }
 
-void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const int& _my_color, const Processing_Moudle& _process_moudle) {
+void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const int& _my_color, const Processing_Moudle& _process_moudle, const new_buff::Check_Moudle& check_moudle) {
   //  更新灰度图
   cvtColor(_input_img, gray_img_, cv::COLOR_BGR2GRAY);
 
@@ -348,17 +368,55 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
 #endif  // !RELEASE
 
   // 求交集
-  bitwise_and(bin_img_color_, bin_img_gray_, bin_img_);
+  //bitwise_and(bin_img_color_, bin_img_gray_, bin_img_action);
 
   // 膨胀处理
+  //morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 10);
+  switch (check_moudle)
+  {
+  case new_buff::ACTION_MODE:
+    bitwise_and(bin_img_color_, bin_img_gray_, bin_img_action);
+    morphologyEx(bin_img_action, bin_img_action, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 1);
+    #ifndef RELEASE
+    if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
+      cv::imshow("[basic_buff] imageProcessing() -> bin_img_action", bin_img_action);
+    }
+    #endif  // !RELEASE
+    break;
+  
+  case new_buff::INACTION_MODE:
+    bitwise_and(bin_img_color_, bin_img_gray_, bin_img_inaction);
+    morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 10);
+    #ifndef RELEASE
+    if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
+      cv::imshow("[basic_buff] imageProcessing() -> bin_img_inaction", bin_img_inaction);
+    }
+    fmt::print("{}{}",debug_info,"GET\n");
+    #endif  // !RELEASE
+    break;
+  
+  default:
+    break;
+  }
+  //morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 1);
+  /*morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
   morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-
+  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
+  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
+  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
+  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
+  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
+  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
+  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);*/
 // 显示最终合并的二值图
+/*
 #ifndef RELEASE
   if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
-    cv::imshow("[basic_buff] imageProcessing() -> bin_img_final", bin_img_);
+    cv::imshow("[basic_buff] imageProcessing() -> bin_img_action", bin_img_action);
+    cv::imshow("[basic_buff] imageProcessing() -> bin_img_inaction", bin_img_inaction);
   }
 #endif  // !RELEASE
+*/
 }
 
 void Detector::bgrProcessing(const int& _my_color) {
@@ -579,7 +637,24 @@ void Detector::hsvProcessing(const int& _my_color) {
   }
 }
 
-void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std::vector<abstract_target::Target>& _target_box) {
+void Detector::edit_param()
+{
+  cv::namedWindow("EDIT");
+  cv::createTrackbar("SMALL_TARGET_Length_MIN:", "EDIT", &buff_config_.param.SMALL_TARGET_Length_MIN, 100, nullptr);
+  cv::createTrackbar("SMALL_TARGET_AREA_MIN:", "EDIT", &buff_config_.param.SMALL_TARGET_AREA_MIN, 500, nullptr);
+  cv::createTrackbar("SMALL_TARGET_AREA_MAX:", "EDIT", &buff_config_.param.SMALL_TARGET_AREA_MAX, 4000, nullptr);
+  cv::createTrackbar("BIG_TARGET_AREA_MIN:", "EDIT", &buff_config_.param.BIG_TARGET_AREA_MIN, 4000, nullptr);
+  cv::createTrackbar("BIG_TARGET_AREA_MAX:", "EDIT", &buff_config_.param.BIG_TARGET_AREA_MAX, 16000, nullptr);
+  cv::createTrackbar("DIFF_ANGLE_MAX:", "EDIT", &buff_config_.param.DIFF_ANGLE_MAX, 200, nullptr);
+  cv::createTrackbar("DIFF_ANGLE_MIN:", "EDIT", &buff_config_.param.DIFF_ANGLE_MIN, 200, nullptr);
+  /*cv::createTrackbar("SMALL_TARGET_ASPECT_RATIO_MAX:", "EDIT", &buff_config_.param.SMALL_TARGET_ASPECT_RATIO_MAX, 255, nullptr);
+  cv::createTrackbar("SMALL_TARGET_ASPECT_RATIO_MIN:", "EDIT", &buff_config_.param.SMALL_TARGET_ASPECT_RATIO_MIN, 255, nullptr);
+  cv::createTrackbar("AREA_RATIO_MIN:", "EDIT", &buff_config_.param.AREA_RATIO_MIN, 255, nullptr);
+  cv::createTrackbar("AREA_RATIO_MAX:", "EDIT", &buff_config_.param.AREA_RATIO_MAX, 255, nullptr);*/
+}
+
+
+void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std::vector<abstract_target::Target>& _target_box, const new_buff::Check_Moudle &check_moudle) {
   cv::findContours(_input_bin_img, contours_, hierarchy_, 3, cv::CHAIN_APPROX_NONE);
   bool flag[7],f1;
   for(int i = 0; i <= 6; ++i)
@@ -589,6 +664,7 @@ void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std:
   f1 = false;
   //cv::drawContours(_input_bin_img, contours_, 1, basic_buff::Color_Draw_For_Edge,2);
   //cv::imshow("TEST",_input_bin_img);
+  edit_param();
   for (size_t i = 0; i != contours_.size(); ++i) {
     // 用于寻找小轮廓，没有父轮廓的跳过，以及不满足6点拟合椭圆
     if (hierarchy_[i][3] < 0 || contours_[i].size() < 6 || contours_[static_cast<uint>(hierarchy_[i][3])].size() < 6) {
@@ -605,8 +681,9 @@ void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std:
 
     // 小轮廓周长条件
     small_rect_length_ = cv::arcLength(contours_[i], true);
+    
     if (small_rect_length_ < buff_config_.param.SMALL_TARGET_Length_MIN) { 
-      /* MIN 10 */
+      
       fmt::print("[{}] small_rect_length_:{} \n", debug_info, small_rect_length_);
       flag[1]=true;
       continue;
@@ -614,8 +691,9 @@ void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std:
 
     // 小轮廓面积条件
     small_rect_area_ = cv::contourArea(contours_[i]);
+    
     if (small_rect_area_ < buff_config_.param.SMALL_TARGET_AREA_MIN || small_rect_area_ > buff_config_.param.SMALL_TARGET_AREA_MAX) {  
-      /* MIN 150 MAX 2000 */
+      
       fmt::print("[{}] small_rect_area_:{} \n", debug_info, small_rect_area_);
       flag[2]=true;
       continue;
@@ -672,8 +750,8 @@ void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std:
     // 更新装甲板的四个顶点编号
     candidated_target_.updateVertex(_input_dst_img);
     // 更新扇叶状态
-    candidated_target_.setType(_input_bin_img, _input_dst_img);
-
+    //candidated_target_.setType(_input_bin_img, _input_dst_img, static_cast<new_buff::Check_Moudle>(check_moudle));
+     candidated_target_.setType(_input_bin_img, static_cast<new_buff::Check_Moudle>(check_moudle));
     _target_box.push_back(candidated_target_);
   }
   if(f1)
@@ -720,7 +798,7 @@ bool Detector::isFindTarget(cv::Mat& _input_img, std::vector<abstract_target::Ta
 #endif  // RELEASE
   }
 
-  fmt::print("[{}] 未击打数量: {},  已击打数量: {}\n", target_yellow, inaction_cnt_, action_cnt_);
+  fmt::print("[{}] 未击打数量: {},  已击打数量: {}\n", target_yellow, inaction_cnt_, action_cnt_/2);
 
   // 清除容器
   contours_.clear();
@@ -856,6 +934,7 @@ cv::Point2f Detector::findCircleR(cv::Mat& _input_src_img, cv::Mat& _input_bin_i
 
 #ifndef RELEASE
     // 画出小轮廓到假定圆心的距离线
+    cv::line(_dst_img, current_target_.Armor().Rect().center, center_r_point2f, cv::Scalar(0, 255, 0), 2);
     cv::line(_dst_img, current_target_.Armor().Rect().center, center_r_point2f, cv::Scalar(0, 255, 0), 2);
     // 画出假定圆心
     cv::circle(_dst_img, center_r_point2f, 2, cv::Scalar(0, 0, 255), 2, 8, 0);
@@ -1123,15 +1202,15 @@ void Detector::calculateTargetPointSet(
 
 #ifndef RELEASE
   // 绘制图像
-  // 最终目标装甲板（预测值）
+  // 预测位置
   for (int k = 0; k < 4; ++k) {
-    cv::line(_input_dst_img, _target_2d_point[k], _target_2d_point[(k + 1) % 4], cv::Scalar(0, 130, 255),
-             2);  // orange
+    cv::line(_input_dst_img, _target_2d_point[k], _target_2d_point[(k + 1) % 4], cv::Scalar(0, 130, 255),2);  // orange
   }
 
   cv::circle(_input_dst_img, _final_center_r, radio_, cv::Scalar(0, 255, 125), 2, 8, 0);                       // 轨迹圆
   cv::circle(_input_dst_img, pre_center_, 3, cv::Scalar(255, 0, 0), 3, 8, 0);                                  // 预测值的中点
-  cv::line(_input_dst_img, pre_center_, _final_center_r, cv::Scalar(0, 255, 255), 2);                          // 预测点和圆心的连线
+  cv::line(_input_dst_img, pre_center_, _final_center_r, cv::Scalar(0, 255, 255), 2); // 圆心-预测中心连线                         // 预测点和圆心的连线
+  fmt::print("[{}] cord:{} {}\n",debug_info,pre_center_.x,pre_center_.y);
   cv::line(_input_dst_img, current_target_.Armor().Rect().center, _final_center_r, cv::Scalar(0, 255, 0), 2);  // 装甲板和圆心的连线
 
   // 顺时针表示顶点顺序,红黄蓝绿

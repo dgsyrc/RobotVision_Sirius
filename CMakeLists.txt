@@ -126,6 +126,10 @@ list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/module/roi)
 add_library(rvs-basic-roi SHARED module/roi/basic_roi.cpp)
 list(APPEND RVS_EXTRA_LIBS rvs-basic-roi)
 
+list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/module/camera)
+add_library(rvs-camera-calibration SHARED module/camera/camera_calibration.cpp)
+list(APPEND RVS_EXTRA_LIBS rvs-camera-calibration)
+
 # Add utils header
 list(APPEND EXTRA_INCLUDES utils)
 
@@ -163,11 +167,13 @@ set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
 # define
 set(CONFIG_FILE_PATH ${PROJECT_SOURCE_DIR}/configs)
 set(SOURCE_PATH ${PROJECT_SOURCE_DIR})
+set(SAVE_FILE_PATH ${PROJECT_SOURCE_DIR}/configs/camera)
 target_compile_definitions(RobotVision_Sirius PRIVATE "CONFIG_FILE_PATH=\"${CONFIG_FILE_PATH}\"")
 target_compile_definitions(RobotVision_Sirius PRIVATE "SOURCE_PATH=\"${SOURCE_PATH}\"")
 target_compile_definitions(rvs-basic-buff PRIVATE "CONFIG_FILE_PATH=\"${CONFIG_FILE_PATH}\"")
 target_compile_definitions(rvs-onnx-inferring PRIVATE "CONFIG_FILE_PATH=\"${CONFIG_FILE_PATH}\"")
 target_compile_definitions(rvs-video-record PRIVATE "CONFIG_FILE_PATH=\"${CONFIG_FILE_PATH}\"")
+target_compile_definitions(rvs-camera-calibration PRIVATE "SAVE_FILE_PATH=\"${SAVE_FILE_PATH}\"")
 
 
 # Add test_camera directory

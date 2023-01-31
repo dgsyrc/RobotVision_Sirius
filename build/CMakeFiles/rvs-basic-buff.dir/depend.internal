@@ -22,6 +22,7 @@ CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o
  /home/ccong/Desktop/RobotVision_Sirius/module/buff/abstract_target.hpp
  /home/ccong/Desktop/RobotVision_Sirius/module/buff/basic_buff.cpp
  /home/ccong/Desktop/RobotVision_Sirius/module/buff/basic_buff.hpp
+ /home/ccong/Desktop/RobotVision_Sirius/module/buff/new_buff.hpp
  /usr/include/opencv4/opencv2/calib3d.hpp
  /usr/include/opencv4/opencv2/core.hpp
  /usr/include/opencv4/opencv2/core/affine.hpp

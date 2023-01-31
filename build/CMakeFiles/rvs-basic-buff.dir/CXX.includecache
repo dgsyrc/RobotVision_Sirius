@@ -201,10 +201,14 @@ abstract_blade.hpp
 /home/ccong/Desktop/RobotVision_Sirius/module/buff/abstract_blade.hpp
 fan_armor.hpp
 /home/ccong/Desktop/RobotVision_Sirius/module/buff/fan_armor.hpp
+new_buff.hpp
+/home/ccong/Desktop/RobotVision_Sirius/module/buff/new_buff.hpp
 
 /home/ccong/Desktop/RobotVision_Sirius/module/buff/basic_buff.cpp
 basic_buff.hpp
 /home/ccong/Desktop/RobotVision_Sirius/module/buff/basic_buff.hpp
+new_buff.hpp
+/home/ccong/Desktop/RobotVision_Sirius/module/buff/new_buff.hpp
 
 /home/ccong/Desktop/RobotVision_Sirius/module/buff/basic_buff.hpp
 fmt/color.h
@@ -231,6 +235,8 @@ roi/basic_roi.hpp
 /home/ccong/Desktop/RobotVision_Sirius/module/buff/roi/basic_roi.hpp
 utils/fps.hpp
 /home/ccong/Desktop/RobotVision_Sirius/module/buff/utils/fps.hpp
+
+/home/ccong/Desktop/RobotVision_Sirius/module/buff/new_buff.hpp
 
 /usr/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp

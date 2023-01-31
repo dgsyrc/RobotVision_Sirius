@@ -20,6 +20,7 @@
 #include "module/record/record.hpp"
 #include "module/roi/basic_roi.hpp"
 #include "utils/reset_mv_camera.hpp"
+#include "module/camera/camera_calibration.hpp"
 #include <string>
 
 auto idntifier = fmt::format(fg(fmt::color::green) | fmt::emphasis::bold, "RobotVision");

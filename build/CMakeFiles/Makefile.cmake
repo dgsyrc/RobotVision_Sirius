@@ -57,16 +57,17 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/rvs-basic-roi.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-video-record.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-basic-buff.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-fan-armor.dir/DependInfo.cmake"
-  "CMakeFiles/RobotVision_Sirius.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-basic-kalman.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-basic-armor.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-basic-pnp.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-onnx-inferring.dir/DependInfo.cmake"
-  "CMakeFiles/rvs-uart-serial.dir/DependInfo.cmake"
   "CMakeFiles/rvs-mv-video-capture.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-uart-serial.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-onnx-inferring.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-basic-pnp.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-basic-kalman.dir/DependInfo.cmake"
+  "CMakeFiles/RobotVision_Sirius.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-fan-armor.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-basic-buff.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-video-record.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-basic-roi.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-basic-armor.dir/DependInfo.cmake"
+  "CMakeFiles/rvs-camera-calibration.dir/DependInfo.cmake"
   "3rdparty/fmt/CMakeFiles/fmt.dir/DependInfo.cmake"
   )

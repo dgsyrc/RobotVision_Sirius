@@ -63,6 +63,25 @@ git commit -m "commit"
 git push -u origin main
 ```
 
+## 一些代码
+
+### opencv
+
+##### 图像矩阵复制
+
+```
+Mat src = imread("test.jpg");
+Mat dst = src.clone();
+```
+
+## 一些图片
+
+![image-20230129132508135](pic/image-20230129132508135.png)
+
+![image-20230129181309834](/home/ccong/Desktop/RobotVision_Sirius/pic/image-20230129181309834.png)
+
+
+
 ## 日志
 
 2023-01-13 新增串口通信数据12～15（预测坐标高低8位、区域长、区域宽）

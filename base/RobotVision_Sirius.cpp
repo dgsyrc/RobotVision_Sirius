@@ -6,7 +6,9 @@
  * @copyright Copyright (c) 2023 Sirius
  */
 #include "RobotVision_Sirius.hpp"
-// #define VIDEO_DEBUG
+//#define VIDEO_DEBUG
+#define PARM_EDIT
+
 
 int main() 
 {
@@ -18,10 +20,10 @@ int main()
 
 #ifndef VIDEO_DEBUG
   mindvision::VideoCapture* mv_capture_ = new mindvision::VideoCapture(
-  mindvision::CameraParam(0, mindvision::RESOLUTION_1280_X_1024, mindvision::EXPOSURE_20000));
+  mindvision::CameraParam(0, mindvision::RESOLUTION_1280_X_1024, mindvision::EXPOSURE_10000));
   cv::VideoCapture cap_ = cv::VideoCapture(0);
 #else
-  cv::VideoCapture cap_(fmt::format("{}{}", SOURCE_PATH, "/video/1.mp4"));
+  cv::VideoCapture cap_(fmt::format("{}{}", SOURCE_PATH, "/video/2.mp4"));
 #endif
 
   // 配置文件
@@ -68,9 +70,7 @@ int main()
       cv::waitKey(30);
 #endif
     if (!src_img.empty()) {
-      
       serial_.updateReceiveInformation();
-      
       switch (serial_.returnReceiveMode()) {
       // 基础自瞄模式
       case uart::SUP_SHOOT:
@@ -170,14 +170,25 @@ int main()
       // 雷达模式
       case uart::RADAR_MODE:
         break;
-      // 默认进入基础自瞄
-      default:
+      case uart::CAMERA_CALIBRATION:
+        //cam::create_images(src_img);
+        //cam::calibrate();
+        //cam::auto_create_images(src_img);
+        cam::assess(src_img);
+        //cam::CalibrationEvaluate();
+        break;
+      default: // 默认进入基础自瞄
         if (basic_armor_.runBasicArmor(src_img, serial_.returnReceive())) {
             pnp_.solvePnP(serial_.returnReceiveBulletVelocity(), basic_armor_.returnFinalArmorDistinguish(0), basic_armor_.returnFinalArmorRotatedRect(0));
         }
         serial_.updataWriteData(pnp_.returnYawAngle(), pnp_.returnPitchAngle(), pnp_.returnDepth(), basic_armor_.returnArmorNum(), 0, 0, 0, 0);
         break;
       }
+    }
+    else{
+#ifdef VIDEO_DEBUG
+      //cap_.open(fmt::format("{}{}", SOURCE_PATH, "/video/1080.mp4"));
+#endif
     }
     if (record_.last_mode_ != uart::RECORD_MODE && serial_.returnReceiveMode() == uart::RECORD_MODE) {
       vw_src.release();
@@ -187,8 +198,9 @@ int main()
     if (serial_.returnReceiveMode() != uart::SENTRY_STRIKE_MODE) {
       basic_armor_.initializationSentryMode();
     }
-    //
+#ifndef VIDEO_DEBUG
     mv_capture_->cameraReleasebuff();
+#endif
     basic_armor_.freeMemory(fmt::format("{}{}", CONFIG_FILE_PATH, "/armor/basic_armor_config_new.xml"));
 
 #ifndef RELEASE
@@ -204,8 +216,9 @@ int main()
     // 看门狗放置相机掉线
     global_fps_.calculateFPSGlobal();
     if (global_fps_.returnFps() > 500) {
-      //
+#ifndef VIDEO_DEBUG
       mv_capture_->~VideoCapture();
+#endif
       static int counter_for_dev {100};
       static int counter_for_new {30};
       while (!utils::resetMVCamera()) {
@@ -215,19 +228,15 @@ int main()
         usleep(100);
       }
       usleep(100);
-      //
+#ifndef VIDEO_DEBUG
       mv_capture_ = new mindvision::VideoCapture(mindvision::CameraParam(
-          0, mindvision::RESOLUTION_1280_X_800, mindvision::EXPOSURE_600));
-      //
+          0, mindvision::RESOLUTION_1280_X_800, mindvision::EXPOSURE_10000));
+#endif
       if (!--counter_for_new) {
         //int i [[maybe_unused]] = std::system("echo 1 | sudo -S reboot");
       }
     }
-    else{
-#ifdef VIDEO_DEBUG
-      //cap_.open("/home/ccong/Desktop/RobotVision/video/1.mp4");
-#endif
-    }
+    
   }
   return 0;
 }

@@ -15,6 +15,9 @@
 #include "abstract_blade.hpp"
 #include "fan_armor.hpp"
 
+#include "new_buff.hpp"
+
+
 namespace abstract_target {
   auto debug_info          = fmt::format(fg(fmt::color::red) | fmt::emphasis::bold, "debug_info");
   class Target {
@@ -50,7 +53,7 @@ namespace abstract_target {
      * @param[in]  _img             输入绘制图像
      * @todo 待添加新版roi
      */
-    void setType(cv::Mat& _bin_img, cv::Mat& _img);
+    void setType(cv::Mat& _bin_img, const new_buff::Check_Moudle& check_moudle);
 
     /**
      * @brief 显示可打击的目标
@@ -135,6 +138,8 @@ namespace abstract_target {
     std::vector<cv::Point2f> points_2d_;
     // 装甲板高度点差
     cv::Point2f delta_height_point_;
+
+    
   };
 
   Target::Target() {
@@ -211,7 +216,7 @@ namespace abstract_target {
 
   void Target::setType(const abstract_object::ObjectType& _type) { type_ = _type; }
 
-  void Target::setType(cv::Mat& _bin_img, cv::Mat& _img) {
+  void Target::setType(cv::Mat& _bin_img, const new_buff::Check_Moudle& check_moudle) {
     // 上层中心点 和 下层中心点
     cv::Point2f point_up_center   = (fan_armor_.Vertex(0) + fan_armor_.Vertex(1)) * 0.5;
     cv::Point2f point_down_center = (fan_armor_.Vertex(2) + fan_armor_.Vertex(3)) * 0.5;
@@ -249,14 +254,28 @@ namespace abstract_target {
     cv::Rect right_rect(right1, right2);  // 画出右边小roi
 
     // 计算光线强度
-    int left_intensity  = abstract_object::getRectIntensity(_bin_img, left_rect);
-    int right_intensity = abstract_object::getRectIntensity(_bin_img, right_rect);
+    //int left_intensity  = abstract_object::getRectIntensity(_bin_img, left_rect);
+    //int right_intensity = abstract_object::getRectIntensity(_bin_img, right_rect);
+    /*
     fmt::print("[{}] left_intensity:{} right_intensity:{}\n", debug_info, left_intensity, right_intensity);
     if (left_intensity <= 110 && right_intensity <= 110) { //15 15
       type_ = abstract_object::INACTION;
     } else {
       type_ = abstract_object::ACTION;
     }
+    */
+    switch (check_moudle)
+    {
+      case new_buff::ACTION_MODE:
+        type_ = abstract_object::ACTION;
+        break;
+      case new_buff::INACTION_MODE:
+        type_ = abstract_object::INACTION;
+        break;
+      default:
+        break;
+    }
+
   }
 
   void Target::displayInactionTarget(cv::Mat& _img) {

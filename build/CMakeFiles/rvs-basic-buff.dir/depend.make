@@ -21,6 +21,7 @@ CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: ../module/buff/abstr
 CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: ../module/buff/abstract_target.hpp
 CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: ../module/buff/basic_buff.cpp
 CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: ../module/buff/basic_buff.hpp
+CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: ../module/buff/new_buff.hpp
 CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: /usr/include/opencv4/opencv2/calib3d.hpp
 CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: /usr/include/opencv4/opencv2/core.hpp
 CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.o: /usr/include/opencv4/opencv2/core/affine.hpp

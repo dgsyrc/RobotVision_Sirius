@@ -19,6 +19,8 @@ CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/buff/
 CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/buff/abstract_object.hpp
 CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/buff/abstract_target.hpp
 CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/buff/basic_buff.hpp
+CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/buff/new_buff.hpp
+CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/camera/camera_calibration.hpp
 CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/filter/abstract_kalman.hpp
 CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/filter/basic_kalman.hpp
 CMakeFiles/RobotVision_Sirius.dir/base/RobotVision_Sirius.cpp.o: ../module/ml/onnx_inferring.hpp

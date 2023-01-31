@@ -31,6 +31,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../module/record"
   "../module/ml"
   "../module/roi"
+  "../module/camera"
   "../utils"
   "/usr/include/opencv4"
   )
@@ -47,6 +48,7 @@ set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles/rvs-video-record.dir/DependInfo.cmake"
   "/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles/rvs-onnx-inferring.dir/DependInfo.cmake"
   "/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles/rvs-basic-roi.dir/DependInfo.cmake"
+  "/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles/rvs-camera-calibration.dir/DependInfo.cmake"
   "/home/ccong/Desktop/RobotVision_Sirius/build/CMakeFiles/rvs-fan-armor.dir/DependInfo.cmake"
   )
 

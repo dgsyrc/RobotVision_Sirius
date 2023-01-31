@@ -215,6 +215,8 @@ abstract_blade.hpp
 ../module/buff/abstract_blade.hpp
 fan_armor.hpp
 ../module/buff/fan_armor.hpp
+new_buff.hpp
+../module/buff/new_buff.hpp
 
 ../module/buff/basic_buff.hpp
 fmt/color.h
@@ -241,6 +243,20 @@ roi/basic_roi.hpp
 ../module/buff/roi/basic_roi.hpp
 utils/fps.hpp
 ../module/buff/utils/fps.hpp
+
+../module/buff/new_buff.hpp
+
+../module/camera/camera_calibration.hpp
+cstring
+-
+vector
+-
+opencv4/opencv2/opencv.hpp
+-
+fmt/color.h
+-
+fmt/core.h
+-
 
 ../module/filter/abstract_kalman.hpp
 
@@ -337,6 +353,8 @@ module/roi/basic_roi.hpp
 /home/ccong/Desktop/RobotVision_Sirius/base/module/roi/basic_roi.hpp
 utils/reset_mv_camera.hpp
 /home/ccong/Desktop/RobotVision_Sirius/base/utils/reset_mv_camera.hpp
+module/camera/camera_calibration.hpp
+/home/ccong/Desktop/RobotVision_Sirius/base/module/camera/camera_calibration.hpp
 string
 -
 

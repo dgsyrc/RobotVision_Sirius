@@ -34,6 +34,9 @@ double fps::FPS::last_time;
 
 namespace basic_buff {
 
+
+
+
 auto idntifier_green     = fmt::format(fg(fmt::color::green) | fmt::emphasis::bold, "basic_buff");
 auto idntifier_red       = fmt::format(fg(fmt::color::red) | fmt::emphasis::bold, "basic_buff");
 auto idntifier_yellow    = fmt::format(fg(fmt::color::yellow) | fmt::emphasis::bold, "basic_buff");
@@ -134,7 +137,7 @@ struct Buff_Param {
 struct Buff_Ctrl {
   int IS_PARAM_ADJUSTMENT;
   int IS_SHOW_BIN_IMG;
-  int PROCESSING_MODE;
+  int PROCESSING_MODE; // BGR_MODE=0 HSV_MODE=1
 };
 
 struct Buff_Cfg {
@@ -184,6 +187,8 @@ class Detector {
    * @author WCJ
    */
   void getInput(cv::Mat& _input_img, const int& _my_color);
+  void getInput_Action(cv::Mat& _input_img, const int& _my_color);
+  void getInput_Inaction(cv::Mat& _input_img, const int& _my_color);
 
   /**
    * @brief 显示最终图像
@@ -192,6 +197,8 @@ class Detector {
 
   // 类中全局变量
   cv::Mat                  src_img_;          // 输入原图
+  cv::Mat                  src_img_action;          // 输入原图
+  cv::Mat                  src_img_inaction;          // 输入原图
   cv::Mat                  dst_img_;          // 图像效果展示图
   std::vector<cv::Point2f> target_2d_point_;  // 目标二维点集
   float                    final_target_z_;   // 最终打击目标的深度信息（预测点）
@@ -214,15 +221,15 @@ class Detector {
     HSV_MODE,
   };
 
+
   /**
    * @brief 预处理执行函数
    * @param[in]  _input_img       输入图像（src）
    * @param[out] _output_img      输出图像（bin）
    * @param[in]  _my_color        颜色参数
    * @param[in]  _process_moudle  预处理模式
-   * @author WCJ HZH RCX
    */
-  void imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const int& _my_color, const Processing_Moudle& _process_moudle);
+  void imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const int& _my_color, const Processing_Moudle& _process_moudle, const new_buff::Check_Moudle& check_moudle);
 
   /**
    * @brief BGR颜色空间预处理
@@ -239,11 +246,14 @@ class Detector {
   void hsvProcessing(const int& _my_color);
 
   cv::Mat gray_img_;        // 灰度图
-  cv::Mat bin_img_;         // 最终二值图
+  //cv::Mat bin_img_;         // 最终二值图
   cv::Mat bin_img_color_;   // 颜色二值图
   cv::Mat bin_img_color1_;  // 颜色二值图一
   cv::Mat bin_img_color2_;  // 颜色二值图二
   cv::Mat bin_img_gray_;    // 灰度二值图
+
+  cv::Mat bin_img_action;   // 激活识别二值图
+  cv::Mat bin_img_inaction; // 未激活识别二值图
 
   cv::Mat ele_ = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5));  // 椭圆内核
 
@@ -272,7 +282,7 @@ class Detector {
    * @param  _target_box      输出目标容器
    * @author WCJ HZH
    */
-  void findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std::vector<abstract_target::Target>& _target_box);
+  void findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std::vector<abstract_target::Target>& _target_box, const new_buff::Check_Moudle &check_moudle);
 
   fan_armor::Detector      small_target_;  // 内轮廓
   abstract_blade::FanBlade big_target_;    // 外轮廓
@@ -376,6 +386,8 @@ class Detector {
    * @author WCJ
    */
   void calVelocity();
+
+  void edit_param();
 
   // 角度
   float current_angle_;         // 当前目标角度

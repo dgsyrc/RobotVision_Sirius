@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/ccong/Desktop/RobotVision_Sirius/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,121 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named rvs-basic-roi
+# Target rules for targets named rvs-mv-video-capture
 
 # Build rule for target.
-rvs-basic-roi: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-roi
-.PHONY : rvs-basic-roi
+rvs-mv-video-capture: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-mv-video-capture
+.PHONY : rvs-mv-video-capture
 
 # fast build rule for target.
-rvs-basic-roi/fast:
-	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/build
-.PHONY : rvs-basic-roi/fast
-
-#=============================================================================
-# Target rules for targets named rvs-video-record
-
-# Build rule for target.
-rvs-video-record: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-video-record
-.PHONY : rvs-video-record
-
-# fast build rule for target.
-rvs-video-record/fast:
-	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/build
-.PHONY : rvs-video-record/fast
-
-#=============================================================================
-# Target rules for targets named rvs-basic-buff
-
-# Build rule for target.
-rvs-basic-buff: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-buff
-.PHONY : rvs-basic-buff
-
-# fast build rule for target.
-rvs-basic-buff/fast:
-	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/build
-.PHONY : rvs-basic-buff/fast
-
-#=============================================================================
-# Target rules for targets named rvs-fan-armor
-
-# Build rule for target.
-rvs-fan-armor: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-fan-armor
-.PHONY : rvs-fan-armor
-
-# fast build rule for target.
-rvs-fan-armor/fast:
-	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/build
-.PHONY : rvs-fan-armor/fast
-
-#=============================================================================
-# Target rules for targets named RobotVision_Sirius
-
-# Build rule for target.
-RobotVision_Sirius: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 RobotVision_Sirius
-.PHONY : RobotVision_Sirius
-
-# fast build rule for target.
-RobotVision_Sirius/fast:
-	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/build
-.PHONY : RobotVision_Sirius/fast
-
-#=============================================================================
-# Target rules for targets named rvs-basic-kalman
-
-# Build rule for target.
-rvs-basic-kalman: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-kalman
-.PHONY : rvs-basic-kalman
-
-# fast build rule for target.
-rvs-basic-kalman/fast:
-	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/build
-.PHONY : rvs-basic-kalman/fast
-
-#=============================================================================
-# Target rules for targets named rvs-basic-armor
-
-# Build rule for target.
-rvs-basic-armor: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-armor
-.PHONY : rvs-basic-armor
-
-# fast build rule for target.
-rvs-basic-armor/fast:
-	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/build
-.PHONY : rvs-basic-armor/fast
-
-#=============================================================================
-# Target rules for targets named rvs-basic-pnp
-
-# Build rule for target.
-rvs-basic-pnp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-pnp
-.PHONY : rvs-basic-pnp
-
-# fast build rule for target.
-rvs-basic-pnp/fast:
-	$(MAKE) -f CMakeFiles/rvs-basic-pnp.dir/build.make CMakeFiles/rvs-basic-pnp.dir/build
-.PHONY : rvs-basic-pnp/fast
-
-#=============================================================================
-# Target rules for targets named rvs-onnx-inferring
-
-# Build rule for target.
-rvs-onnx-inferring: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-onnx-inferring
-.PHONY : rvs-onnx-inferring
-
-# fast build rule for target.
-rvs-onnx-inferring/fast:
-	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/build
-.PHONY : rvs-onnx-inferring/fast
+rvs-mv-video-capture/fast:
+	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/build
+.PHONY : rvs-mv-video-capture/fast
 
 #=============================================================================
 # Target rules for targets named rvs-uart-serial
@@ -241,17 +137,134 @@ rvs-uart-serial/fast:
 .PHONY : rvs-uart-serial/fast
 
 #=============================================================================
-# Target rules for targets named rvs-mv-video-capture
+# Target rules for targets named rvs-onnx-inferring
 
 # Build rule for target.
-rvs-mv-video-capture: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rvs-mv-video-capture
-.PHONY : rvs-mv-video-capture
+rvs-onnx-inferring: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-onnx-inferring
+.PHONY : rvs-onnx-inferring
 
 # fast build rule for target.
-rvs-mv-video-capture/fast:
-	$(MAKE) -f CMakeFiles/rvs-mv-video-capture.dir/build.make CMakeFiles/rvs-mv-video-capture.dir/build
-.PHONY : rvs-mv-video-capture/fast
+rvs-onnx-inferring/fast:
+	$(MAKE) -f CMakeFiles/rvs-onnx-inferring.dir/build.make CMakeFiles/rvs-onnx-inferring.dir/build
+.PHONY : rvs-onnx-inferring/fast
+
+#=============================================================================
+# Target rules for targets named rvs-basic-pnp
+
+# Build rule for target.
+rvs-basic-pnp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-pnp
+.PHONY : rvs-basic-pnp
+
+# fast build rule for target.
+rvs-basic-pnp/fast:
+	$(MAKE) -f CMakeFiles/rvs-basic-pnp.dir/build.make CMakeFiles/rvs-basic-pnp.dir/build
+.PHONY : rvs-basic-pnp/fast
+
+#=============================================================================
+# Target rules for targets named rvs-basic-kalman
+
+# Build rule for target.
+rvs-basic-kalman: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-kalman
+.PHONY : rvs-basic-kalman
+
+# fast build rule for target.
+rvs-basic-kalman/fast:
+	$(MAKE) -f CMakeFiles/rvs-basic-kalman.dir/build.make CMakeFiles/rvs-basic-kalman.dir/build
+.PHONY : rvs-basic-kalman/fast
+
+#=============================================================================
+# Target rules for targets named RobotVision_Sirius
+
+# Build rule for target.
+RobotVision_Sirius: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 RobotVision_Sirius
+.PHONY : RobotVision_Sirius
+
+# fast build rule for target.
+RobotVision_Sirius/fast:
+	$(MAKE) -f CMakeFiles/RobotVision_Sirius.dir/build.make CMakeFiles/RobotVision_Sirius.dir/build
+.PHONY : RobotVision_Sirius/fast
+
+#=============================================================================
+# Target rules for targets named rvs-fan-armor
+
+# Build rule for target.
+rvs-fan-armor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-fan-armor
+.PHONY : rvs-fan-armor
+
+# fast build rule for target.
+rvs-fan-armor/fast:
+	$(MAKE) -f CMakeFiles/rvs-fan-armor.dir/build.make CMakeFiles/rvs-fan-armor.dir/build
+.PHONY : rvs-fan-armor/fast
+
+#=============================================================================
+# Target rules for targets named rvs-basic-buff
+
+# Build rule for target.
+rvs-basic-buff: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-buff
+.PHONY : rvs-basic-buff
+
+# fast build rule for target.
+rvs-basic-buff/fast:
+	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/build
+.PHONY : rvs-basic-buff/fast
+
+#=============================================================================
+# Target rules for targets named rvs-video-record
+
+# Build rule for target.
+rvs-video-record: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-video-record
+.PHONY : rvs-video-record
+
+# fast build rule for target.
+rvs-video-record/fast:
+	$(MAKE) -f CMakeFiles/rvs-video-record.dir/build.make CMakeFiles/rvs-video-record.dir/build
+.PHONY : rvs-video-record/fast
+
+#=============================================================================
+# Target rules for targets named rvs-basic-roi
+
+# Build rule for target.
+rvs-basic-roi: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-roi
+.PHONY : rvs-basic-roi
+
+# fast build rule for target.
+rvs-basic-roi/fast:
+	$(MAKE) -f CMakeFiles/rvs-basic-roi.dir/build.make CMakeFiles/rvs-basic-roi.dir/build
+.PHONY : rvs-basic-roi/fast
+
+#=============================================================================
+# Target rules for targets named rvs-basic-armor
+
+# Build rule for target.
+rvs-basic-armor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-basic-armor
+.PHONY : rvs-basic-armor
+
+# fast build rule for target.
+rvs-basic-armor/fast:
+	$(MAKE) -f CMakeFiles/rvs-basic-armor.dir/build.make CMakeFiles/rvs-basic-armor.dir/build
+.PHONY : rvs-basic-armor/fast
+
+#=============================================================================
+# Target rules for targets named rvs-camera-calibration
+
+# Build rule for target.
+rvs-camera-calibration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rvs-camera-calibration
+.PHONY : rvs-camera-calibration
+
+# fast build rule for target.
+rvs-camera-calibration/fast:
+	$(MAKE) -f CMakeFiles/rvs-camera-calibration.dir/build.make CMakeFiles/rvs-camera-calibration.dir/build
+.PHONY : rvs-camera-calibration/fast
 
 #=============================================================================
 # Target rules for targets named fmt
@@ -455,6 +468,33 @@ module/buff/basic_buff.cpp.s:
 	$(MAKE) -f CMakeFiles/rvs-basic-buff.dir/build.make CMakeFiles/rvs-basic-buff.dir/module/buff/basic_buff.cpp.s
 .PHONY : module/buff/basic_buff.cpp.s
 
+module/camera/camera_calibration.o: module/camera/camera_calibration.cpp.o
+
+.PHONY : module/camera/camera_calibration.o
+
+# target to build an object file
+module/camera/camera_calibration.cpp.o:
+	$(MAKE) -f CMakeFiles/rvs-camera-calibration.dir/build.make CMakeFiles/rvs-camera-calibration.dir/module/camera/camera_calibration.cpp.o
+.PHONY : module/camera/camera_calibration.cpp.o
+
+module/camera/camera_calibration.i: module/camera/camera_calibration.cpp.i
+
+.PHONY : module/camera/camera_calibration.i
+
+# target to preprocess a source file
+module/camera/camera_calibration.cpp.i:
+	$(MAKE) -f CMakeFiles/rvs-camera-calibration.dir/build.make CMakeFiles/rvs-camera-calibration.dir/module/camera/camera_calibration.cpp.i
+.PHONY : module/camera/camera_calibration.cpp.i
+
+module/camera/camera_calibration.s: module/camera/camera_calibration.cpp.s
+
+.PHONY : module/camera/camera_calibration.s
+
+# target to generate assembly for a file
+module/camera/camera_calibration.cpp.s:
+	$(MAKE) -f CMakeFiles/rvs-camera-calibration.dir/build.make CMakeFiles/rvs-camera-calibration.dir/module/camera/camera_calibration.cpp.s
+.PHONY : module/camera/camera_calibration.cpp.s
+
 module/filter/basic_kalman.o: module/filter/basic_kalman.cpp.o
 
 .PHONY : module/filter/basic_kalman.o
@@ -569,19 +609,20 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
-	@echo "... rvs-basic-roi"
-	@echo "... rvs-video-record"
-	@echo "... rvs-basic-buff"
-	@echo "... rvs-fan-armor"
-	@echo "... rebuild_cache"
-	@echo "... RobotVision_Sirius"
-	@echo "... rvs-basic-kalman"
-	@echo "... rvs-basic-armor"
-	@echo "... rvs-basic-pnp"
-	@echo "... rvs-onnx-inferring"
-	@echo "... rvs-uart-serial"
 	@echo "... rvs-mv-video-capture"
+	@echo "... rvs-uart-serial"
+	@echo "... rvs-onnx-inferring"
+	@echo "... rvs-basic-pnp"
+	@echo "... rvs-basic-kalman"
+	@echo "... RobotVision_Sirius"
+	@echo "... rvs-fan-armor"
+	@echo "... rvs-basic-buff"
+	@echo "... rvs-video-record"
+	@echo "... rvs-basic-roi"
+	@echo "... rvs-basic-armor"
+	@echo "... rvs-camera-calibration"
+	@echo "... rebuild_cache"
+	@echo "... edit_cache"
 	@echo "... fmt"
 	@echo "... base/RobotVision_Sirius.o"
 	@echo "... base/RobotVision_Sirius.i"
@@ -604,6 +645,9 @@ help:
 	@echo "... module/buff/basic_buff.o"
 	@echo "... module/buff/basic_buff.i"
 	@echo "... module/buff/basic_buff.s"
+	@echo "... module/camera/camera_calibration.o"
+	@echo "... module/camera/camera_calibration.i"
+	@echo "... module/camera/camera_calibration.s"
 	@echo "... module/filter/basic_kalman.o"
 	@echo "... module/filter/basic_kalman.i"
 	@echo "... module/filter/basic_kalman.s"

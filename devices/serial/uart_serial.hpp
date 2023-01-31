@@ -64,6 +64,8 @@ enum RunMode {
   SENTINEL_AUTONOMOUS_MODE,
   // Radar Mode
   RADAR_MODE,
+  // 相机标定
+  CAMERA_CALIBRATION,
 };
 // Describe the current robot ID information
 enum RobotID {
@@ -192,7 +194,7 @@ class SerialPort {
    * 
    * @return int 
    */
-  inline int   returnReceiveMode()           { return 2/*receive_data_.now_run_mode*/; }
+  inline int   returnReceiveMode()           { return 9/*receive_data_.now_run_mode*/; }
   /**
    * @brief 返回陀螺仪 Pitch 轴数据
    * 
