@@ -90,14 +90,14 @@ class FPS {
 
  private:
   void displayFPS() const {
-    fmt::print("[{}] {} FPS of current/min/max: {}, {}, {}, time of current/averge: {}, {}\n",
+    /*fmt::print("[{}] {} FPS of current/min/max: {}, {}, {}, time of current/averge: {}, {}\n",
                idntifier,
                name_,
                fps,
                min,
                max,
                time * 1000,
-               average * 1000);
+               average * 1000);*/
   }
 
   int           cnt;      //  计算次数

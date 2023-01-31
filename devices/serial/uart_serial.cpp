@@ -79,20 +79,18 @@ SerialPort::~SerialPort(void) {
  *  17:     'E'
  */
 void SerialPort::receiveData() {
-  memset(receive_buff_, '0', REC_INFO_LENGTH * 2);
+  memset(receive_buff_, 0, REC_INFO_LENGTH * 2);
   read_message_ = read(fd, receive_buff_temp_, sizeof(receive_buff_temp_));
-
+  //fmt::print("PASS\n");
   for (size_t i = 0; i != sizeof(receive_buff_temp_); ++i) {
     if (receive_buff_temp_[i] == 'S' && receive_buff_temp_[i + sizeof(receive_buff_) - 1] == 'E') {
+      //fmt::print("PASS\n");
       if (serial_config_.show_serial_information == 1) {
         fmt::print("[{}] receiveData() ->", idntifier_green);
-
         for (size_t j = 0; j != sizeof(receive_buff_); ++j) {
           receive_buff_[j] = receive_buff_temp_[i + j];
-
           fmt::print(" {:d}", receive_buff_[j]);
         }
-
         fmt::print("\n");
       } else {
         for (size_t j = 0; j != sizeof(receive_buff_); ++j) {
@@ -102,8 +100,8 @@ void SerialPort::receiveData() {
 
       break;
     }
+    
   }
-
   tcflush(fd, TCIFLUSH);
 }
 
@@ -135,6 +133,9 @@ void SerialPort::writeData(const int&     _yaw,
 
   getDataForSend(data_type, is_shooting, _yaw, yaw, _pitch, pitch, depth, CRC, predict_cord, predict_length, predict_width);
 
+  //memset(write_buff_, 0, sizeof(write_buff_));
+  write_buff_[0]='S';
+  write_buff_[18]='E';
   write_message_ = write(fd, write_buff_, sizeof(write_buff_));
 
   if (serial_config_.show_serial_information == 1) {
@@ -143,15 +144,15 @@ void SerialPort::writeData(const int&     _yaw,
     depth_reduction_ = mergeIntoBytes(write_buff_[10], write_buff_[9]);
     predict_cord_reduction_ = mergeIntoBytes(write_buff_[12], write_buff_[13]);
 
-    fmt::print("[{}] writeData() ->", idntifier_green);
-    for (size_t i = 0; i < 4; ++i) { fmt::print(" {}", write_buff_[i]); }
-    fmt::print(" {} {} {} {}",
+    //fmt::print("[{}] writeData() ->", idntifier_green);
+    /*for (size_t i = 0; i < 4; ++i) { fmt::print(" {}", write_buff_[i]); }
+      fmt::print(" {} {} {} {}",
       static_cast<float>(yaw_reduction_) / 100,
       static_cast<int>(write_buff_[6]),
       static_cast<float>(pitch_reduction_) / 100,
       static_cast<float>(depth_reduction_));
-    for (size_t i = 11; i < 19; ++i) { fmt::print(" {}", write_buff_[i]); }
-    fmt::print("\n");
+    for (size_t i = 11; i < 19; ++i) { fmt::print(" {}", write_buff_[i]); }*/
+    //fmt::print("\n");
 
     yaw_reduction_   = 0x0000;
     pitch_reduction_ = 0x0000;
@@ -320,23 +321,29 @@ void SerialPort::updateReceiveInformation() {
     last_receive_data_ = receive_data_;
   }
 
-  for (size_t i = 0; i != sizeof(transform_arr_) / sizeof(transform_arr_[0]); ++i) {
-    transform_arr_[i] = receive_buff_[i + 1] - '0';
-  }
 
-  switch (transform_arr_[0]) {
+  // BUG？
+  /*for (size_t i = 0; i != sizeof(transform_arr_) / sizeof(transform_arr_[0]); ++i) {
+    transform_arr_[i] = receive_buff_[i + 1] - '0';
+    fmt::print("[info] transform_arr_[{:d}]:{:d}", i, transform_arr_[i]);
+  }*/
+  //switch (transform_arr_[0]) {
+  switch (receive_buff_[1]) {
     case RED:
       receive_data_.my_color = RED;
+      fmt::print("[info] My color is RED\n");
       break;
     case BLUE:
       receive_data_.my_color = BLUE;
+      fmt::print("[info] My color is BLUE\n");
       break;
     default:
       receive_data_.my_color = ALL;
+      fmt::print("[info] My color is ALL\n");
       break;
   }
-
-  switch (transform_arr_[1]) {
+  //switch (transform_arr_[1]) {
+  switch (receive_buff_[2]) {
   case SUP_SHOOT:
     receive_data_.now_run_mode = SUP_SHOOT;
     break;
@@ -365,7 +372,8 @@ void SerialPort::updateReceiveInformation() {
     break;
   }
 
-  switch (transform_arr_[2]) {
+  //switch (transform_arr_[2]) {
+  switch (receive_buff_[3]) {
     case HERO:
       receive_data_.my_robot_id = HERO;
       break;
@@ -386,22 +394,29 @@ void SerialPort::updateReceiveInformation() {
       break;
   }
 
-  receive_data_.bullet_velocity = receive_buff_[14] - 2;
+  /*receive_data_.bullet_velocity = receive_buff_[14]; // -2 ?
+  fmt::print("[info] bullet_velocity:{:d}\n", receive_data_.bullet_velocity);*/
 
-  for (size_t i = 0; i != sizeof(receive_data_.Receive_Yaw_Angle_Info.arr_yaw_angle); ++i) {
-    receive_data_.Receive_Yaw_Angle_Info.arr_yaw_angle[i] = receive_buff_[i + 4];
+  for (size_t i = 0; i != sizeof(receive_data_.Yaw_Angle.arr_yaw); ++i) {
+    receive_data_.Yaw_Angle.arr_yaw[i] = receive_buff_[i + 4];
   }
 
-  for (size_t i = 0; i != sizeof(receive_data_.Receive_Yaw_Velocity_Info.arr_yaw_velocity); ++i) {
-    receive_data_.Receive_Yaw_Velocity_Info.arr_yaw_velocity[i] = receive_buff_[i + 10];
+  for (size_t i = 0; i != sizeof(receive_data_.Pitch_Angle.pitch); ++i) {
+    receive_data_.Pitch_Angle.arr_pitch[i] = receive_buff_[i + 8];
   }
 
-  for (size_t i = 0; i != sizeof(this->receive_data_.Receive_Pitch_Angle_Info.arr_pitch_angle); ++i) {
-    receive_data_.Receive_Pitch_Angle_Info.arr_pitch_angle[i] = receive_buff_[i + 8];
+  for (size_t i = 0; i != sizeof(receive_data_.Pitch_Velocity.veloctiy); ++i) {
+    receive_data_.Pitch_Velocity.arr_pitch_velocity[i] = receive_buff_[i + 12];
   }
 
-  for (size_t i = 0; i != sizeof(this->receive_data_.Receive_Pitch_Velocity_Info.arr_pitch_velocity); ++i) {
-    receive_data_.Receive_Pitch_Velocity_Info.arr_pitch_velocity[i] = receive_buff_[i + 12];
+  for (size_t i = 0; i != sizeof(receive_data_.Yaw_Velocity.veloctiy); ++i) {
+    receive_data_.Yaw_Velocity.arr_yaw_velocity[i] = receive_buff_[i + 16];
   }
+
+  for (size_t i = 0; i != sizeof(receive_data_.bullet_velocity.veloctiy); ++i) {
+    receive_data_.bullet_velocity.arr_veloctiy[i] = receive_buff_[i + 20];
+  }
+
+  
 }
 }  // namespace uart

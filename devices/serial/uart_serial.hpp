@@ -28,7 +28,7 @@ auto idntifier_red   = fmt::format(fg(fmt::color::red)   | fmt::emphasis::bold, 
 
 enum BufferLength {
   // The recieve length of the array obtained after decoding
-  REC_INFO_LENGTH   = 22,
+  REC_INFO_LENGTH   = 25,
 
   // The send length of the array for CRC auth code code calculating
   CRC_BUFF_LENGTH   = 11,
@@ -87,40 +87,42 @@ struct Receive_Data {
   int   my_color;  // 01颜色
   int   now_run_mode; // 02模式
   int   my_robot_id; // 03机器人ID
-  int   bullet_velocity; // 14子弹速度
 
-  // Description of the yaw axis angle of the gyroscope (signed)
-  union Receive_Yaw_Angle_Information {
-    float   yaw_angle;
-    uint8_t arr_yaw_angle[4] = {0}; 
-  } Receive_Yaw_Angle_Info;
+  union Bullet_Velocity_Info {
+    float veloctiy;
+    uint8_t arr_veloctiy[4] = {0};
+  } bullet_velocity;
 
-  union Receive_Yaw_Velocity_Information
+  union Yaw_Angle_Info {
+    float yaw;
+    uint8_t arr_yaw[4] = {0};
+  } Yaw_Angle;
+
+  union Yaw_Velocity_Info
   {
-    float   yaw_veloctiy;
+    float   veloctiy;
     uint8_t arr_yaw_velocity[4] = {0};
-  } Receive_Yaw_Velocity_Info;
+  } Yaw_Velocity;
 
-  // Description of the pitch axis angle of the gyroscope (signed)
-  union Receive_Pitch_Angle_Information {
-    float   pitch_angle;
-    uint8_t arr_pitch_angle[4] = {0};
-  } Receive_Pitch_Angle_Info;
+  union Pitch_Angle_Info {
+    float   pitch;
+    uint8_t arr_pitch[4] = {0};
+  } Pitch_Angle;
 
-  union Receive_Pitch_Velocity_Information {
-    float   pitch_veloctiy;
+  union Pitch_Velocity_Info {
+    float   veloctiy;
     uint8_t arr_pitch_velocity[4] = {0};
-  } Receive_Pitch_Velocity_Info;
+  } Pitch_Velocity;
 
   Receive_Data() {
-    my_color                                   = ALL;
-    now_run_mode                               = SUP_SHOOT;
-    my_robot_id                                = INFANTRY;
-    bullet_velocity                            = 30;
-    Receive_Yaw_Angle_Info.yaw_angle           = 0.f;
-    Receive_Yaw_Velocity_Info.yaw_veloctiy     = 0.f;
-    Receive_Pitch_Angle_Info.pitch_angle       = 0.f;
-    Receive_Pitch_Velocity_Info.pitch_veloctiy = 0.f;
+    my_color                 = ALL;
+    now_run_mode             = SUP_SHOOT;
+    my_robot_id              = INFANTRY;
+    bullet_velocity.veloctiy = 30;
+    Yaw_Angle.yaw            = 0.f;
+    Yaw_Velocity.veloctiy    = 0.f;
+    Pitch_Angle.pitch        = 0.f;
+    Pitch_Velocity.veloctiy  = 0.f;
   }
 };
 
@@ -174,9 +176,9 @@ class SerialPort {
   /**
    * @brief 返回子弹速度
    * 
-   * @return int 
+   * @return float 
    */
-  inline int   returnReceiveBulletVelocity() { return receive_data_.bullet_velocity; }
+  inline float   returnReceiveBulletVelocity() { return receive_data_.bullet_velocity.veloctiy; }
   /**
    * @brief 返回机器人 ID
    * 
@@ -194,31 +196,31 @@ class SerialPort {
    * 
    * @return int 
    */
-  inline int   returnReceiveMode()           { return 9/*receive_data_.now_run_mode*/; }
+  inline int   returnReceiveMode()           { return receive_data_.now_run_mode; }
   /**
    * @brief 返回陀螺仪 Pitch 轴数据
    * 
    * @return float 
    */
-  inline float returnReceivePitch()          { return receive_data_.Receive_Pitch_Angle_Info.pitch_angle; }
+  inline float returnReceivePitch()          { return receive_data_.Pitch_Angle.pitch; }
   /**
    * @brief 返回陀螺仪 Yaw 轴数据
    * 
    * @return float 
    */
-  inline float returnReceiveYaw()                  { return receive_data_.Receive_Yaw_Angle_Info.yaw_angle; }
+  inline float returnReceiveYaw()                  { return receive_data_.Yaw_Angle.yaw; }
   /**
    * @brief 返回陀螺仪Yaw轴速度数据
    * 
    * @return float 
    */
-  inline float returnReceiveYawVelocity()          { return receive_data_.Receive_Yaw_Velocity_Info.yaw_veloctiy; }
+  inline float returnReceiveYawVelocity()          { return receive_data_.Yaw_Velocity.veloctiy; }
   /**
    * @brief 返回陀螺仪Pitch轴速度数据
    * 
    * @return float 
    */
-  inline float returnReceivePitchVelocity()        { return receive_data_.Receive_Pitch_Velocity_Info.pitch_veloctiy;}
+  inline float returnReceivePitchVelocity()        { return receive_data_.Pitch_Velocity.veloctiy;}
 
   /**
    * @brief 返回高八位数据

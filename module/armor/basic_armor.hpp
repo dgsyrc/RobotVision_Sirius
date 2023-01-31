@@ -236,7 +236,7 @@ class Detector {
    * @param _yaw_angle        Yaw 轴陀螺仪值
    */
   void initialPredictionData(const float   _gyro_speed,
-                             const int     _bullet_velocity,
+                             const float   _bullet_velocity,
                              const float   _yaw_angle);
   /**
    * @brief 返回上一次最优装甲板的旋转矩形
