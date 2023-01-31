@@ -25,7 +25,6 @@ class RoI {
    * @param _input_img 需要截取的图像
    * @param _rect      需要截取的位置(外接矩形)
    * @return cv::Mat   返回截取后的图片
-   * @author RCX
    */
   cv::Mat cutRoIRect(const cv::Mat&   _input_img,
                      const cv::Rect&  _rect) {
@@ -40,7 +39,6 @@ class RoI {
    * @param _input_img 需要截取的图像
    * @param _rect      需要截取的位置 (旋转矩形)
    * @return cv::Mat   返回截取后的图片
-   * @author RCX
    */
   cv::Mat cutRoIRotatedRect(const cv::Mat&         _input_img,
                             const cv::RotatedRect& _rect) {
@@ -75,7 +73,6 @@ class RoI {
    *
    * @param _input_point ROI 图像的点
    * @return cv::Point2d 返回原图的点
-   * @author RCX
    */
   inline cv::Point2d coordMapping(const cv::Point& _input_point) {
     return cv::Point(_input_point.x + tl_.x,
@@ -86,7 +83,6 @@ class RoI {
    *
    * @param _input_rect ROI 图像的值
    * @return cv::Rect   返回原图的值
-   * @author RCX
    */
   inline cv::Rect rectMapping(const cv::Rect& _input_rect) {
     cv::Point convert_tl = coordMapping(_input_rect.tl());
@@ -101,7 +97,6 @@ class RoI {
    *
    * @param _input_r_rect    ROI 图像的值
    * @return cv::RotatedRect 返回原图的值
-   * @author RCX
    */
   inline cv::RotatedRect rotatedRectMapping(const cv::RotatedRect& _input_r_rect) {
     return cv::RotatedRect(coordMapping(_input_r_rect.center),

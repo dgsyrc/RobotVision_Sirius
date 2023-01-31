@@ -43,28 +43,24 @@ class PnP : public abstract_pnp::PnP {
    * @brief 返回 Yaw 轴角度
    *
    * @return float
-   * @author XX
    */
   inline float  returnYawAngle()   { return pnp_info_.yaw_angle; }
   /**
    * @brief 返回 Pitch 轴角度
    *
    * @return float
-   * @author XX
    */
   inline float  returnPitchAngle() { return pnp_info_.pitch_angle; }
   /**
    * @brief 返回深度
    *
    * @return float
-   * @author XX
    */
   inline float  returnDepth()      { return pnp_info_.depth; }
   /**
    * @brief 返回目标旋转向量
    *
    * @return double
-   * @author XX
    */
   inline double returnTvecTx()     { return tvec_.ptr<double>(0)[0]; }
   inline double returnTvecTy()     { return tvec_.ptr<double>(0)[1]; }
@@ -76,7 +72,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _armor_type   装甲板类型
    * @param _src_img      原图（ CV_8UC3 ）
    * @param _rect         目标旋转矩形
-   * @author XX
    */
   void solvePnP(int             _ballet_speed,
                 int             _armor_type,
@@ -89,7 +84,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _armor_type   装甲板类型
    * @param _src_img      原图（ CV_8UC3 ）
    * @param _rect         目标外接矩形
-   * @author XX
    */
   void solvePnP(int      _ballet_speed,
                 int      _armor_type,
@@ -103,7 +97,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _height       目标实际高度
    * @param _src_img      原图（ CV_8UC3 ）
    * @param _rect         目标旋转矩形
-   * @author XX
    */
   void solvePnP(int             _ballet_speed,
                 int             _width,
@@ -118,7 +111,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _height       目标实际高度
    * @param _src_img      原图（ CV_8UC3 ）
    * @param _rect         目标外接矩形
-   * @author XX
    */
   void solvePnP(int      _ballet_speed,
                 int      _width,
@@ -131,7 +123,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _ballet_speed 子弹速度
    * @param _armor_type   装甲板类型
    * @param _rect         目标旋转矩形
-   * @author XX
    */
   void solvePnP(int             _ballet_speed,
                 int             _armor_type,
@@ -143,7 +134,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _width        目标实际宽度
    * @param _height       目标实际高度
    * @param _rect         目标外接矩形
-   * @author XX
    */
   void solvePnP(int             _ballet_speed,
                 int             _width,
@@ -155,7 +145,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _ballet_speed 子弹速度
    * @param _armor_type   装甲板类型
    * @param _rect         目标外接矩形
-   * @author XX
    */
   void solvePnP(int      _ballet_speed,
                 int      _armor_type,
@@ -167,7 +156,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _width        目标实际宽度
    * @param _height       目标实际高度
    * @param _rect         目标外接矩形
-   * @author XX
    */
   void solvePnP(int      _ballet_speed,
                 int      _width,
@@ -180,7 +168,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _armor_type   装甲板类型
    * @param _rect         目标旋转矩形
    * @param _depth        目标深度
-   * @author XX
    */
   void solvePnP(int             _ballet_speed,
                 int             _armor_type,
@@ -193,7 +180,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _armor_type   装甲板类型
    * @param _target_2d    目标 2d 点坐标
    * @param _depth        目标深度
-   * @author XX
    */
   void solvePnP(int                      _ballet_speed,
                 int                      _armor_type,
@@ -206,7 +192,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _armor_type   装甲板类型
    * @param _src_img      原图（ CV_8UC3 ）
    * @param _target_2d    目标 2d 点坐标
-   * @author XX
    */
   void solvePnP(int                      _ballet_speed,
                 int                      _armor_type,
@@ -218,7 +203,6 @@ class PnP : public abstract_pnp::PnP {
    * @param _ballet_speed 子弹速度
    * @param _armor_type   装甲板类型
    * @param _target_2d    目标 2d 点坐标
-   * @author XX
    */
   void solvePnP(int                      _ballet_speed,
                 int                      _armor_type,

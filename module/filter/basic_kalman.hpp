@@ -29,7 +29,6 @@ class firstKalman {
    * @param t   公式数据
    * @param x0  公式数据 
    * @param p0  公式数据
-   * @author SHL 
    */
   firstKalman(float Q, float R, float t, float x0, float p0) {
     Q_ = Q;
@@ -45,7 +44,6 @@ class firstKalman {
    * @param Q    过程噪声
    * @param R    测量噪声
    * @param t    公式数据
-   * @author     SHL
    */
   void setParam(int _Q, int _R, int _t) {
     if (_R < 1) _R = 1;
@@ -60,7 +58,6 @@ class firstKalman {
   * 
   * @param _data         传入需要滤波的数据
   * @return float        返回滤波完毕的数据
-  * @author SHL 
   */
   float run(float _data) {
     x_pre_ = x_;                               // x(k|k-1) = AX(k-1|k-1)+BU(k)
@@ -77,7 +74,6 @@ class firstKalman {
    * @param _data1     传入需要滤波的数据
    * @param _data2     传入需要滤波的数据
    * @return float     传出处理后数据
-   * @author           SHL 
    */
   float mergeRun(float _data1, float _data2) {
     x_pre_ = _data1;

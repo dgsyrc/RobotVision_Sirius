@@ -175,8 +175,6 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
 
   // 获取基本信息
   getInput(_input_img, _receive_info.my_color);
-  //getInput_Action(_input_img, _receive_info.my_color);
-  //getInput_Inaction(_input_img, _receive_info.my_color);
   // 预处理
   imageProcessing(src_img_, bin_img_action, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
   imageProcessing(src_img_, bin_img_inaction, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
@@ -205,8 +203,8 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
 #ifdef DEBUG_MANUAL
     // send_info.yaw_angle = current_predict_quantity*100;
     // send_info.pitch_angle = final_forecast_quantity_*100;
-    send_info.yaw_angle   = angleCalculation(pre_center_, 0.0048, src_img_.size(), 8).x;
-    send_info.pitch_angle = angleCalculation(pre_center_, 0.0048, src_img_.size(), 8).y;
+    send_info.yaw_angle   = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).x;
+    send_info.pitch_angle = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).y;
     cv::Point yaw_angle   = cv::Point(dst_img_.cols - 100, 60);
     cv::putText(dst_img_, std::to_string(send_info.yaw_angle), yaw_angle, cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 255, 0), 1, 8, false);
     cv::Point pitch_angle = cv::Point(dst_img_.cols - 100, 70);
@@ -398,16 +396,6 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
   default:
     break;
   }
-  //morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 1);
-  /*morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);
-  morphologyEx(bin_img_, bin_img_, cv::MORPH_DILATE, ele_);*/
 // 显示最终合并的二值图
 /*
 #ifndef RELEASE
@@ -647,10 +635,6 @@ void Detector::edit_param()
   cv::createTrackbar("BIG_TARGET_AREA_MAX:", "EDIT", &buff_config_.param.BIG_TARGET_AREA_MAX, 16000, nullptr);
   cv::createTrackbar("DIFF_ANGLE_MAX:", "EDIT", &buff_config_.param.DIFF_ANGLE_MAX, 200, nullptr);
   cv::createTrackbar("DIFF_ANGLE_MIN:", "EDIT", &buff_config_.param.DIFF_ANGLE_MIN, 200, nullptr);
-  /*cv::createTrackbar("SMALL_TARGET_ASPECT_RATIO_MAX:", "EDIT", &buff_config_.param.SMALL_TARGET_ASPECT_RATIO_MAX, 255, nullptr);
-  cv::createTrackbar("SMALL_TARGET_ASPECT_RATIO_MIN:", "EDIT", &buff_config_.param.SMALL_TARGET_ASPECT_RATIO_MIN, 255, nullptr);
-  cv::createTrackbar("AREA_RATIO_MIN:", "EDIT", &buff_config_.param.AREA_RATIO_MIN, 255, nullptr);
-  cv::createTrackbar("AREA_RATIO_MAX:", "EDIT", &buff_config_.param.AREA_RATIO_MAX, 255, nullptr);*/
 }
 
 

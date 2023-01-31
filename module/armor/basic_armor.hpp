@@ -392,7 +392,7 @@ class Detector {
   // 上上帧预测像素点数量
   int last_last_forecast_pixels_ = 0;
   // 相机焦距
-  const int camera_focal_        = 8;
+  const int camera_focal_        = 6;
   // 延时滤波占比
   int proportion_direction_      = 15;
   // 预测效果大小 * 0.1

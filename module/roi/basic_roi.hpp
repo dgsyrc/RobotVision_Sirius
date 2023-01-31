@@ -32,14 +32,12 @@ class RoI : public abstract_roi::RoI {
    * @brief 返回 ROI 的 tl 点
    *
    * @return cv::Point 返回 ROI 的 tl 点
-   * @author WSL
    */
   inline cv::Point returnRectTl() { return roi_armor_data_.last_rect.tl(); }
   /**
    * @brief 设置是否进行 ROI
    *
    * @param _num 装甲板数量
-   * @author WSL
    */
   inline void setLastRoiSuccess(int _num) {
     roi_armor_data_.last_armor_success = false;
@@ -53,7 +51,6 @@ class RoI : public abstract_roi::RoI {
    *
    * @param _rect             装甲板旋转矩形
    * @param _ArmorDistinguish 装甲板类型
-   * @author WSL
    */
   inline void setLastRoiRect(cv::RotatedRect _rect,
                              int             _ArmorDistinguish) {
@@ -75,7 +72,6 @@ class RoI : public abstract_roi::RoI {
    * @param _rect          ROI 的旋转矩形
    * @param width_big_num  宽度增加的倍数
    * @param height_big_num 高度增加的倍数
-   * @author WSL
    */
   inline void BigLastRoiRect(cv::RotatedRect _rect,
                              float           _width_big_num,
@@ -95,7 +91,6 @@ class RoI : public abstract_roi::RoI {
    * @param _input_img 图像
    * @param _r_rect    ROI 区域
    * @return cv::Rect  返回安全的 Rect 参数
-   * @author RCX
    */
   cv::Rect makeRectSafeFixed(const cv::Mat&         _input_img,
                              const cv::RotatedRect& _r_rect);
@@ -105,7 +100,6 @@ class RoI : public abstract_roi::RoI {
    * @param _input_img 图像
    * @param _r_rect    ROI 区域
    * @return cv::Rect  返回安全的 Rect 参数
-   * @author RCX
    */
   cv::Rect makeRectSafeTailor(const cv::Mat&         _input_img,
                               const cv::RotatedRect& _r_rect);
@@ -115,7 +109,6 @@ class RoI : public abstract_roi::RoI {
    * @param _input_img 图像
    * @param _r_rect    ROI 区域
    * @return cv::Rect  返回安全的 Rect 参数
-   * @author RCX
    */
   cv::Rect makeRectSafeTailor(const cv::Mat&  _input_img,
                               const cv::Rect& _r_rect);
@@ -125,7 +118,6 @@ class RoI : public abstract_roi::RoI {
    * @param _input_img 图像
    * @param _r_rect    ROI 区域
    * @return cv::Rect  返回安全的 Rect 参数
-   * @author WSL
    */
   cv::Rect makeRectSafeThird(const cv::Mat&         _input_img,
                              const cv::RotatedRect& _r_rect);
@@ -135,7 +127,6 @@ class RoI : public abstract_roi::RoI {
    *
    * @param _input_img 图像
    * @return cv::Mat   返回 ROI 图像
-   * @author WSL
    */     
   cv::Mat returnROIResultMat(const cv::Mat& _input_img);
 };

@@ -3,7 +3,6 @@
  * @namespace: ooi
  * @class: model
  * @brief: Load ONNX model and infer input image for classified int digit
- * @author Unbinilium
  * @version 1.0.1
  * @date 2023-01-18
  */
