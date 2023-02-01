@@ -66,7 +66,7 @@ SerialPort::~SerialPort(void) {
   if (!close(fd)) { fmt::print("[{}] Close serial device success: {}\n", idntifier_green, fd); }
 }
 
-/* Receiving protocol:
+/* 接收的数据:
  *  0:      'S'
  *  1:      color
  *  2:      model
@@ -79,12 +79,12 @@ SerialPort::~SerialPort(void) {
  *  17:     'E'
  */
 void SerialPort::receiveData() {
+  // 初始化接收数据为0
   memset(receive_buff_, 0, REC_INFO_LENGTH * 2);
+  // 接收数据
   read_message_ = read(fd, receive_buff_temp_, sizeof(receive_buff_temp_));
-  //fmt::print("PASS\n");
   for (size_t i = 0; i != sizeof(receive_buff_temp_); ++i) {
     if (receive_buff_temp_[i] == 'S' && receive_buff_temp_[i + sizeof(receive_buff_) - 1] == 'E') {
-      //fmt::print("PASS\n");
       if (serial_config_.show_serial_information == 1) {
         fmt::print("[{}] receiveData() ->", idntifier_green);
         for (size_t j = 0; j != sizeof(receive_buff_); ++j) {
@@ -105,17 +105,16 @@ void SerialPort::receiveData() {
   tcflush(fd, TCIFLUSH);
 }
 
-/* Sending protocol:
- *  0:      'S'
- *  1:      data_type
- *  2:      is_shooting
- *  3:      _yaw (sign)
- *  4~5:    yaw (4:low, 5:high)
- *  6:      _pitch (sign)
- *  7~8:    pitch (7:low, 8:high)
- *  9~10:   depth (9:low, 10:high)
- *  11:     CRC
- *  12:     'E'
+/**
+ * @brief 写入发送数据
+ * 
+ * @param _yaw yaw轴符号
+ * @param yaw  yaw轴
+ * @param _pitch pitch轴符号
+ * @param pitch pitch轴
+ * @param depth 深度信息
+ * @param 
+ * @return void 
  */
 void SerialPort::writeData(const int&     _yaw,
                            const int16_t& yaw,

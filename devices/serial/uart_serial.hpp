@@ -27,7 +27,7 @@ auto idntifier_green = fmt::format(fg(fmt::color::green) | fmt::emphasis::bold, 
 auto idntifier_red   = fmt::format(fg(fmt::color::red)   | fmt::emphasis::bold, "uart_serial");
 
 enum BufferLength {
-  // The recieve length of the array obtained after decoding
+  // 接收数据字节数
   REC_INFO_LENGTH   = 25,
 
   // The send length of the array for CRC auth code code calculating
@@ -38,14 +38,14 @@ enum BufferLength {
 };
 
 
-// The color of our team
+// 我方颜色
 enum Color {
   ALL,
   RED,
   BLUE,
 };
 
-// Description of operation mode information
+// 当前模式
 enum RunMode {
   DEFAULT_MODE,
   // Self-Scanning Mode
@@ -62,11 +62,12 @@ enum RunMode {
   PLANE_MODE,
   // Sentrys autonomous mode
   SENTINEL_AUTONOMOUS_MODE,
-  // Radar Mode
+  // 雷达模式
   RADAR_MODE,
   // 相机标定
   CAMERA_CALIBRATION,
 };
+
 // Describe the current robot ID information
 enum RobotID {
   HERO = 1, // 英雄
@@ -76,13 +77,14 @@ enum RobotID {
   SENTRY, // 哨兵
 };
 
+// 串口信息
 struct Serial_Config {
   std::string preferred_device        = "/dev/ttyUSB0";
   int         set_baudrate            = 0;
   int         show_serial_information = 0;
 };
 
-// Serial port information receiving structure 头帧0x53 尾帧0x45
+// 接收的数据结构 头帧0x53 尾帧0x45
 struct Receive_Data {
   int   my_color;  // 01颜色
   int   now_run_mode; // 02模式
@@ -90,35 +92,35 @@ struct Receive_Data {
 
   union Bullet_Velocity_Info {
     float veloctiy;
-    uint8_t arr_veloctiy[4] = {0};
+    uint8_t arr_veloctiy[2] = {0};
   } bullet_velocity;
 
   union Yaw_Angle_Info {
     float yaw;
-    uint8_t arr_yaw[4] = {0};
+    uint8_t arr_yaw[2] = {0};
   } Yaw_Angle;
 
   union Yaw_Velocity_Info
   {
     float   veloctiy;
-    uint8_t arr_yaw_velocity[4] = {0};
+    uint8_t arr_yaw_velocity[2] = {0};
   } Yaw_Velocity;
 
   union Pitch_Angle_Info {
     float   pitch;
-    uint8_t arr_pitch[4] = {0};
+    uint8_t arr_pitch[2] = {0};
   } Pitch_Angle;
 
   union Pitch_Velocity_Info {
     float   veloctiy;
-    uint8_t arr_pitch_velocity[4] = {0};
+    uint8_t arr_pitch_velocity = 0;
   } Pitch_Velocity;
 
   Receive_Data() {
     my_color                 = ALL;
     now_run_mode             = SUP_SHOOT;
     my_robot_id              = INFANTRY;
-    bullet_velocity.veloctiy = 30;
+    bullet_velocity.veloctiy = 0;
     Yaw_Angle.yaw            = 0.f;
     Yaw_Velocity.veloctiy    = 0.f;
     Pitch_Angle.pitch        = 0.f;
@@ -126,21 +128,23 @@ struct Receive_Data {
   }
 };
 
-// Serial port message sending structure
-// add cord width length
+// 发送的数据结构
 struct Write_Data {
-  int   symbol_yaw; // 03yaw正负号
-  int   symbol_pitch; // 06pitch轴正负号
-  int   depth; // 0910深度
-
-  // Whether the robot shold shoot, 1 for shoot for 1 ball, otherwises 0
-  int   is_shooting; // 02射击信息
-
-  // Whether the target is found, 1 for found, otherwise 0
   int   data_type; // 01识别信息
-
+  int   is_shooting; // 02射击信息 1发射 0不发射
+  
+  int   symbol_yaw; // 03yaw正负号
   float yaw_angle; // 0405yaw轴数据
+
+  int   symbol_pitch; // 06pitch轴正负号
   float pitch_angle; // 0708pitch轴数据
+
+  struct node {
+    u_int16_t x; // 0910 预测坐标x轴
+    u_int16_t y; // 1112 预测坐标y轴
+  } cord;
+
+  int  depth; // 0910深度
 
   int predict_cord; // 1213 预测坐标
   int predict_length; // 14 区域长
