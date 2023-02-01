@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2023 Sirius
  */
 #include "RobotVision_Sirius.hpp"
-//#define VIDEO_DEBUG
+#define VIDEO_DEBUG
 #define PARM_EDIT
 
 
@@ -23,7 +23,9 @@ int main()
   mindvision::CameraParam(0, mindvision::RESOLUTION_1280_X_1024, mindvision::EXPOSURE_10000));
   cv::VideoCapture cap_ = cv::VideoCapture(0);
 #else
+  
   cv::VideoCapture cap_(fmt::format("{}{}", SOURCE_PATH, "/video/2.mp4"));
+  
 #endif
 
   // 配置文件
@@ -56,6 +58,7 @@ int main()
   fps::FPS       global_fps_;
 
   basic_roi::RoI roi_;
+  
   while (true) {
     global_fps_.getTick();
 #ifndef VIDEO_DEBUG
@@ -68,6 +71,7 @@ int main()
 #else
       cap_.read(src_img);
       cv::waitKey(30);
+      
 #endif
     if (!src_img.empty()) {
       serial_.updateReceiveInformation();
@@ -80,7 +84,7 @@ int main()
         serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
                                 pnp_.returnYawAngle(),
                                 pnp_.returnPitchAngle(),
-                                (uart::Write_Data::node){0,0},
+                                basic_armor_.returnArmorCenter(0),
                                 pnp_.returnDepth());
         break;
       // 能量机关
@@ -96,13 +100,13 @@ int main()
           serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
                                   pnp_.returnYawAngle(),
                                   pnp_.returnPitchAngle(),
-                                  (uart::Write_Data::node){0,0},
+                                  basic_armor_.returnArmorCenter(0),
                                   pnp_.returnDepth());
         } else {
           serial_.updataWriteData(basic_armor_.returnLostCnt() > 0 ? 1 : 0, 0,
                                   -pnp_.returnYawAngle(),
                                   pnp_.returnPitchAngle(),
-                                  (uart::Write_Data::node){0,0},
+                                  basic_armor_.returnArmorCenter(0),
                                   pnp_.returnDepth());
         }
 
@@ -120,13 +124,13 @@ int main()
           serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
                                   pnp_.returnYawAngle(),
                                   pnp_.returnPitchAngle(),
-                                  (uart::Write_Data::node){0,0},
+                                  basic_armor_.returnArmorCenter(0),
                                   pnp_.returnDepth());
         } else {
           serial_.updataWriteData(basic_armor_.returnLostCnt() > 0 ? 1 : 0, 0,
                                   -pnp_.returnYawAngle(),
                                   pnp_.returnPitchAngle(),
-                                  (uart::Write_Data::node){0,0},
+                                  basic_armor_.returnArmorCenter(0),
                                   pnp_.returnDepth());
         }
         roi_.setLastRoiSuccess(basic_armor_.returnArmorNum());
@@ -149,7 +153,7 @@ int main()
             serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
                                     pnp_.returnYawAngle(),
                                     pnp_.returnPitchAngle(),
-                                    (uart::Write_Data::node){0,0},
+                                    basic_armor_.returnArmorCenter(0),
                                     pnp_.returnDepth());
           } else {
             for (int i = 0; i < basic_armor_.returnArmorNum(); i++) {
@@ -162,14 +166,14 @@ int main()
                   serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
                                           pnp_.returnYawAngle(),
                                           pnp_.returnPitchAngle(),
-                                          (uart::Write_Data::node){0,0},
+                                          basic_armor_.returnArmorCenter(0),
                                           pnp_.returnDepth());
                   break;
                 } else {
                   serial_.updataWriteData(0, 0,
                                           pnp_.returnYawAngle(),
                                           pnp_.returnPitchAngle(),
-                                          (uart::Write_Data::node){0,0},
+                                          basic_armor_.returnArmorCenter(0),
                                           pnp_.returnDepth());
                   break;
                 }
@@ -180,7 +184,7 @@ int main()
                 serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
                                         pnp_.returnYawAngle(),
                                         pnp_.returnPitchAngle(),
-                                        (uart::Write_Data::node){0,0},
+                                        basic_armor_.returnArmorCenter(0),
                                         pnp_.returnDepth());
                 break;
               }
@@ -208,7 +212,7 @@ int main()
         serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
                                 pnp_.returnYawAngle(),
                                 pnp_.returnPitchAngle(),
-                                (uart::Write_Data::node){0,0},
+                                basic_armor_.returnArmorCenter(0),
                                 pnp_.returnDepth());
         break;
       }

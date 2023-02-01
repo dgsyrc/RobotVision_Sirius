@@ -205,6 +205,8 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
     // send_info.pitch_angle = final_forecast_quantity_*100;
     send_info.yaw   = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).x;
     send_info.pitch = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).y;
+    send_info.cord.x = pre_center_.x;
+    send_info.cord.y = pre_center_.y;
     cv::Point yaw_angle   = cv::Point(dst_img_.cols - 100, 60);
     cv::putText(dst_img_, std::to_string(send_info.yaw), yaw_angle, cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 255, 0), 1, 8, false);
     cv::Point pitch_angle = cv::Point(dst_img_.cols - 100, 70);
@@ -229,7 +231,6 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
 #endif
   // 更新上一帧数据
   updateLastData(is_find_target_);
-
   return send_info;
 }
 
@@ -660,7 +661,6 @@ void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std:
     {
       flag[0] = false;
       f1 = true;
-      fmt::print("[{}] pass\n", debug_info_2);
     }
 
     // 小轮廓周长条件
@@ -1194,7 +1194,7 @@ void Detector::calculateTargetPointSet(
   cv::circle(_input_dst_img, _final_center_r, radio_, cv::Scalar(0, 255, 125), 2, 8, 0);                       // 轨迹圆
   cv::circle(_input_dst_img, pre_center_, 3, cv::Scalar(255, 0, 0), 3, 8, 0);                                  // 预测值的中点
   cv::line(_input_dst_img, pre_center_, _final_center_r, cv::Scalar(0, 255, 255), 2); // 圆心-预测中心连线                         // 预测点和圆心的连线
-  fmt::print("[{}] cord:{} {}\n",debug_info,pre_center_.x,pre_center_.y);
+  //fmt::print("[{}] cord:{} {}\n",debug_info,pre_center_.x,pre_center_.y);
   cv::line(_input_dst_img, current_target_.Armor().Rect().center, _final_center_r, cv::Scalar(0, 255, 0), 2);  // 装甲板和圆心的连线
 
   // 顺时针表示顶点顺序,红黄蓝绿
@@ -1202,6 +1202,7 @@ void Detector::calculateTargetPointSet(
   cv::circle(_input_dst_img, _target_2d_point[1], 3, cv::Scalar(0, 255, 255), -1, 8, 0);
   cv::circle(_input_dst_img, _target_2d_point[2], 3, cv::Scalar(255, 0, 0), -1, 8, 0);
   cv::circle(_input_dst_img, _target_2d_point[3], 3, cv::Scalar(0, 255, 0), -1, 8, 0);
+
   // 绘制图像
 #endif  // RELEASE
 }

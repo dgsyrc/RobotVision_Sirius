@@ -28,7 +28,7 @@ auto idntifier_red   = fmt::format(fg(fmt::color::red)   | fmt::emphasis::bold, 
 
 enum BufferLength {
   // 接收数据字节数
-  REC_INFO_LENGTH   = 25,
+  REC_INFO_LENGTH   = 14,
 
   // 计算CRC校验码的发送数据的长度
   CRC_BUFF_LENGTH   = 13,
@@ -150,8 +150,8 @@ struct Write_Data {
   float pitch; // 0506 pitch轴数据
 
   struct node {
-    u_int16_t x; // 0708 预测坐标x轴
-    u_int16_t y; // 0910 预测坐标y轴
+    int x; // 0708 预测坐标x轴
+    int y; // 0910 预测坐标y轴
   } cord;
 
   int  depth; // 1112 深度
@@ -161,8 +161,8 @@ struct Write_Data {
     is_shooting  = 0; // 02
     yaw    = 0.f; // 0304
     pitch  = 0.f; // 0506
-    cord.x       = 0.f; // 0708
-    cord.y       = 0.f; // 0910
+    cord.x       = 0; // 0708
+    cord.y       = 0; // 0910
     depth        = 0; // 1112
   }
 };
@@ -202,7 +202,7 @@ class SerialPort {
    * 
    * @return int 
    */
-  inline int   returnReceiveMode()           { return receive_data_.now_run_mode; }
+  inline int   returnReceiveMode()           { return 2/*receive_data_.now_run_mode*/; }
   /**
    * @brief 返回陀螺仪 Pitch 轴数据
    * 
@@ -358,7 +358,8 @@ class SerialPort {
   int16_t yaw_reduction_;
   int16_t pitch_reduction_;
   int16_t depth_reduction_;
-  int16_t predict_cord_reduction_;
+  int16_t cord_reduction_x;
+  int16_t cord_reduction_y;
 
   int16_t angle_reduction_;
   int16_t acceleration_reduction_;
@@ -367,6 +368,8 @@ class SerialPort {
 
   ssize_t read_message_;
   ssize_t write_message_;
+
+  bool get_flag;
 
   inline uint8_t checksumCRC(unsigned char* buf, uint16_t len);
 

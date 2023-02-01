@@ -11,7 +11,6 @@
 namespace cam{
 
   void create_images(cv::Mat& frame) {
-    fmt::print("CHECK\n");
     imshow("frame", frame);
     ch = cv::waitKey(50);
     printf("%d ", ch);
@@ -46,16 +45,13 @@ namespace cam{
       s = img.size();
       cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
       cv::imshow("calibration-demo", gray);
-      //cv::waitKey(5000);
       ret = cv::findChessboardCorners(gray, cv::Size(7, 7), corners, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);
       if (ret) {
-        fmt::print("PASS\n");
         cv::cornerSubPix(gray, corners, cv::Size(11, 11), cv::Size(-1, -1), criteria);
         cv::drawChessboardCorners(img, cv::Size(7, 7), corners, ret);
         imagePoints.push_back(corners);
         objectPoints.push_back(obj);
         cv::imshow("calibration-demo", img);
-        //cv::waitKey(5000);
       }
     }
     // 相机校正
@@ -81,7 +77,6 @@ namespace cam{
     cv::imshow("calibration-demo", gray);
     ret = cv::findChessboardCorners(gray, cv::Size(7, 7), corners, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);
     if (ret) {
-      fmt::print("PASS\n");
       cv::imwrite(fmt::format("{}/photos/{}.png",SAVE_FILE_PATH, std::to_string(index)) , image);
       cv::cornerSubPix(gray, corners, cv::Size(11, 11), cv::Size(-1, -1), criteria);
       cv::drawChessboardCorners(image, cv::Size(7, 7), corners, ret);
@@ -124,7 +119,6 @@ namespace cam{
       s = img.size();
       if(i == 0){
         cv::calibrateCamera(objRealPoint, corners, s, intrinsic, distCoeffs, rvecs, tvecs, 0);
-        fmt::print("PASS\n");
       }
       cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
       ret = cv::findChessboardCorners(gray, cv::Size(7, 7), corners, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);

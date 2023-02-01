@@ -279,6 +279,14 @@ class Detector {
    * @param _my_color   自身的颜色
    */
   void runImage(const cv::Mat &_src_img, const int _my_color);
+ /**
+   * @brief 获取装甲板中心点
+   * 
+   * @param _num 
+   */
+  uart::Write_Data::node returnArmorCenter(const int _num){
+    return (uart::Write_Data::node){armor_[_num].armor_rect.center.x,armor_[_num].armor_rect.center.y};
+  }
   /**
    * @brief BGR 预处理
    * 

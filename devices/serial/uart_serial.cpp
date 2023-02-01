@@ -79,12 +79,16 @@ SerialPort::~SerialPort(void) {
  *  13:     'E'
  */
 void SerialPort::receiveData() {
+  get_flag = false;
   // 初始化接收数据为0
   memset(receive_buff_, 0, REC_INFO_LENGTH * 2);
   // 接收数据
   read_message_ = read(fd, receive_buff_temp_, sizeof(receive_buff_temp_));
   for (size_t i = 0; i != sizeof(receive_buff_temp_); ++i) {
     if (receive_buff_temp_[i] == 'S' && receive_buff_temp_[i + sizeof(receive_buff_) - 1] == 'E') {
+      if(!get_flag) {
+        get_flag = true;
+      }
       if (serial_config_.show_serial_information == 1) {
         fmt::print("[{}] receiveData() ->", idntifier_green);
         for (size_t j = 0; j != sizeof(receive_buff_); ++j) {
@@ -97,11 +101,11 @@ void SerialPort::receiveData() {
           receive_buff_[j] = receive_buff_temp_[i + j];
         }
       }
-
       break;
     }
     
   }
+  fmt::print("\n");
   tcflush(fd, TCIFLUSH);
 }
 
@@ -119,24 +123,26 @@ void SerialPort::writeData(const int&     data_type,
 
   //memset(write_buff_, 0, sizeof(write_buff_));
   write_buff_[0]='S';
-  write_buff_[18]='E';
+  write_buff_[14]='E';
   write_message_ = write(fd, write_buff_, sizeof(write_buff_));
 
   if (serial_config_.show_serial_information == 1) {
-    yaw_reduction_   = mergeIntoBytes(write_buff_[5],  write_buff_[4]);
-    pitch_reduction_ = mergeIntoBytes(write_buff_[8],  write_buff_[7]);
-    depth_reduction_ = mergeIntoBytes(write_buff_[10], write_buff_[9]);
-    predict_cord_reduction_ = mergeIntoBytes(write_buff_[12], write_buff_[13]);
+    yaw_reduction_   = mergeIntoBytes(write_buff_[4],  write_buff_[3]);
+    pitch_reduction_ = mergeIntoBytes(write_buff_[6],  write_buff_[5]);
+    cord_reduction_x = mergeIntoBytes(write_buff_[8], write_buff_[7]);
+    cord_reduction_y = mergeIntoBytes(write_buff_[10], write_buff_[9]);
+    depth_reduction_ = mergeIntoBytes(write_buff_[12], write_buff_[11]);
 
-    //fmt::print("[{}] writeData() ->", idntifier_green);
-    /*for (size_t i = 0; i < 4; ++i) { fmt::print(" {}", write_buff_[i]); }
-      fmt::print(" {} {} {} {}",
+    fmt::print("[{}] writeData() ->", idntifier_green);
+    for (size_t i = 0; i < 3; ++i) { fmt::print(" {}", write_buff_[i]); }
+      fmt::print(" {} {} {} {} {}",
       static_cast<float>(yaw_reduction_) / 100,
-      static_cast<int>(write_buff_[6]),
       static_cast<float>(pitch_reduction_) / 100,
+      static_cast<int>(cord_reduction_x),
+      static_cast<int>(cord_reduction_y),
       static_cast<float>(depth_reduction_));
-    for (size_t i = 11; i < 19; ++i) { fmt::print(" {}", write_buff_[i]); }*/
-    //fmt::print("\n");
+    for (size_t i = 13; i < 15; ++i) { fmt::print(" {}", write_buff_[i]); }
+    fmt::print("\n");
 
     yaw_reduction_   = 0x0000;
     pitch_reduction_ = 0x0000;
@@ -149,8 +155,8 @@ void SerialPort::writeData(const Write_Data& _write_data) {
   write_data_.is_shooting  = _write_data.is_shooting;
   write_data_.yaw    = _write_data.yaw * 100;
   write_data_.pitch  = _write_data.pitch * 100;
+  write_data_.cord   = _write_data.cord;
   write_data_.depth        = 0;
-
 
   writeData(write_data_.data_type,
             write_data_.is_shooting,
@@ -195,8 +201,8 @@ Write_Data SerialPort::gainWriteData(const int _data_type,
   write_data.is_shooting  = _is_shooting;
   write_data.yaw    = _yaw * 100;
   write_data.pitch  = _pitch * 100;
-  write_data_.cord        = _cord;
-  write_data.depth        = _depth;
+  write_data_.cord  = _cord;
+  write_data.depth  = _depth;
   return write_data;
 }
 
@@ -224,8 +230,8 @@ void SerialPort::getDataForCRC(const int&     data_type,
   crc_buff_[7]  = returnLowBit(cord.x);
   crc_buff_[8]  = returnHighBit(cord.x);
   crc_buff_[9]  = returnLowBit(cord.y);
-  crc_buff_[10]  = returnHighBit(cord.y);
-  crc_buff_[11]  = returnLowBit(depth);
+  crc_buff_[10] = returnHighBit(cord.y);
+  crc_buff_[11] = returnLowBit(depth);
   crc_buff_[12] = returnHighBit(depth);
 }
 
@@ -254,9 +260,10 @@ void SerialPort::getDataForSend(const int& data_type,
 }
 
 bool SerialPort::isEmpty() {
-  if (receive_buff_[0] != '0' || receive_buff_[REC_INFO_LENGTH - 1] != '0') {
+  if(get_flag) {
     return false;
-  } else {
+  }
+  else {
     return true;
   }
 }
@@ -264,10 +271,10 @@ bool SerialPort::isEmpty() {
 void SerialPort::updateReceiveInformation() {
   receiveData();
 
-  if (isEmpty()) {
-    return;
+  if (!isEmpty()) {
+    cv::destroyAllWindows();
   } else {
-    last_receive_data_ = receive_data_;
+    return;
   }
 
   switch (receive_buff_[1]) {
@@ -309,6 +316,10 @@ void SerialPort::updateReceiveInformation() {
     break;
   case RADAR_MODE:
     receive_data_.now_run_mode = RADAR_MODE;
+    break;
+  case CAMERA_CALIBRATION:
+    receive_data_.now_run_mode = CAMERA_CALIBRATION;
+    break;
   default:
     receive_data_.now_run_mode = AUTO_AIM;
     break;
