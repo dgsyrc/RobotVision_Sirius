@@ -396,26 +396,22 @@ void SerialPort::updateReceiveInformation() {
   /*receive_data_.bullet_velocity = receive_buff_[14]; // -2 ?
   fmt::print("[info] bullet_velocity:{:d}\n", receive_data_.bullet_velocity);*/
 
-  for (size_t i = 0; i != sizeof(receive_data_.Yaw_Angle.arr_yaw); ++i) {
-    receive_data_.Yaw_Angle.arr_yaw[i] = receive_buff_[i + 4];
+  for (size_t i = 0; i != sizeof(receive_data_.raw_yaw_angle.arr_yaw); ++i) {
+    receive_data_.raw_yaw_angle.arr_yaw[i] = receive_buff_[i + 4];
   }
 
-  for (size_t i = 0; i != sizeof(receive_data_.Pitch_Angle.pitch); ++i) {
-    receive_data_.Pitch_Angle.arr_pitch[i] = receive_buff_[i + 8];
+  for (size_t i = 0; i != sizeof(receive_data_.raw_pitch_angle.pitch); ++i) {
+    receive_data_.raw_pitch_angle.arr_pitch[i] = receive_buff_[i + 6];
   }
 
-  for (size_t i = 0; i != sizeof(receive_data_.Pitch_Velocity.veloctiy); ++i) {
-    receive_data_.Pitch_Velocity.arr_pitch_velocity[i] = receive_buff_[i + 12];
+  for (size_t i = 0; i != sizeof(receive_data_.raw_pitch_velocity.veloctiy); ++i) {
+    receive_data_.raw_pitch_velocity.arr_pitch_velocity[i] = receive_buff_[i + 8];
   }
 
-  for (size_t i = 0; i != sizeof(receive_data_.Yaw_Velocity.veloctiy); ++i) {
-    receive_data_.Yaw_Velocity.arr_yaw_velocity[i] = receive_buff_[i + 16];
+  for (size_t i = 0; i != sizeof(receive_data_.raw_yaw_velocity.veloctiy); ++i) {
+    receive_data_.raw_yaw_velocity.arr_yaw_velocity[i] = receive_buff_[i + 10];
   }
 
-  for (size_t i = 0; i != sizeof(receive_data_.bullet_velocity.veloctiy); ++i) {
-    receive_data_.bullet_velocity.arr_veloctiy[i] = receive_buff_[i + 20];
-  }
-
-  
+  receive_data_.raw_bullet_velocity.arr_veloctiy = receive_buff_[12];
 }
 }  // namespace uart

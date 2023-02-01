@@ -90,41 +90,55 @@ struct Receive_Data {
   int   now_run_mode; // 02模式
   int   my_robot_id; // 03机器人ID
 
+  float yaw; // yaw轴
+  float pitch; // pitch轴
+
+  float yaw_velocity; // yaw轴加速度
+  float pitch_velocity; // pitch轴加速度
+
+  float bullet_velocity; // 子弹速度
+  float bullet_velocity; // 子弹速度
+
   union Bullet_Velocity_Info {
-    float veloctiy;
-    uint8_t arr_veloctiy[2] = {0};
-  } bullet_velocity;
+    short veloctiy;
+    uint8_t arr_veloctiy = 0;
+  } raw_bullet_velocity;
 
   union Yaw_Angle_Info {
-    float yaw;
+    short yaw;
     uint8_t arr_yaw[2] = {0};
-  } Yaw_Angle;
+  } raw_yaw_angle;
 
-  union Yaw_Velocity_Info
-  {
-    float   veloctiy;
+  union Yaw_Velocity_Info {
+    short veloctiy;
     uint8_t arr_yaw_velocity[2] = {0};
-  } Yaw_Velocity;
+  } raw_yaw_velocity;
 
   union Pitch_Angle_Info {
-    float   pitch;
+    short pitch;
     uint8_t arr_pitch[2] = {0};
-  } Pitch_Angle;
+  } raw_pitch_angle;
 
   union Pitch_Velocity_Info {
-    float   veloctiy;
-    uint8_t arr_pitch_velocity = 0;
-  } Pitch_Velocity;
+    short veloctiy;
+    uint8_t arr_pitch_velocity[2] = {0};
+  } raw_pitch_velocity;
 
   Receive_Data() {
     my_color                 = ALL;
     now_run_mode             = SUP_SHOOT;
     my_robot_id              = INFANTRY;
-    bullet_velocity.veloctiy = 0;
-    Yaw_Angle.yaw            = 0.f;
-    Yaw_Velocity.veloctiy    = 0.f;
-    Pitch_Angle.pitch        = 0.f;
-    Pitch_Velocity.veloctiy  = 0.f;
+    raw_bullet_velocity.veloctiy = 0;
+    raw_yaw_angle.yaw            = 0;
+    raw_yaw_velocity.veloctiy    = 0;
+    raw_pitch_angle.pitch        = 0;
+    raw_pitch_velocity.veloctiy  = 0;
+    yaw = 0.f; // yaw轴
+    pitch = 0.f; // pitch轴
+    yaw_velocity = 0.f; // yaw轴加速度
+    pitch_velocity = 0.f; // pitch轴加速度
+    bullet_velocity = 0.f; // 子弹速度
+    bullet_velocity = 0.f; // 子弹速度
   }
 };
 
@@ -182,7 +196,7 @@ class SerialPort {
    * 
    * @return float 
    */
-  inline float   returnReceiveBulletVelocity() { return receive_data_.bullet_velocity.veloctiy; }
+  inline float   returnReceiveBulletVelocity() { return receive_data_.bullet_velocity; }
   /**
    * @brief 返回机器人 ID
    * 
@@ -206,25 +220,25 @@ class SerialPort {
    * 
    * @return float 
    */
-  inline float returnReceivePitch()          { return receive_data_.Pitch_Angle.pitch; }
+  inline float returnReceivePitch()          { return receive_data_.pitch; }
   /**
    * @brief 返回陀螺仪 Yaw 轴数据
    * 
    * @return float 
    */
-  inline float returnReceiveYaw()                  { return receive_data_.Yaw_Angle.yaw; }
+  inline float returnReceiveYaw()                  { return receive_data_.yaw; }
   /**
    * @brief 返回陀螺仪Yaw轴速度数据
    * 
    * @return float 
    */
-  inline float returnReceiveYawVelocity()          { return receive_data_.Yaw_Velocity.veloctiy; }
+  inline float returnReceiveYawVelocity()          { return receive_data_.yaw_velocity; }
   /**
    * @brief 返回陀螺仪Pitch轴速度数据
    * 
    * @return float 
    */
-  inline float returnReceivePitchVelocity()        { return receive_data_.Pitch_Velocity.veloctiy;}
+  inline float returnReceivePitchVelocity()        { return receive_data_.pitch_velocity;}
 
   /**
    * @brief 返回高八位数据

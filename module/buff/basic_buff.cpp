@@ -140,7 +140,7 @@ void Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_i
   judgeCondition(is_find_target_);
 
   // 计算预测量 单位为弧度
-  final_forecast_quantity_ = doPredict(static_cast<float>(_receive_info.bullet_velocity.veloctiy), is_find_target_);
+  final_forecast_quantity_ = doPredict(static_cast<float>(_receive_info.bullet_velocity), is_find_target_);
 
   // 计算获取最终目标（矩形、顶点）
   calculateTargetPointSet(final_forecast_quantity_, final_center_r_, target_2d_point_, dst_img_, is_find_target_);
@@ -191,7 +191,7 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
   judgeCondition(is_find_target_);
 
   // 计算预测量 单位为弧度
-  final_forecast_quantity_ = doPredict(static_cast<float>(_receive_info.bullet_velocity.veloctiy), is_find_target_);
+  final_forecast_quantity_ = doPredict(static_cast<float>(_receive_info.bullet_velocity), is_find_target_);
 
   // 计算获取最终目标（矩形、顶点）
   calculateTargetPointSet(final_forecast_quantity_, final_center_r_, target_2d_point_, dst_img_, is_find_target_);
