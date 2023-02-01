@@ -71,12 +71,12 @@ SerialPort::~SerialPort(void) {
  *  1:      color
  *  2:      model
  *  3:      robot_id
- *  4~7:    yaw_angle (union)
- *  8~11:   pitch_angle (union)
- *  12~13:  yaw_velocity
- *  14~15:  pitch_velocity
- *  16:     bullet_velocity
- *  17:     'E'
+ *  4~5:    yaw_angle (union)
+ *  6~7:    pitch_angle (union)
+ *  8~9:    yaw_velocity
+ *  10~11:  pitch_velocity
+ *  12:     bullet_velocity
+ *  13:     'E'
  */
 void SerialPort::receiveData() {
   // 初始化接收数据为0
@@ -105,32 +105,17 @@ void SerialPort::receiveData() {
   tcflush(fd, TCIFLUSH);
 }
 
-/**
- * @brief 写入发送数据
- * 
- * @param _yaw yaw轴符号
- * @param yaw  yaw轴
- * @param _pitch pitch轴符号
- * @param pitch pitch轴
- * @param depth 深度信息
- * @param 
- * @return void 
- */
-void SerialPort::writeData(const int&     _yaw,
+void SerialPort::writeData(const int&     data_type,
+                           const int&     is_shooting,
                            const int16_t& yaw,
-                           const int&     _pitch,
                            const int16_t& pitch,
-                           const int16_t& depth,
-                           const int16_t& predict_cord,
-                           const int16_t&     predict_length,
-                           const int16_t&     predict_width,
-                           const int&     data_type,
-                           const int&     is_shooting) {
-  getDataForCRC(data_type, is_shooting, _yaw, yaw, _pitch, pitch, depth, predict_cord, predict_length, predict_width);
+                           const Write_Data::node& cord,
+                           const int16_t& depth) {
+  //getDataForCRC(data_type, is_shooting, _yaw, yaw, _pitch, pitch, depth, predict_cord, predict_length, predict_width);
 
-  uint8_t CRC = checksumCRC(crc_buff_, sizeof(crc_buff_));
+  //uint8_t CRC = checksumCRC(crc_buff_, sizeof(crc_buff_));
 
-  getDataForSend(data_type, is_shooting, _yaw, yaw, _pitch, pitch, depth, CRC, predict_cord, predict_length, predict_width);
+  getDataForSend(data_type, is_shooting, yaw, pitch, cord, depth, 0);
 
   //memset(write_buff_, 0, sizeof(write_buff_));
   write_buff_[0]='S';
@@ -162,81 +147,56 @@ void SerialPort::writeData(const int&     _yaw,
 void SerialPort::writeData(const Write_Data& _write_data) {
   write_data_.data_type    = _write_data.data_type > 1 ? 1 : _write_data.data_type;
   write_data_.is_shooting  = _write_data.is_shooting;
-  write_data_.symbol_yaw   = _write_data.yaw_angle >= 0 ? 1 : 0;
-  write_data_.yaw_angle    = fabs(_write_data.yaw_angle) * 100;
-  write_data_.symbol_pitch = _write_data.pitch_angle >= 0 ? 1 : 0;
-  write_data_.pitch_angle  = fabs(_write_data.pitch_angle) * 100;
-  write_data_.depth        = _write_data.depth;
-  write_data_.predict_cord = 0;
-  write_data_.predict_length = 0;
-  write_data_.predict_width = 0;
+  write_data_.yaw    = _write_data.yaw * 100;
+  write_data_.pitch  = _write_data.pitch * 100;
+  write_data_.depth        = 0;
 
-  writeData(write_data_.symbol_yaw,
-            write_data_.yaw_angle,
-            write_data_.symbol_pitch,
-            write_data_.pitch_angle,
-            write_data_.depth,
-            write_data_.data_type,
+
+  writeData(write_data_.data_type,
             write_data_.is_shooting,
-            write_data_.predict_cord,
-            write_data_.predict_length,
-            write_data_.predict_width);
+            write_data_.yaw,
+            write_data_.pitch,
+            write_data_.cord,
+            write_data_.depth);
 }
 
 void SerialPort::writeData() {
-  writeData(write_data_.symbol_yaw,
-            write_data_.yaw_angle,
-            write_data_.symbol_pitch,
-            write_data_.pitch_angle,
-            write_data_.depth,
-            write_data_.data_type,
+  writeData(write_data_.data_type,
             write_data_.is_shooting,
-            write_data_.predict_cord,
-            write_data_.predict_length,
-            write_data_.predict_width);
+            write_data_.yaw,
+            write_data_.pitch,
+            write_data_.cord,
+            write_data_.depth);
 }
 
-void SerialPort::updataWriteData(const float _yaw,
+void SerialPort::updataWriteData(const int   _data_type,
+                                 const int   _is_shooting,
+                                 const float _yaw,
                                  const float _pitch,
-                                 const int   _depth,
-                                 const int   _predict_cord,
-                                 const int   _predict_length,
-                                 const int   _predict_width,
-                                 const int   _data_type,
-                                 const int   _is_shooting) {
+                                 const Write_Data::node _cord,
+                                 const int   _depth) {
   write_data_.data_type    = _data_type > 1 ? 1 : _data_type;
   write_data_.is_shooting  = _is_shooting;
-  write_data_.symbol_yaw   = _yaw >= 0 ? 1 : 0;
-  write_data_.yaw_angle    = fabs(_yaw) * 100;
-  write_data_.symbol_pitch = _pitch >= 0 ? 1 : 0;
-  write_data_.pitch_angle  = fabs(_pitch) * 100;
-  write_data_.depth        = _depth;
-  write_data_.predict_cord = 0;
-  write_data_.predict_length = 0;
-  write_data_.predict_width = 0;
+  write_data_.yaw    = _yaw * 100;
+  write_data_.pitch  = _pitch * 100;
+  write_data_.cord   = _cord;
+  write_data_.depth  = _depth;
   writeData();
 }
 
-Write_Data SerialPort::gainWriteData(const float _yaw,
+Write_Data SerialPort::gainWriteData(const int _data_type,
+                                     const int _is_shooting,
+                                     const float _yaw,
                                      const float _pitch,
-                                     const int   _depth,
-                                     const int   _predict_cord,
-                                     const int   _predict_length,
-                                     const int   _predict_width,
-                                     const int   _data_type,
-                                     const int   _is_shooting) {
+                                     const Write_Data::node _cord,
+                                     const int _depth) {
   Write_Data write_data;
-
   write_data.data_type    = _data_type > 1 ? 1 : _data_type;
   write_data.is_shooting  = _is_shooting;
-  write_data.symbol_yaw   = _yaw >= 0 ? 1 : 0;
-  write_data.yaw_angle    = fabs(_yaw) * 100;
-  write_data.symbol_pitch = _pitch >= 0 ? 1 : 0;
-  write_data.pitch_angle  = fabs(_pitch) * 100;
+  write_data.yaw    = _yaw * 100;
+  write_data.pitch  = _pitch * 100;
+  write_data_.cord        = _cord;
   write_data.depth        = _depth;
-  write_data_.predict_cord = 0;
-  write_data_.predict_length = 0;
-  write_data_.predict_width = 0;
   return write_data;
 }
 
@@ -250,57 +210,47 @@ uint8_t SerialPort::checksumCRC(unsigned char* buf, uint16_t len) {
 
 void SerialPort::getDataForCRC(const int&     data_type,
                                const int&     is_shooting,
-                               const int&     _yaw,
                                const int16_t& yaw,
-                               const int&     _pitch,
                                const int16_t& pitch,
-                               const int16_t& depth,
-                               const int16_t& predict_cord,
-                               const int16_t& predict_length,
-                               const int16_t& predict_width) {
+                               const Write_Data::node& cord,
+                               const int16_t& depth) {
   crc_buff_[0]  = 0x53;
   crc_buff_[1]  = static_cast<unsigned char>(data_type);
   crc_buff_[2]  = static_cast<unsigned char>(is_shooting);
-  crc_buff_[3]  = static_cast<unsigned char>(_yaw);
-  crc_buff_[4]  = returnLowBit(yaw);
-  crc_buff_[5]  = returnHighBit(yaw);
-  crc_buff_[6]  = static_cast<unsigned char>(_pitch);
-  crc_buff_[7]  = returnLowBit(pitch);
-  crc_buff_[8]  = returnHighBit(pitch);
-  crc_buff_[9]  = returnLowBit(depth);
-  crc_buff_[10] = returnHighBit(depth);
+  crc_buff_[3]  = returnLowBit(yaw);
+  crc_buff_[4]  = returnHighBit(yaw);
+  crc_buff_[5]  = returnLowBit(pitch);
+  crc_buff_[6]  = returnHighBit(pitch);
+  crc_buff_[7]  = returnLowBit(cord.x);
+  crc_buff_[8]  = returnHighBit(cord.x);
+  crc_buff_[9]  = returnLowBit(cord.y);
+  crc_buff_[10]  = returnHighBit(cord.y);
+  crc_buff_[11]  = returnLowBit(depth);
+  crc_buff_[12] = returnHighBit(depth);
 }
 
-void SerialPort::getDataForSend(const int&     data_type,
-                                const int&     is_shooting,
-                                const int&     _yaw,
+void SerialPort::getDataForSend(const int& data_type,
+                                const int& is_shooting,
                                 const int16_t& yaw,
-                                const int&     _pitch,
                                 const int16_t& pitch,
+                                const Write_Data::node& cord,
                                 const int16_t& depth,
-                                const uint8_t& CRC,
-                                const int16_t& predict_cord,
-                                const int16_t& predict_length,
-                                const int16_t& predict_width) {
+                                const uint8_t& CRC) {
   write_buff_[0]  = 0x53;
   write_buff_[1]  = static_cast<unsigned char>(data_type);
   write_buff_[2]  = static_cast<unsigned char>(is_shooting);
-  write_buff_[3]  = static_cast<unsigned char>(_yaw);
-  write_buff_[4]  = returnLowBit(yaw);
-  write_buff_[5]  = returnHighBit(yaw);
-  write_buff_[6]  = static_cast<unsigned char>(_pitch);
-  write_buff_[7]  = returnLowBit(pitch);
-  write_buff_[8]  = returnHighBit(pitch);
-  write_buff_[9]  = returnLowBit(depth);
-  write_buff_[10] = returnHighBit(depth);
-  write_buff_[11] = CRC & 0xff;
-  write_buff_[12]  = returnLowBit(predict_cord);
-  write_buff_[13] = returnHighBit(predict_cord);
-  write_buff_[14] = returnLowBit(predict_length);
-  write_buff_[15] = returnHighBit(predict_length);
-  write_buff_[16] = returnLowBit(predict_width);
-  write_buff_[17] = returnHighBit(predict_width);
-  write_buff_[18] = 0x45;
+  write_buff_[3]  = returnLowBit(yaw);
+  write_buff_[4]  = returnHighBit(yaw);
+  write_buff_[5]  = returnLowBit(pitch);
+  write_buff_[6]  = returnHighBit(pitch);
+  write_buff_[7]  = returnLowBit(cord.x);
+  write_buff_[8]  = returnHighBit(cord.x);
+  write_buff_[9]  = returnLowBit(cord.y);
+  write_buff_[10]  = returnHighBit(cord.y);
+  write_buff_[11]  = returnLowBit(depth);
+  write_buff_[12] = returnHighBit(depth);
+  write_buff_[13] = 0; //CRC & 0xff;
+  write_buff_[14] = 0x45;
 }
 
 bool SerialPort::isEmpty() {
@@ -320,13 +270,6 @@ void SerialPort::updateReceiveInformation() {
     last_receive_data_ = receive_data_;
   }
 
-
-  // BUG？
-  /*for (size_t i = 0; i != sizeof(transform_arr_) / sizeof(transform_arr_[0]); ++i) {
-    transform_arr_[i] = receive_buff_[i + 1] - '0';
-    fmt::print("[info] transform_arr_[{:d}]:{:d}", i, transform_arr_[i]);
-  }*/
-  //switch (transform_arr_[0]) {
   switch (receive_buff_[1]) {
     case RED:
       receive_data_.my_color = RED;
@@ -341,13 +284,13 @@ void SerialPort::updateReceiveInformation() {
       fmt::print("[info] My color is ALL\n");
       break;
   }
-  //switch (transform_arr_[1]) {
+
   switch (receive_buff_[2]) {
-  case SUP_SHOOT:
-    receive_data_.now_run_mode = SUP_SHOOT;
+  case AUTO_AIM:
+    receive_data_.now_run_mode = AUTO_AIM;
     break;
-  case ENERGY_AGENCY:
-    receive_data_.now_run_mode = ENERGY_AGENCY;
+  case ENERGY_BUFF:
+    receive_data_.now_run_mode = ENERGY_BUFF;
     break;
   case SENTRY_STRIKE_MODE:
     receive_data_.now_run_mode = SENTRY_STRIKE_MODE;
@@ -367,11 +310,10 @@ void SerialPort::updateReceiveInformation() {
   case RADAR_MODE:
     receive_data_.now_run_mode = RADAR_MODE;
   default:
-    receive_data_.now_run_mode = SUP_SHOOT;
+    receive_data_.now_run_mode = AUTO_AIM;
     break;
   }
 
-  //switch (transform_arr_[2]) {
   switch (receive_buff_[3]) {
     case HERO:
       receive_data_.my_robot_id = HERO;
@@ -392,9 +334,6 @@ void SerialPort::updateReceiveInformation() {
       receive_data_.my_robot_id = INFANTRY;
       break;
   }
-
-  /*receive_data_.bullet_velocity = receive_buff_[14]; // -2 ?
-  fmt::print("[info] bullet_velocity:{:d}\n", receive_data_.bullet_velocity);*/
 
   for (size_t i = 0; i != sizeof(receive_data_.raw_yaw_angle.arr_yaw); ++i) {
     receive_data_.raw_yaw_angle.arr_yaw[i] = receive_buff_[i + 4];

@@ -265,9 +265,9 @@ bool Detector::sentryMode(const cv::Mat& _src_img,
                           const uart::Receive_Data _receive_data) {
   if (sentry_cnt_ == 0) {
     // 更新哨兵预测方向及预测量
-    initialPredictionData(_receive_data.Pitch_Angle.pitch,
-                          _receive_data.bullet_velocity.veloctiy,
-                          _receive_data.Yaw_Angle.yaw);
+    initialPredictionData(_receive_data.pitch,
+                          _receive_data.bullet_velocity,
+                          _receive_data.yaw);
     runImage(_src_img, _receive_data.my_color);
     draw_img_ = _src_img.clone();
     if (findLight()) {
@@ -309,7 +309,7 @@ bool Detector::sentryMode(const cv::Mat& _src_img,
   } else {
     // 初始化陀螺仪零点
     if (sentry_cnt_ < 5) {
-      initial_gyroscope_ += _receive_data.Yaw_Angle.yaw;
+      initial_gyroscope_ += _receive_data.yaw;
       initial_gyroscope_ *= 0.5;
     }
     sentry_cnt_--;

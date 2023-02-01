@@ -149,12 +149,12 @@ void Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_i
   if (is_find_target_) {
     // 计算云台角度
     buff_pnp_.solvePnP(28, 2, target_2d_point_, final_target_z_);
-    _send_info.yaw_angle   = buff_pnp_.returnYawAngle() + buff_config_.param.OFFSET_ARMOR_YAW;
-    _send_info.pitch_angle = buff_pnp_.returnPitchAngle() + buff_config_.param.OFFSET_ARMOR_PITCH;
+    _send_info.yaw   = buff_pnp_.returnYawAngle() + buff_config_.param.OFFSET_ARMOR_YAW;
+    _send_info.pitch = buff_pnp_.returnPitchAngle() + buff_config_.param.OFFSET_ARMOR_PITCH;
     _send_info.depth       = final_target_z_;
     _send_info.data_type   = is_find_target_;
 
-    fmt::print("[{}] Info, yaw: {}, pitch: {}, depth: {}\n", idntifier_yellow, _send_info.yaw_angle, _send_info.pitch_angle, _send_info.depth);
+    fmt::print("[{}] Info, yaw: {}, pitch: {}, depth: {}\n", idntifier_yellow, _send_info.yaw, _send_info.pitch, _send_info.depth);
   } else {
     _send_info = uart::Write_Data();
   }
@@ -203,12 +203,12 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
 #ifdef DEBUG_MANUAL
     // send_info.yaw_angle = current_predict_quantity*100;
     // send_info.pitch_angle = final_forecast_quantity_*100;
-    send_info.yaw_angle   = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).x;
-    send_info.pitch_angle = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).y;
+    send_info.yaw   = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).x;
+    send_info.pitch = angleCalculation(pre_center_, 0.0048, src_img_.size(), 6).y;
     cv::Point yaw_angle   = cv::Point(dst_img_.cols - 100, 60);
-    cv::putText(dst_img_, std::to_string(send_info.yaw_angle), yaw_angle, cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 255, 0), 1, 8, false);
+    cv::putText(dst_img_, std::to_string(send_info.yaw), yaw_angle, cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 255, 0), 1, 8, false);
     cv::Point pitch_angle = cv::Point(dst_img_.cols - 100, 70);
-    cv::putText(dst_img_, std::to_string(send_info.pitch_angle), pitch_angle, cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(25, 255, 255), 1, 8, false);
+    cv::putText(dst_img_, std::to_string(send_info.pitch), pitch_angle, cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(25, 255, 255), 1, 8, false);
 
 #else
     send_info.yaw_angle   = buff_pnp_.returnYawAngle() + buff_config_.param.OFFSET_ARMOR_YAW;
@@ -218,7 +218,7 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
     send_info.depth     = final_target_z_;
     send_info.data_type = is_find_target_;
 
-    fmt::print("[{}] Info, yaw: {}, pitch: {}, depth: {}\n", idntifier_yellow, send_info.yaw_angle, send_info.pitch_angle, send_info.depth);
+    fmt::print("[{}] Info, yaw: {}, pitch: {}, depth: {}\n", idntifier_yellow, send_info.yaw, send_info.pitch, send_info.depth);
   } else {
     send_info             = uart::Write_Data();
   }

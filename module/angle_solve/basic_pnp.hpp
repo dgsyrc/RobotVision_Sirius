@@ -54,9 +54,9 @@ class PnP : public abstract_pnp::PnP {
   /**
    * @brief 返回深度
    *
-   * @return float
+   * @return int
    */
-  inline float  returnDepth()      { return pnp_info_.depth; }
+  inline int  returnDepth()      { return pnp_info_.depth; }
   /**
    * @brief 返回目标旋转向量
    *

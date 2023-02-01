@@ -30,11 +30,11 @@ enum BufferLength {
   // 接收数据字节数
   REC_INFO_LENGTH   = 25,
 
-  // The send length of the array for CRC auth code code calculating
-  CRC_BUFF_LENGTH   = 11,
+  // 计算CRC校验码的发送数据的长度
+  CRC_BUFF_LENGTH   = 13,
 
   // The send length of the array after append CRC auth code
-  WRITE_BUFF_LENGTH = 19,
+  WRITE_BUFF_LENGTH = 19
 };
 
 
@@ -42,16 +42,16 @@ enum BufferLength {
 enum Color {
   ALL,
   RED,
-  BLUE,
+  BLUE
 };
 
 // 当前模式
 enum RunMode {
   DEFAULT_MODE,
   // Self-Scanning Mode
-  SUP_SHOOT,
+  AUTO_AIM,
   // Talisman Mode
-  ENERGY_AGENCY,
+  ENERGY_BUFF,
   // Hitting the sentry Mode
   SENTRY_STRIKE_MODE,
   // Little top mode
@@ -65,16 +65,16 @@ enum RunMode {
   // 雷达模式
   RADAR_MODE,
   // 相机标定
-  CAMERA_CALIBRATION,
+  CAMERA_CALIBRATION
 };
 
 // Describe the current robot ID information
 enum RobotID {
-  HERO = 1, // 英雄
-  UAV  = 6, // 无人机
+  HERO, // 英雄
+  UAV, // 无人机
   ENGINEERING, // 工程
   INFANTRY, // 步兵
-  SENTRY, // 哨兵
+  SENTRY // 哨兵
 };
 
 // 串口信息
@@ -86,47 +86,46 @@ struct Serial_Config {
 
 // 接收的数据结构 头帧0x53 尾帧0x45
 struct Receive_Data {
-  int   my_color;  // 01颜色
-  int   now_run_mode; // 02模式
-  int   my_robot_id; // 03机器人ID
+  int   my_color;  // 01 颜色
+  int   now_run_mode; // 02 模式
+  int   my_robot_id; // 03 机器人ID
 
-  float yaw; // yaw轴
-  float pitch; // pitch轴
+  float yaw; // 0405 yaw轴
+  float pitch; // 0607 pitch轴
 
-  float yaw_velocity; // yaw轴加速度
-  float pitch_velocity; // pitch轴加速度
+  float yaw_velocity; // 0809 yaw轴加速度
+  float pitch_velocity; // 1011 pitch轴加速度
 
-  float bullet_velocity; // 子弹速度
-  float bullet_velocity; // 子弹速度
+  float bullet_velocity; // 12 子弹速度
 
   union Bullet_Velocity_Info {
-    short veloctiy;
+    short veloctiy; // 子弹速度（未解码）
     uint8_t arr_veloctiy = 0;
-  } raw_bullet_velocity;
+  } raw_bullet_velocity; // 子弹速度（未解码）
 
   union Yaw_Angle_Info {
-    short yaw;
+    short yaw; // yaw轴（未解码）
     uint8_t arr_yaw[2] = {0};
-  } raw_yaw_angle;
+  } raw_yaw_angle;  // yaw轴（未解码）
 
   union Yaw_Velocity_Info {
-    short veloctiy;
+    short veloctiy; // yaw轴加速度（未解码）
     uint8_t arr_yaw_velocity[2] = {0};
-  } raw_yaw_velocity;
+  } raw_yaw_velocity; // yaw轴加速度（未解码）
 
   union Pitch_Angle_Info {
-    short pitch;
+    short pitch; // pitch轴（未解码）
     uint8_t arr_pitch[2] = {0};
-  } raw_pitch_angle;
+  } raw_pitch_angle; // pitch轴（未解码）
 
   union Pitch_Velocity_Info {
-    short veloctiy;
+    short veloctiy; // pitch轴加速度（未解码）
     uint8_t arr_pitch_velocity[2] = {0};
-  } raw_pitch_velocity;
+  } raw_pitch_velocity; // pitch轴加速度（未解码）
 
   Receive_Data() {
     my_color                 = ALL;
-    now_run_mode             = SUP_SHOOT;
+    now_run_mode             = AUTO_AIM;
     my_robot_id              = INFANTRY;
     raw_bullet_velocity.veloctiy = 0;
     raw_yaw_angle.yaw            = 0;
@@ -138,44 +137,33 @@ struct Receive_Data {
     yaw_velocity = 0.f; // yaw轴加速度
     pitch_velocity = 0.f; // pitch轴加速度
     bullet_velocity = 0.f; // 子弹速度
-    bullet_velocity = 0.f; // 子弹速度
   }
 };
 
 // 发送的数据结构
 struct Write_Data {
-  int   data_type; // 01识别信息
-  int   is_shooting; // 02射击信息 1发射 0不发射
+  int   data_type; // 01 识别信息
+  int   is_shooting; // 02 射击信息 1发射 0不发射
   
-  int   symbol_yaw; // 03yaw正负号
-  float yaw_angle; // 0405yaw轴数据
+  float yaw; // 0304 yaw轴数据
 
-  int   symbol_pitch; // 06pitch轴正负号
-  float pitch_angle; // 0708pitch轴数据
+  float pitch; // 0506 pitch轴数据
 
   struct node {
-    u_int16_t x; // 0910 预测坐标x轴
-    u_int16_t y; // 1112 预测坐标y轴
+    u_int16_t x; // 0708 预测坐标x轴
+    u_int16_t y; // 0910 预测坐标y轴
   } cord;
 
-  int  depth; // 0910深度
-
-  int predict_cord; // 1213 预测坐标
-  int predict_length; // 14 区域长
-  int predict_width; // 15 区域宽
-
+  int  depth; // 1112 深度
 
   Write_Data() {
-    symbol_yaw   = 0; // 03
-    symbol_pitch = 0; // 06
-    depth        = 0; // 0910
-    is_shooting  = 0; // 02
     data_type    = 0; // 01
-    yaw_angle    = 0.f; // 0405
-    pitch_angle  = 0.f; // 0708
-    predict_cord = 0; // 1213
-    predict_length = 0; // 14
-    predict_width = 0; // 15
+    is_shooting  = 0; // 02
+    yaw    = 0.f; // 0304
+    pitch  = 0.f; // 0506
+    cord.x       = 0.f; // 0708
+    cord.y       = 0.f; // 0910
+    depth        = 0; // 1112
   }
 };
 
@@ -285,23 +273,21 @@ class SerialPort {
   }
 
   /**
-   * @brief 发送数据
-   * @param  _yaw             03 yaw 符号
-   * @param  yaw              0405 yaw 绝对值
-   * @param  _pitch           06 pitch 符号
-   * @param  pitch            0708 pitch 绝对值
-   * @param  depth            0910 深度
-   * @param  data_type        01 是否发现目标
-   * @param  is_shooting      02 开火命令
-   * @param  predict_cord      1213 预测坐标
-   * @param  predict_length      14 区域长
-   * @param  predict_width      15 区域宽
+   * @brief 写入发送数据
+   * @param data_type 是否发现目标
+   * @param is_shooting 开火命令
+   * @param yaw  yaw轴
+   * @param pitch pitch轴
+   * @param cord 预测坐标
+   * @param depth 深度信息
    */
-  void writeData(const int& _yaw,   const int16_t& yaw,
-                 const int& _pitch, const int16_t& pitch,
-                 const int16_t& depth, const int16_t& predict_cord,
-                 const int16_t& predict_length, const int16_t& predict_width,
-                 const int& data_type = 0, const int& is_shooting = 0);
+  void writeData(const int&     data_type,
+                 const int&     is_shooting,
+                 const int16_t& yaw,
+                 const int16_t& pitch,
+                 const Write_Data::node& cord,
+                 const int16_t& depth);
+
   void writeData();
   /**
    * @brief 发送数据
@@ -309,19 +295,21 @@ class SerialPort {
    * @param _write_data     需要发送的 Write_Data 结构体
    */
   void writeData(const Write_Data& _write_data);
+
   /**
    * @brief 发送数据
    *
+   * @param _data_type    是否发现目标（装甲板数量）
+   * @param _is_shooting  开火命令
    * @param _yaw          yaw 数据
    * @param _pitch        pitch 数据
+   * @param _cord         预测坐标
    * @param _depth        深度
-   * @param _data_type    是否发现目标
-   * @param _is_shooting  开火命令
    */
-  void updataWriteData(const float _yaw,   const float _pitch,
-                       const int   _depth, const int _predict_cord,
-                       const int _predict_length, const int _predict_width,
-                       const int   _data_type = 0, const int _is_shooting = 0);
+  void updataWriteData(const int   _data_type, const int _is_shooting,
+                       const float _yaw,   const float _pitch,
+                       const Write_Data::node _cord, const int _depth);
+
   /**
    * @brief 数据转换为结构体
    *
@@ -332,20 +320,22 @@ class SerialPort {
    * @param _is_shooting  开火命令
    * @return Write_Data   返回写入数据结构体
    */
-  Write_Data gainWriteData(const float _yaw,  const float _pitch,
-                           const int  _depth, const int _predict_cord,
-                           const int  _predict_length, const int _predict_width,
-                           const int  _data_type = 0, const int  _is_shooting = 0);
+  Write_Data gainWriteData(const int  _data_type, const int  _is_shooting,
+                           const float _yaw,  const float _pitch,
+                           const Write_Data::node _cord, const int  _depth);
+
   /**
    * @brief 接收数据
    */
   void receiveData();
+
   /**
    * @brief 接收数据是否正常
    * @return true  不正常
    * @return false 正常
    */
   bool isEmpty();
+  
   /**
    * @brief 更新数据信息
    */
@@ -390,29 +380,24 @@ class SerialPort {
  * @param  pitch            pitch 绝对值
  * @param  depth            深度
  */
-  void getDataForCRC(const int&     data_type,      const int&     is_shooting,
-                     const int&     _yaw,           const int16_t& yaw,
-                     const int&     _pitch,         const int16_t& pitch,
-                     const int16_t& depth,          const int16_t& predict_cord,
-                     const int16_t& predict_length, const int16_t& predict_width);
+  void getDataForCRC(const int& data_type, const int& is_shooting,
+                     const int16_t& yaw, const int16_t& pitch,
+                     const Write_Data::node& cord, const int16_t& depth);
 
   /**
- * @brief Get the Data For Send object
- * @param  data_type        是否发现目标
- * @param  is_shooting      开火命令
- * @param  _yaw             yaw 符号
- * @param  yaw              yaw 绝对值
- * @param  _pitch           pitch 符号
- * @param  pitch            pitch 绝对值
- * @param  depth            深度
- * @param  CRC              CRC 校验码
+ * @brief 获取发送信息
+ * @param data_type    是否发现目标
+ * @param is_shooting  开火命令
+ * @param yaw          yaw轴
+ * @param pitch        pitch轴
+ * @param cord         预测坐标
+ * @param depth        深度
+ * @param CRC          CRC 校验码
  */
   void getDataForSend(const int&     data_type, const int&     is_shooting,
-                      const int&     _yaw,      const int16_t& yaw,
-                      const int&     _pitch,    const int16_t& pitch,
-                      const int16_t& depth, const uint8_t&     CRC,
-                      const int16_t& predict_cord, const int16_t& predict_length,
-                      const int16_t& predict_width);
+                      const int16_t& yaw, const int16_t& pitch,
+                      const Write_Data::node& cord, const int16_t& depth,
+                      const uint8_t& CRC);
 };
 
 static constexpr unsigned char CRC8_Table[] = {

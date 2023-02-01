@@ -73,14 +73,18 @@ int main()
       serial_.updateReceiveInformation();
       switch (serial_.returnReceiveMode()) {
       // 基础自瞄模式
-      case uart::SUP_SHOOT:
+      case uart::AUTO_AIM:
         if (basic_armor_.runBasicArmor(src_img, serial_.returnReceive())) {
           pnp_.solvePnP(serial_.returnReceiveBulletVelocity(), basic_armor_.returnFinalArmorDistinguish(0), basic_armor_.returnFinalArmorRotatedRect(0));
         }
-        serial_.updataWriteData(pnp_.returnYawAngle(), pnp_.returnPitchAngle(), pnp_.returnDepth(), basic_armor_.returnArmorNum(), 0, 0, 0, 0);
+        serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+                                pnp_.returnYawAngle(),
+                                pnp_.returnPitchAngle(),
+                                (uart::Write_Data::node){0,0},
+                                pnp_.returnDepth());
         break;
       // 能量机关
-      case uart::ENERGY_AGENCY:
+      case uart::ENERGY_BUFF:
         serial_.writeData(basic_buff_.runTask(src_img, serial_.returnReceive()));
         break;
       // 击打哨兵模式
@@ -89,17 +93,17 @@ int main()
           pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
                         basic_armor_.returnFinalArmorDistinguish(0),
                         basic_armor_.returnFinalArmorRotatedRect(0));
-          serial_.updataWriteData(pnp_.returnYawAngle(),
+          serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+                                  pnp_.returnYawAngle(),
                                   pnp_.returnPitchAngle(),
-                                  pnp_.returnDepth(),
-                                  basic_armor_.returnArmorNum(),
-                                  0,0,0,0);
+                                  (uart::Write_Data::node){0,0},
+                                  pnp_.returnDepth());
         } else {
-          serial_.updataWriteData(-pnp_.returnYawAngle(),
+          serial_.updataWriteData(basic_armor_.returnLostCnt() > 0 ? 1 : 0, 0,
+                                  -pnp_.returnYawAngle(),
                                   pnp_.returnPitchAngle(),
-                                  pnp_.returnDepth(),
-                                  basic_armor_.returnLostCnt() > 0 ? 1 : 0,
-                                  0,0,0,0);
+                                  (uart::Write_Data::node){0,0},
+                                  pnp_.returnDepth());
         }
 
         break;
@@ -108,18 +112,22 @@ int main()
         roi_img = roi_.returnROIResultMat(src_img);
         if (basic_armor_.runBasicArmor(roi_img, serial_.returnReceive())) {
           basic_armor_.fixFinalArmorCenter(0, roi_.returnRectTl());
-            roi_.setLastRoiRect(basic_armor_.returnFinalArmorRotatedRect(0),
-            basic_armor_.returnFinalArmorDistinguish(0));
-            pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
-            basic_armor_.returnFinalArmorDistinguish(0),
-            basic_armor_.returnFinalArmorRotatedRect(0));
-          serial_.updataWriteData(pnp_.returnYawAngle(),
-            pnp_.returnPitchAngle(), pnp_.returnDepth(),
-            basic_armor_.returnArmorNum(), 0, 0, 0, 0);
+          roi_.setLastRoiRect(basic_armor_.returnFinalArmorRotatedRect(0),
+                              basic_armor_.returnFinalArmorDistinguish(0));
+          pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
+                        basic_armor_.returnFinalArmorDistinguish(0),
+                        basic_armor_.returnFinalArmorRotatedRect(0));
+          serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+                                  pnp_.returnYawAngle(),
+                                  pnp_.returnPitchAngle(),
+                                  (uart::Write_Data::node){0,0},
+                                  pnp_.returnDepth());
         } else {
-          serial_.updataWriteData(-pnp_.returnYawAngle(),
-            pnp_.returnPitchAngle(), pnp_.returnDepth(),
-            basic_armor_.returnLostCnt() > 0 ? 1 : 0, 0, 0, 0, 0);
+          serial_.updataWriteData(basic_armor_.returnLostCnt() > 0 ? 1 : 0, 0,
+                                  -pnp_.returnYawAngle(),
+                                  pnp_.returnPitchAngle(),
+                                  (uart::Write_Data::node){0,0},
+                                  pnp_.returnDepth());
         }
         roi_.setLastRoiSuccess(basic_armor_.returnArmorNum());
 
@@ -138,29 +146,42 @@ int main()
             pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
               basic_armor_.returnFinalArmorDistinguish(0),
               basic_armor_.returnFinalArmorRotatedRect(0));
-            serial_.updataWriteData(pnp_.returnYawAngle(),
-              pnp_.returnPitchAngle(), pnp_.returnDepth(), basic_armor_.returnArmorNum(), 0, 0, 0, 0);
+            serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+                                    pnp_.returnYawAngle(),
+                                    pnp_.returnPitchAngle(),
+                                    (uart::Write_Data::node){0,0},
+                                    pnp_.returnDepth());
           } else {
             for (int i = 0; i < basic_armor_.returnArmorNum(); i++) {
               if (model_.inferring(save_roi.cutRoIRotatedRect(src_img,
                 basic_armor_.returnFinalArmorRotatedRect(i)), 0, 0, src_img) == 2) {
                 if (basic_armor_.returnArmorNum() > 1) {
                   pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
-                    basic_armor_.returnFinalArmorDistinguish(i + 1),
-                    basic_armor_.returnFinalArmorRotatedRect(i + 1));
-                  serial_.updataWriteData(pnp_.returnYawAngle(),
-                    pnp_.returnPitchAngle(), pnp_.returnDepth(),
-                    basic_armor_.returnArmorNum(), 0, 0, 0, 0);
+                                basic_armor_.returnFinalArmorDistinguish(i + 1),
+                                basic_armor_.returnFinalArmorRotatedRect(i + 1));
+                  serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+                                          pnp_.returnYawAngle(),
+                                          pnp_.returnPitchAngle(),
+                                          (uart::Write_Data::node){0,0},
+                                          pnp_.returnDepth());
                   break;
                 } else {
-                  serial_.updataWriteData(pnp_.returnYawAngle(), pnp_.returnPitchAngle(), pnp_.returnDepth(), 0, 0, 0, 0, 0);
+                  serial_.updataWriteData(0, 0,
+                                          pnp_.returnYawAngle(),
+                                          pnp_.returnPitchAngle(),
+                                          (uart::Write_Data::node){0,0},
+                                          pnp_.returnDepth());
                   break;
                 }
               } else {
                 pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
-                  basic_armor_.returnFinalArmorDistinguish(0), basic_armor_.returnFinalArmorRotatedRect(0));
-                serial_.updataWriteData(pnp_.returnYawAngle(),
-                  pnp_.returnPitchAngle(), pnp_.returnDepth(), basic_armor_.returnArmorNum(), 0, 0, 0, 0);
+                              basic_armor_.returnFinalArmorDistinguish(0),
+                              basic_armor_.returnFinalArmorRotatedRect(0));
+                serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+                                        pnp_.returnYawAngle(),
+                                        pnp_.returnPitchAngle(),
+                                        (uart::Write_Data::node){0,0},
+                                        pnp_.returnDepth());
                 break;
               }
             }
@@ -170,6 +191,7 @@ int main()
       // 雷达模式
       case uart::RADAR_MODE:
         break;
+      // 相机标定
       case uart::CAMERA_CALIBRATION:
         //cam::create_images(src_img);
         //cam::calibrate();
@@ -179,9 +201,15 @@ int main()
         break;
       default: // 默认进入基础自瞄
         if (basic_armor_.runBasicArmor(src_img, serial_.returnReceive())) {
-            pnp_.solvePnP(serial_.returnReceiveBulletVelocity(), basic_armor_.returnFinalArmorDistinguish(0), basic_armor_.returnFinalArmorRotatedRect(0));
+            pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
+                          basic_armor_.returnFinalArmorDistinguish(0),
+                          basic_armor_.returnFinalArmorRotatedRect(0));
         }
-        serial_.updataWriteData(pnp_.returnYawAngle(), pnp_.returnPitchAngle(), pnp_.returnDepth(), basic_armor_.returnArmorNum(), 0, 0, 0, 0);
+        serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+                                pnp_.returnYawAngle(),
+                                pnp_.returnPitchAngle(),
+                                (uart::Write_Data::node){0,0},
+                                pnp_.returnDepth());
         break;
       }
     }
