@@ -206,7 +206,7 @@ class SerialPort {
    * 
    * @return int 
    */
-  inline int   returnReceiveMode()           { return receive_data_.now_run_mode; }
+  inline int   returnReceiveMode()           { return /*receive_data_.now_run_mode;*/2; }
   /**
    * @brief 返回陀螺仪 Pitch 轴数据
    * 

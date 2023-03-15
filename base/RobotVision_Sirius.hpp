@@ -22,6 +22,7 @@
 #include "utils/reset_mv_camera.hpp"
 #include "module/camera/camera_calibration.hpp"
 #include "module/angle_solve/angle_solve.hpp"
+#include "module/buff/new_buff.hpp"
 
 #include <string>
 

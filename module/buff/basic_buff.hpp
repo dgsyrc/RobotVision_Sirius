@@ -37,7 +37,6 @@ namespace basic_buff {
 
 
 
-
 auto idntifier_green     = fmt::format(fg(fmt::color::green) | fmt::emphasis::bold, "basic_buff");
 auto idntifier_red       = fmt::format(fg(fmt::color::red) | fmt::emphasis::bold, "basic_buff");
 auto idntifier_yellow    = fmt::format(fg(fmt::color::yellow) | fmt::emphasis::bold, "basic_buff");
@@ -51,6 +50,8 @@ auto debug_info          = fmt::format(fg(fmt::color::red) | fmt::emphasis::bold
 auto debug_info_2        = fmt::format(fg(fmt::color::green) | fmt::emphasis::bold, "debug_info");
 
 cv::Scalar Color_Draw_For_Edge = CV_RGB(255,0,0);
+
+new_buff::buff big_buff;
 
 struct Buff_Param {
   // BGR
@@ -154,6 +155,10 @@ class Detector {
 
   ~Detector() = default;
 
+  abstract_target::Target              candidated_target_;  // 当前检测得到的打击目标（遍历使用）
+  abstract_target::Target              current_target_;     // 当前检测打击目标（现在）
+  std::vector<abstract_target::Target> target_box_;         // 打击目标队列
+
   /**
    * @brief 总执行函数（接口）
    * @param  _input_img       输入图像
@@ -169,6 +174,7 @@ class Detector {
    * @return uart::Write_Data 串口发送结构体
    */
   uart::Write_Data runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info);
+
 
  private:
   /**
@@ -207,6 +213,13 @@ class Detector {
   bool is_find_target_;       // 是否发现目标 true：发现 false：未发现
 
   abstract_target::Target last_target_;  //  上一个打击目标
+
+  cv::Point2f final_object; // 预测打击点
+
+  std::vector<std::vector<cv::Point>> contour;
+  std::vector<cv::Vec4i> hierarchy;
+
+  
 
  private:
   // 预处理
@@ -277,13 +290,10 @@ class Detector {
    * @param  _target_box      输出目标容器
    */
   void findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std::vector<abstract_target::Target>& _target_box, const new_buff::Check_Moudle &check_moudle);
+  void findTarget_new(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std::vector<abstract_target::Target>& _target_box, const new_buff::Check_Moudle &check_moudle);
 
   fan_armor::Detector      small_target_;  // 内轮廓
   abstract_blade::FanBlade big_target_;    // 外轮廓
-
-  abstract_target::Target              candidated_target_;  // 当前检测得到的打击目标（遍历使用）
-  abstract_target::Target              current_target_;     // 当前检测打击目标（现在）
-  std::vector<abstract_target::Target> target_box_;         // 打击目标队列
 
   int action_cnt_;    // 已打击扇叶数
   int inaction_cnt_;  // 未击打扇叶数

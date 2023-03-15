@@ -235,7 +235,6 @@ bool Detector::runBasicArmor(const cv::Mat&           _src_img,
   if (findLight()) {
     
     if (fittingArmor()) {
-      fmt::print("[info] 12345\n");
       finalArmor();
       lost_cnt_ = 10;
       // 画图开关
@@ -243,7 +242,7 @@ bool Detector::runBasicArmor(const cv::Mat&           _src_img,
           light_config_.light_draw == 1 ||
           armor_config_.armor_edit == 1 ||
           light_config_.light_edit == 1) {
-        cv::imshow("[basic_armor] getWriteData() -> draw_img_", draw_img_);
+        cv::imshow("auto aim-armor", draw_img_);
 
         draw_img_ = cv::Mat::zeros(_src_img.size(), CV_8UC3);
       }
@@ -255,7 +254,7 @@ bool Detector::runBasicArmor(const cv::Mat&           _src_img,
       light_config_.light_draw == 1 ||
       armor_config_.armor_edit == 1 ||
       light_config_.light_edit == 1) {
-    cv::imshow("[basic_armor] getWriteData() -> draw_img_", draw_img_);
+    cv::imshow("auto aim-armor", draw_img_);
 
     draw_img_ = cv::Mat::zeros(_src_img.size(), CV_8UC3);
   }
@@ -292,7 +291,7 @@ bool Detector::sentryMode(const cv::Mat& _src_img,
                       cv::Scalar(0, 255, 0), 3, 8);
         if (armor_config_.armor_draw == 1 || light_config_.light_draw == 1 ||
             armor_config_.armor_edit == 1 || light_config_.light_edit == 1) {
-          cv::imshow("[basic_armor] getWriteData() -> draw_img_", draw_img_);
+          cv::imshow("auto aim-armor", draw_img_);
           draw_img_ = cv::Mat::zeros(_src_img.size(), CV_8UC3);
         }
         return true;

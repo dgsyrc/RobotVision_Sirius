@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2023 Sirius
  */
 #include "RobotVision_Sirius.hpp"
-//#define VIDEO_DEBUG
+#define VIDEO_DEBUG
 #define MANUAL_FIRE
 #define PARM_EDIT
 
@@ -21,11 +21,11 @@ int main()
 
 #ifndef VIDEO_DEBUG
   mindvision::VideoCapture* mv_capture_ = new mindvision::VideoCapture(
-  mindvision::CameraParam(0, mindvision::RESOLUTION_1280_X_1024, mindvision::EXPOSURE_20000));
+  mindvision::CameraParam(0, mindvision::RESOLUTION_1280_X_1024, mindvision::EXPOSURE_40000));
   cv::VideoCapture cap_ = cv::VideoCapture(0);
 #else
   
-  cv::VideoCapture cap_(fmt::format("{}{}", SOURCE_PATH, "/video/2.mp4"));
+  cv::VideoCapture cap_(fmt::format("{}{}", SOURCE_PATH, "/video/720.mp4"));
   
 #endif
 
@@ -48,6 +48,7 @@ int main()
   angle_solve::solve solution;
   solution.set_config(fmt::format("{}{}", CONFIG_FILE_PATH, "/angle_solve/angle_solve_config.xml"));
 
+
   RecordMode::Record record_ = RecordMode::Record(
     fmt::format("{}{}", CONFIG_FILE_PATH, "/record/recordpath_save.yaml"),
         fmt::format("{}{}", CONFIG_FILE_PATH, "/record/record_packeg/record.avi"),
@@ -63,6 +64,7 @@ int main()
   
   while (true) {
     global_fps_.getTick();
+    new_buff::new_buff_fps.getTick();
 #ifndef VIDEO_DEBUG
     if (mv_capture_->isindustryimgInput()) {
       src_img = mv_capture_->image();
@@ -72,10 +74,13 @@ int main()
 #else
       cap_.read(src_img);
       cv::waitKey(30);
+      
 #endif
     if (!src_img.empty()) {
-      cv::line(src_img,(cv::Point){640,0},(cv::Point){640,1024},cv::Scalar(255,0,0));
-      cv::line(src_img,(cv::Point){0,512},(cv::Point){1280,512},cv::Scalar(255,0,0));
+      src_img = src_img*2;//*2
+      fmt::print("test\n");
+      //cv::line(src_img,(cv::Point){640,0},(cv::Point){640,1024},cv::Scalar(255,0,0));
+      //cv::line(src_img,(cv::Point){0,512},(cv::Point){1280,512},cv::Scalar(255,0,0));
       fire = false;
       serial_.updateReceiveInformation();
       
@@ -112,6 +117,7 @@ int main()
         break;
       // 能量机关
       case uart::ENERGY_BUFF:
+      
         serial_.writeData(basic_buff_.runTask(src_img, serial_.returnReceive()));
         break;
       // 击打哨兵模式
@@ -285,7 +291,7 @@ int main()
       usleep(100);
 #ifndef VIDEO_DEBUG
       mv_capture_ = new mindvision::VideoCapture(mindvision::CameraParam(
-          0, mindvision::RESOLUTION_1280_X_800, mindvision::EXPOSURE_20000));
+          0, mindvision::RESOLUTION_1280_X_800, mindvision::EXPOSURE_40000));
 #endif
       if (!--counter_for_new) {
         //int i [[maybe_unused]] = std::system("echo 1 | sudo -S reboot");

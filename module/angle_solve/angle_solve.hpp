@@ -22,6 +22,8 @@
 
 #define PI 3.14159265
 
+auto angle_info = fmt::format(fg(fmt::color::pink) | fmt::emphasis::bold, "angle_solve_info");
+
 namespace angle_solve {
     class solve { 
         public:

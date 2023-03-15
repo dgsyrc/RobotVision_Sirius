@@ -27,9 +27,9 @@ namespace angle_solve {
         
         target.predict.y = config.pic_distance * config.armor_height / object.size.height;
         target.predict.x = (object.center.x - col / 2.0) * target.predict.y / config.pic_distance;
-        target.predict.z = ((row - object.center.y) - row / 2.0) * target.predict.y / config.pic_distance + target.predict.y*0.085;
-
-        target.time = target.predict.y / (32 * cos(-info.returnReceivePitch()/180*PI) * 100);
+        target.predict.z = ((row - object.center.y) - row / 2.0) * target.predict.y / config.pic_distance;
+        fmt::print("[{}] L: {}  H: {} row: {} object_y: {}\n", angle_info,target.predict.y, target.predict.z, row, object.center.y);
+        target.time = target.predict.y / (14.5 * cos(-info.returnReceivePitch()/180*PI) * 100);
         target.predict.z = target.predict.z + 0.5 * 9.8 * 100 * target.time * target.time;
         fmt::print("[angle info] p {} {} {}\n", 0.5 * 9.8 * 100 * target.time * target.time,target.time, info.returnReceiveBulletVelocity());
         //compensation.pitch = 
@@ -38,14 +38,15 @@ namespace angle_solve {
         target.pitch = atan(-target.predict.z / sqrt(pow(target.predict.y, 2) + pow(target.predict.x, 2))) / PI * 180;
         fmt::print("[angle info] x {} y {} z {} yaw {} pitch {}\n", target.predict.x, target.predict.y, target.predict.z, target.yaw, target.pitch);
         fmt::print("[angle info] y {}\n", target.predict.y);
+       
         fmt::print("[angle info] center x {} center y {}\n", object.center.x, object.center.y);
     }
 
     float solve::returnYawAngle() {
-        if(fabs(target.yaw) < 4.0) {
-            //return 0;
+        if(fabs(target.yaw) < 0.01) {
+            return 0;
 
-            return target.yaw;
+            //return target.yaw;
         } else {
             return target.yaw;
         }
@@ -53,9 +54,9 @@ namespace angle_solve {
     }
 
     float solve::returnPitchAngle() {
-        if(fabs(target.pitch) < 4.0) {
-            //return 0;
-            return target.pitch;
+        if(fabs(target.pitch) < 0.01) {
+            return 0;
+            //return target.pitch;
         } else {
             return target.pitch;
         }

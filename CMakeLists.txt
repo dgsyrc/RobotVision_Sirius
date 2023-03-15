@@ -96,17 +96,24 @@ list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/module/angle_solve)
 add_library(rvs-angle-solve SHARED module/angle_solve/angle_solve.cpp)
 list(APPEND RVS_EXTRA_LIBS rvs-angle-solve)
 
+list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/module/buff)
+add_library(rvs-new-buff SHARED module/buff/new_buff.cpp)
+list(APPEND RVS_EXTRA_LIBS rvs-new-buff)
+
+
 list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/module/armor)
 add_library(rvs-basic-armor SHARED module/armor/basic_armor.cpp)
 list(APPEND RVS_EXTRA_LIBS rvs-basic-armor)
 add_library(rvs-fan-armor SHARED module/armor/fan_armor.cpp)
 list(APPEND RVS_EXTRA_LIBS rvs-fan-armor)
 
+
 list(APPEND EXTRA_INCLUDES ${PROJECT_SOURCE_DIR}/module/buff)
 add_library(rvs-basic-buff SHARED module/buff/basic_buff.cpp)
 target_link_libraries(rvs-basic-buff
     PRIVATE
     rvs-fan-armor
+    rvs-new-buff
 )
 list(APPEND RVS_EXTRA_LIBS rvs-basic-buff)
 

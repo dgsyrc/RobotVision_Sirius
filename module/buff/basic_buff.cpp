@@ -172,31 +172,43 @@ void Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_i
 
 uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info) {
   uart::Write_Data send_info;
-
+  
   // 获取基本信息
   getInput(_input_img, _receive_info.my_color);
   // 预处理
   imageProcessing(src_img_, bin_img_action, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
   imageProcessing(src_img_, bin_img_inaction, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
   // 查找目标
+  big_buff.main_buff_checker(bin_img_action, _input_img, static_cast<new_buff::Check_Moudle>(new_buff::CIRCLE_MODE));
+  big_buff.main_buff_checker(bin_img_action, _input_img, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
+  big_buff.main_buff_checker(bin_img_action, _input_img, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
+
   findTarget(dst_img_, bin_img_action, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
-  findTarget(dst_img_, bin_img_inaction, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
+  //findTarget_new(dst_img_, bin_img_action, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
+  //findTarget(dst_img_, bin_img_inaction, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
   // 判断目标是否为空
   is_find_target_ = isFindTarget(dst_img_, target_box_);
 
   // 查找圆心
   final_center_r_ = findCircleR(src_img_, bin_img_action, dst_img_, is_find_target_);
 
+  big_buff.predict(final_center_r_);
+
+  final_object = big_buff.calculateCord(final_center_r_);
+  fmt::print("[final object] {} {}\n",final_object.x,final_object.y);
+  
   // 计算运转状态值：速度、方向、角度
-  judgeCondition(is_find_target_);
+  //judgeCondition(is_find_target_);
 
   // 计算预测量 单位为弧度
-  final_forecast_quantity_ = doPredict(static_cast<float>(_receive_info.bullet_velocity), is_find_target_);
+  //final_forecast_quantity_ = doPredict(static_cast<float>(_receive_info.bullet_velocity), is_find_target_);
 
   // 计算获取最终目标（矩形、顶点）
-  calculateTargetPointSet(final_forecast_quantity_, final_center_r_, target_2d_point_, dst_img_, is_find_target_);
-
+  //calculateTargetPointSet(final_forecast_quantity_, final_center_r_, target_2d_point_, dst_img_, is_find_target_);
+  cv::circle(dst_img_, final_object, 3, cv::Scalar(255, 0, 0), 3, 8, 0);                                  // 预测值的中点
+  cv::line(dst_img_, final_object, final_center_r_, cv::Scalar(0, 255, 255), 2); // 圆心-预测中心连线
   // 计算云台角度
+  /*
   if (is_find_target_) {
     // 计算云台角度
     buff_pnp_.solvePnP(28, 2, target_2d_point_, final_target_z_);
@@ -223,7 +235,7 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
     fmt::print("[{}] Info, yaw: {}, pitch: {}, depth: {}\n", idntifier_yellow, send_info.yaw, send_info.pitch, send_info.depth);
   } else {
     send_info             = uart::Write_Data();
-  }
+  }*/
 
   // TODO(fqjun) :自动控制
 #ifndef RELEASE
@@ -375,7 +387,11 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
   {
   case new_buff::ACTION_MODE:
     bitwise_and(bin_img_color_, bin_img_gray_, bin_img_action);
+    /*morphologyEx(bin_img_action, bin_img_action, cv::MORPH_ERODE, ele_, cv::Point(-1, -1), 1);
     morphologyEx(bin_img_action, bin_img_action, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 1);
+    morphologyEx(bin_img_action, bin_img_action, cv::MORPH_ERODE, ele_, cv::Point(-1, -1), 2);
+    morphologyEx(bin_img_action, bin_img_action, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 1);
+    morphologyEx(bin_img_action, bin_img_action, cv::MORPH_ERODE, ele_, cv::Point(-1, -1), 1);*/
     #ifndef RELEASE
     if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
       cv::imshow("[basic_buff] imageProcessing() -> bin_img_action", bin_img_action);
@@ -385,7 +401,8 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
   
   case new_buff::INACTION_MODE:
     bitwise_and(bin_img_color_, bin_img_gray_, bin_img_inaction);
-    morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 10);
+    morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 2);
+    morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_ERODE, ele_, cv::Point(-1, -1), 2);
     #ifndef RELEASE
     if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
       cv::imshow("[basic_buff] imageProcessing() -> bin_img_inaction", bin_img_inaction);
@@ -637,7 +654,6 @@ void Detector::edit_param()
   cv::createTrackbar("DIFF_ANGLE_MIN:", "EDIT", &buff_config_.param.DIFF_ANGLE_MIN, 200, nullptr);
 }
 
-
 void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std::vector<abstract_target::Target>& _target_box, const new_buff::Check_Moudle &check_moudle) {
   cv::findContours(_input_bin_img, contours_, hierarchy_, 3, cv::CHAIN_APPROX_NONE);
   bool flag[7],f1;
@@ -734,7 +750,7 @@ void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std:
     candidated_target_.updateVertex(_input_dst_img);
     // 更新扇叶状态
     //candidated_target_.setType(_input_bin_img, _input_dst_img, static_cast<new_buff::Check_Moudle>(check_moudle));
-     candidated_target_.setType(_input_bin_img, static_cast<new_buff::Check_Moudle>(check_moudle));
+     candidated_target_.setType(static_cast<new_buff::Check_Moudle>(check_moudle));
     _target_box.push_back(candidated_target_);
   }
   if(f1)
@@ -776,6 +792,7 @@ bool Detector::isFindTarget(cv::Mat& _input_img, std::vector<abstract_target::Ta
     ++inaction_cnt_;
     // 获取到未激活对象后退出遍历 TODO(fqjun) 查看是否筛选出想要的内容
     current_target_ = *iter;
+    
 #ifndef RELEASE
     current_target_.displayInactionTarget(_input_img);
 #endif  // RELEASE
@@ -1108,7 +1125,7 @@ float Detector::fixedPredict(const float& _bullet_velocity) {
 
   target_y_ = target_buff_h_ + barrel_buff_botton_h_;
 
-  // 计算能量机关的水平直线距离
+  // 计算能量机关的水平直线距离3
   target_x_ = buff_config_.param.TARGET_X;
 
   // 计算能量机关目标的直线距离

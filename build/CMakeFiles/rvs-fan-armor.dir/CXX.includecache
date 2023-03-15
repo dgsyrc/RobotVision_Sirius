@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../module/buff/abstract_object.hpp
+opencv4/opencv2/opencv.hpp
+-
+vector
+-
+
+/home/ccong/Desktop/RobotVision_Sirius/module/armor/fan_armor.cpp
+fan_armor.hpp
+/home/ccong/Desktop/RobotVision_Sirius/module/armor/fan_armor.hpp
+
+/home/ccong/Desktop/RobotVision_Sirius/module/armor/fan_armor.hpp
+vector
+-
+module/buff/abstract_object.hpp
+/home/ccong/Desktop/RobotVision_Sirius/module/armor/module/buff/abstract_object.hpp
+

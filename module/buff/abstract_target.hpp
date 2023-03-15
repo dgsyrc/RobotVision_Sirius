@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "abstract_blade.hpp"
+#include "basic_buff.hpp"
 #include "fan_armor.hpp"
 
 #include "new_buff.hpp"
@@ -47,16 +48,13 @@ namespace abstract_target {
      */
     void setType(const abstract_object::ObjectType& _type);
 
+    void setType(const new_buff::Check_Moudle &check_moudle);
+
     /**
      * @brief 设置运转类型
      * @param[in]  _bin_img         输入二值图
      * @param[in]  _img             输入绘制图像
-     * @todo 待添加新版roi
-     */
-    void setType(cv::Mat& _bin_img, const new_buff::Check_Moudle& check_moudle);
-
-    /**
-     * @brief 显示可打击的目标
+     * @todo 待添加新版roies not name a type
      * @param[in]  _img             输入绘制图像
      * @note 装甲板为绿框，扇叶为黄框
      */
@@ -216,7 +214,7 @@ namespace abstract_target {
 
   void Target::setType(const abstract_object::ObjectType& _type) { type_ = _type; }
 
-  void Target::setType(cv::Mat& _bin_img, const new_buff::Check_Moudle& check_moudle) {
+  void Target::setType(const new_buff::Check_Moudle& check_moudle) {
     // 上层中心点 和 下层中心点
     cv::Point2f point_up_center   = (fan_armor_.Vertex(0) + fan_armor_.Vertex(1)) * 0.5;
     cv::Point2f point_down_center = (fan_armor_.Vertex(2) + fan_armor_.Vertex(3)) * 0.5;
@@ -271,6 +269,8 @@ namespace abstract_target {
         break;
       case new_buff::INACTION_MODE:
         type_ = abstract_object::INACTION;
+        new_buff::armor_last = new_buff::armor_now;
+        new_buff::armor_now =          fan_armor_.Rect().center;
         break;
       default:
         break;

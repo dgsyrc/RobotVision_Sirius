@@ -1,0 +1,217 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14
+					]
+				},
+				{
+					"build" : "3rdparty/fmt",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "3rdparty/fmt",
+					"targetIndexes" : 
+					[
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "RobotVision_Sirius",
+					"targetIndexes" : 
+					[
+						0,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "FMT",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "RobotVision_Sirius::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-RobotVision_Sirius-Debug-52bbf5d77832444b99c0.json",
+					"name" : "RobotVision_Sirius",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "fmt::@99b488b5ce7e6b2029cf",
+					"jsonFile" : "target-fmt-Debug-e74ab66868bb7ed2ce29.json",
+					"name" : "fmt",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-angle-solve::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-angle-solve-Debug-31d50ef54066175cb16e.json",
+					"name" : "rvs-angle-solve",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-basic-armor::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-basic-armor-Debug-cac7f11ff5e310c3911b.json",
+					"name" : "rvs-basic-armor",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-basic-buff::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-basic-buff-Debug-8b3efcfd1a9d98bbec99.json",
+					"name" : "rvs-basic-buff",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-basic-kalman::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-basic-kalman-Debug-17dfabfa5b1f4b2ed78b.json",
+					"name" : "rvs-basic-kalman",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-basic-pnp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-basic-pnp-Debug-79344cf0ea229c137e7a.json",
+					"name" : "rvs-basic-pnp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-basic-roi::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-basic-roi-Debug-bffa3b982eeba47a147f.json",
+					"name" : "rvs-basic-roi",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-camera-calibration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-camera-calibration-Debug-80f75e39cf249302bfe6.json",
+					"name" : "rvs-camera-calibration",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-fan-armor::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-fan-armor-Debug-ebb95cdf14af5867b47b.json",
+					"name" : "rvs-fan-armor",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-mv-video-capture::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-mv-video-capture-Debug-8e35bed3ab6f87337d86.json",
+					"name" : "rvs-mv-video-capture",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-new-buff::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-new-buff-Debug-615ce6229654dc7ced1f.json",
+					"name" : "rvs-new-buff",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-onnx-inferring::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-onnx-inferring-Debug-b4cc22e90afc7d494a7c.json",
+					"name" : "rvs-onnx-inferring",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-uart-serial::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-uart-serial-Debug-d2bdd889600f42134451.json",
+					"name" : "rvs-uart-serial",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rvs-video-record::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rvs-video-record-Debug-9a89aacc558e9474f58e.json",
+					"name" : "rvs-video-record",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/ccong/Desktop/RobotVision_Sirius/build",
+		"source" : "/home/ccong/Desktop/RobotVision_Sirius"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}
