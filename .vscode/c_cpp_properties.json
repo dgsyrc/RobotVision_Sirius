@@ -6,8 +6,7 @@
                 "${workspaceFolder}/**",
                 "/usr/include/opencv4",
                 "${workspaceFolder}",
-                "${workspaceFolder}/module/armor",
-                "/usr/include/opencv4"
+                "${workspaceFolder}/module/armor"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

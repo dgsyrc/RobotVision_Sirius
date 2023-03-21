@@ -9,6 +9,7 @@
 #define VIDEO_DEBUG
 #define MANUAL_FIRE
 #define PARM_EDIT
+//#define RELEASE
 
 
 int main() 
@@ -48,6 +49,9 @@ int main()
   angle_solve::solve solution;
   solution.set_config(fmt::format("{}{}", CONFIG_FILE_PATH, "/angle_solve/angle_solve_config.xml"));
 
+  angle_solve::solve buff_solution;
+  buff_solution.set_config(fmt::format("{}{}", CONFIG_FILE_PATH, "/angle_solve/buff_angle_solve_config.xml"));
+
 
   RecordMode::Record record_ = RecordMode::Record(
     fmt::format("{}{}", CONFIG_FILE_PATH, "/record/recordpath_save.yaml"),
@@ -78,32 +82,17 @@ int main()
 #endif
     if (!src_img.empty()) {
       src_img = src_img*2;//*2
-      fmt::print("test\n");
-      //cv::line(src_img,(cv::Point){640,0},(cv::Point){640,1024},cv::Scalar(255,0,0));
-      //cv::line(src_img,(cv::Point){0,512},(cv::Point){1280,512},cv::Scalar(255,0,0));
       fire = false;
       serial_.updateReceiveInformation();
-      
-      /*if(serial_.returnOldFlag()) {
-        continue;
-      }*/
       switch (serial_.returnReceiveMode()) {
       // 基础自瞄模式
       case uart::AUTO_AIM:
        if (basic_armor_.runBasicArmor(src_img, serial_.returnReceive())) {
           solution.angleSolve(basic_armor_.returnFinalArmorRotatedRect(0), src_img.size().height, src_img.size().width, serial_);
-          //
+          // 旧的调用
           //pnp_.solvePnP(serial_.returnReceiveBulletVelocity(), basic_armor_.returnFinalArmorDistinguish(0), basic_armor_.returnFinalArmorRotatedRect(0));
         }
-#ifdef MANUAL_FIRE
-        if(basic_armor_.returnArmorNum() != 0) {
-          if(cv::waitKey(1) == 'f') {
-            fire = true;
-          } else {
-            fire = false;
-          }
-        }
-#endif
+        // 旧的调用
         /*serial_.updataWriteData(basic_armor_.returnArmorNum(), fire,
                                 pnp_.returnYawAngle(),
                                 pnp_.returnPitchAngle(),
@@ -117,10 +106,22 @@ int main()
         break;
       // 能量机关
       case uart::ENERGY_BUFF:
-      
-        serial_.writeData(basic_buff_.runTask(src_img, serial_.returnReceive()));
+        //serial_.writeData(basic_buff_.runTask(src_img, serial_.returnReceive()));
+        if(basic_buff_.runTask(src_img, serial_.returnReceive())){
+          fmt::print("[buff] PASS to\n");
+          buff_solution.angleSolve(basic_buff_.returnObjectRect(), src_img.size().height, src_img.size().width, serial_);
+          serial_.updataWriteData(1, fire,
+                                buff_solution.returnYawAngle(),
+                                buff_solution.returnPitchAngle(),
+                                basic_buff_.returnObjectforUart(),
+                                0);
+        } else {
+          serial_.updataWriteData(0, 0, 0, 0, {0,0}, 0);
+        }
+        
+        
         break;
-      // 击打哨兵模式
+      // 击打哨兵模式 
       case uart::SENTRY_STRIKE_MODE:
         if (basic_armor_.sentryMode(src_img, serial_.returnReceive())) {
           pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
@@ -234,15 +235,20 @@ int main()
         break;
       default: // 默认进入基础自瞄 
         if (basic_armor_.runBasicArmor(src_img, serial_.returnReceive())) {
-            pnp_.solvePnP(serial_.returnReceiveBulletVelocity(),
-                          basic_armor_.returnFinalArmorDistinguish(0),
-                          basic_armor_.returnFinalArmorRotatedRect(0));
+          solution.angleSolve(basic_armor_.returnFinalArmorRotatedRect(0), src_img.size().height, src_img.size().width, serial_);
+          //pnp_.solvePnP(serial_.returnReceiveBulletVelocity(), basic_armor_.returnFinalArmorDistinguish(0), basic_armor_.returnFinalArmorRotatedRect(0));
         }
-        serial_.updataWriteData(basic_armor_.returnArmorNum(), 0,
+        // 旧的调用
+        /*serial_.updataWriteData(basic_armor_.returnArmorNum(), fire,
                                 pnp_.returnYawAngle(),
                                 pnp_.returnPitchAngle(),
                                 basic_armor_.returnArmorCenter(0),
-                                pnp_.returnDepth());
+                                pnp_.returnDepth());*/
+        serial_.updataWriteData(basic_armor_.returnArmorNum(), fire,
+                                solution.returnYawAngle(),
+                                solution.returnPitchAngle(),
+                                basic_armor_.returnArmorCenter(0),
+                                0);
         break;
       }
     }
@@ -275,7 +281,7 @@ int main()
     usleep(1);
 #endif
     // 看门狗放置相机掉线
-    global_fps_.calculateFPSGlobal();
+    /*global_fps_.calculateFPSGlobal();*/
     if (global_fps_.returnFps() > 500) {
 #ifndef VIDEO_DEBUG
       mv_capture_->~VideoCapture();

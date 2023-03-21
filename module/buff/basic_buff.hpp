@@ -173,7 +173,12 @@ class Detector {
    * @param  _receive_info    串口接收结构体
    * @return uart::Write_Data 串口发送结构体
    */
-  uart::Write_Data runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info);
+  bool runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info);
+  //uart::Write_Data runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info);
+
+  cv::RotatedRect returnObjectRect();
+
+  uart::Write_Data::node returnObjectforUart();
 
 
  private:
@@ -211,6 +216,8 @@ class Detector {
 
   bool is_find_last_target_;  // 上一帧是否发现目标 true：发现 false：未发现
   bool is_find_target_;       // 是否发现目标 true：发现 false：未发现
+
+  
 
   abstract_target::Target last_target_;  //  上一个打击目标
 

@@ -7,12 +7,16 @@
  */
 
 #include "camera_calibration.hpp"
+//#define RELEASE
 
 namespace cam{
 
   void create_images(cv::Mat& frame) {
+#ifndef RELEASE
     imshow("frame", frame);
     ch = cv::waitKey(50);
+#endif
+   
     printf("%d ", ch);
     img=frame.clone();
     s = img.size();
@@ -44,14 +48,18 @@ namespace cam{
       img = cv::imread(files[i]);
       s = img.size();
       cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+#ifndef RELEASE
       cv::imshow("calibration-demo", gray);
+#endif
       ret = cv::findChessboardCorners(gray, cv::Size(7, 7), corners, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);
       if (ret) {
         cv::cornerSubPix(gray, corners, cv::Size(11, 11), cv::Size(-1, -1), criteria);
         cv::drawChessboardCorners(img, cv::Size(7, 7), corners, ret);
         imagePoints.push_back(corners);
         objectPoints.push_back(obj);
+#ifndef RELEASE
         cv::imshow("calibration-demo", img);
+#endif
       }
     }
     // 相机校正
@@ -74,7 +82,9 @@ namespace cam{
     }
     s = image.size();
     cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+#ifndef RELEASE
     cv::imshow("calibration-demo", gray);
+#endif
     ret = cv::findChessboardCorners(gray, cv::Size(7, 7), corners, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);
     if (ret) {
       cv::imwrite(fmt::format("{}/photos/{}.png",SAVE_FILE_PATH, std::to_string(index)) , image);
@@ -82,7 +92,9 @@ namespace cam{
       cv::drawChessboardCorners(image, cv::Size(7, 7), corners, ret);
       imagePoints.push_back(corners);
       objectPoints.push_back(obj);
+#ifndef RELEASE
       cv::imshow("calibration-demo", image); // 显示识别到标定板的帧
+#endif
       fmt::print("SUCCESS\n");
       index += 1;
     }
@@ -95,7 +107,9 @@ namespace cam{
     camera_config["distortion"] >> distCoeffs;
 
     cv::undistort(image, rectify, intrinsic, distCoeffs);
+#ifndef RELEASE
     cv::imshow("ASSESS", rectify);
+#endif
     camera_config.release();
   }
 

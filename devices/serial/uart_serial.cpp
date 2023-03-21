@@ -8,6 +8,7 @@
  */
 
 #include "uart_serial.hpp"
+//#define RELEASE
 
 
 namespace uart {
@@ -286,7 +287,9 @@ void SerialPort::updateReceiveInformation() {
   fmt::print("[info] in 1\n");
   if (!isEmpty()) {
     if(pre_mode != receive_buff_[2]) {
+#ifndef RELEASE
       cv::destroyAllWindows();
+#endif
       pre_mode = receive_buff_[2];
     }
   } else {

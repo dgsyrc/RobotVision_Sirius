@@ -10,6 +10,7 @@
 
 #include "basic_buff.hpp"
 #include "new_buff.hpp"
+//#define RELEASE
 
 namespace basic_buff {
 #ifdef DEBUG_STATIC
@@ -113,7 +114,11 @@ inline void Detector::getInput_Inaction(cv::Mat& _input_img, const int& _my_colo
   is_find_target_ = false;
 }
 
-inline void Detector::displayDst() { imshow("[basic_buff] displayDst() -> dst_img_", dst_img_); }
+inline void Detector::displayDst() { 
+#ifndef RELEASE
+  imshow("[basic_buff] displayDst() -> dst_img_", dst_img_); 
+#endif
+  }
 
 void Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info, uart::Write_Data& _send_info) {
   // 获取基本信息
@@ -169,8 +174,8 @@ void Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_i
 
   // 输入串口数据
 }
-
-uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info) {
+// uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info) {
+bool Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_info) {
   uart::Write_Data send_info;
   
   // 获取基本信息
@@ -190,14 +195,32 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
   is_find_target_ = isFindTarget(dst_img_, target_box_);
 
   // 查找圆心
-  final_center_r_ = findCircleR(src_img_, bin_img_action, dst_img_, is_find_target_);
+  //final_center_r_ = findCircleR(src_img_, bin_img_action, dst_img_, is_find_target_);
+  final_center_r_ = big_buff.returnCircleR();
 
-  big_buff.predict(final_center_r_);
+  //big_buff.predict(final_center_r_,dst_img_);
 
-  final_object = big_buff.calculateCord(final_center_r_);
+  
+
+  //final_object = big_buff.calculateCord(final_center_r_);
+
+
+  final_object = big_buff.stablePerdict(final_center_r_,dst_img_);
+
   fmt::print("[final object] {} {}\n",final_object.x,final_object.y);
+
+  if(final_object.x==0&&final_object.y==0){
+    return false;
+  } else {
+    
+    return true;
+  }
+
+  
   
   // 计算运转状态值：速度、方向、角度
+
+  
   //judgeCondition(is_find_target_);
 
   // 计算预测量 单位为弧度
@@ -205,8 +228,8 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
 
   // 计算获取最终目标（矩形、顶点）
   //calculateTargetPointSet(final_forecast_quantity_, final_center_r_, target_2d_point_, dst_img_, is_find_target_);
-  cv::circle(dst_img_, final_object, 3, cv::Scalar(255, 0, 0), 3, 8, 0);                                  // 预测值的中点
-  cv::line(dst_img_, final_object, final_center_r_, cv::Scalar(0, 255, 255), 2); // 圆心-预测中心连线
+  //cv::circle(dst_img_, final_object, 3, cv::Scalar(255, 0, 0), 3, 8, 0);                                  // 预测值的中点
+  //cv::line(dst_img_, final_object, final_center_r_, cv::Scalar(255, 255, 255), 2); // 圆心-预测中心连线
   // 计算云台角度
   /*
   if (is_find_target_) {
@@ -238,13 +261,22 @@ uart::Write_Data Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data
   }*/
 
   // TODO(fqjun) :自动控制
-#ifndef RELEASE
+/*#ifndef RELEASE
   displayDst();
 #endif
   // 更新上一帧数据
   updateLastData(is_find_target_);
-  return send_info;
+  return send_info;*/
 }
+
+cv::RotatedRect Detector::returnObjectRect() {
+  return big_buff.returnArmorRect();
+}
+
+uart::Write_Data::node Detector::returnObjectforUart() {
+  return (uart::Write_Data::node){final_object.x,final_object.y};
+}
+
 
 void Detector::readBuffConfig(const cv::FileStorage& _fs) {
   // ctrl

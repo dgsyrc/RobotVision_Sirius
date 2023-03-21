@@ -86,7 +86,7 @@ class FPS {
 
   void          getTick()   { time1 = cv::getTickCount(); }
   static double lastTime()  { return last_time; }
-  inline float  returnFps() { return time * 1000; displayFPS();}
+  inline float  returnFps() { return time * 1000; /*displayFPS();*/}
 
  private:
   void displayFPS() const {

@@ -40,7 +40,15 @@ namespace new_buff {
 
     cv::Point2f armor_last;
     cv::Point2f armor_now;
-    cv::Point2f circles;
+
+    cv::RotatedRect object_rects;
+
+    cv::RotatedRect armor_now_rects;
+    cv::RotatedRect armor_last_rects;
+
+    float tan_angle;
+    
+    bool isfindcircleR = false;
 
     fps::FPS new_buff_fps;
 
@@ -56,11 +64,20 @@ namespace new_buff {
 
             void set_config(std::string config_path);
 
-            void predict(cv::Point2f &circle_r);
+            cv::Point2f stablePerdict(cv::Point2f &circle_r,cv::Mat &img);
+
+            void predict(cv::Point2f &circle_r,cv::Mat &img);
 
             cv::Point2f calculateCord(cv::Point2f &circle_r);
 
             void main_buff_checker(cv::Mat img, cv::Mat img_src,new_buff::Check_Moudle moudle);
+
+            cv::Point2f returnCircleR();
+
+            double returnDistance(cv::Point2f x,cv::Point2f y);
+
+            cv::RotatedRect returnArmorRect();
+
         private:
 
             struct info {
@@ -72,8 +89,10 @@ namespace new_buff {
                 float armor_distance;
             } config;
 
-            
+            cv::Point2f circles;
             predict_status status = NONE;
+
+            
 
             float last_velocity= 0.0;
             float now_velocity = 0.0;
@@ -103,6 +122,8 @@ namespace new_buff {
 
             float beta = 0.0;
             cv::Point2f object;
+
+            double center_dist;
     };
 
 }

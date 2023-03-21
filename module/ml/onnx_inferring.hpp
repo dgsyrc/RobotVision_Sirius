@@ -14,9 +14,10 @@
 
 #include <string>
 #include <iostream>
+#include <opencv2/opencv.hpp>
 using namespace std;
 
-#include <opencv2/opencv.hpp>
+
 
 namespace onnx_inferring {
 
@@ -84,8 +85,9 @@ class model{
     // cv::morphologyEx(Image_output, Image_output, cv::MORPH_OPEN, element);
     // cv::dilate(Image_output, Image_output, cv::Mat(cv::Size(3, 3), CV_8UC1));
     // cv::bitwise_not(Image_output, Image_output);
-
+#ifndef RELEASE
     cv::imshow("output_img_ocr", Image_output);
+#endif
 
     opencv_net.setInput(cv::dnn::blobFromImage(Image_output));
 
@@ -108,11 +110,12 @@ class model{
         }
       }
     });
-
+#ifndef RELEASE
     if (!Image_showput.empty()) {
         cv::putText(Image_showput , to_string(max_probability_idx) , cv::Point(100 , 100) , cv::FONT_HERSHEY_DUPLEX ,  2, cv::Scalar(255 , 255 , 255) , 2 , cv::LINE_AA);
         cv::imshow("number_img" , Image_showput);
     }
+#endif
     return max_probability_idx;
   }
 

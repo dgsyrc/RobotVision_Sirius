@@ -18,13 +18,14 @@ namespace angle_solve {
         conf["PIC_ARMOR_LENGHT"] >> config.pic_armor_lenght;
         conf["PIC_DISTANCE"] >> config.pic_distance;
         conf["ARMOR_DISTANCE"] >> config.armor_distance;
+        fmt::print("[angle info] config st {}\n",config.pic_distance);
         conf.release();
     }
 
     void solve::angleSolve(cv::RotatedRect object, int row, int col, uart::SerialPort& info) {
         //
         // 左加右减 上减下加
-        
+        fmt::print("[angle info] config {}\n",config.pic_distance);
         target.predict.y = config.pic_distance * config.armor_height / object.size.height;
         target.predict.x = (object.center.x - col / 2.0) * target.predict.y / config.pic_distance;
         target.predict.z = ((row - object.center.y) - row / 2.0) * target.predict.y / config.pic_distance;
@@ -41,6 +42,7 @@ namespace angle_solve {
        
         fmt::print("[angle info] center x {} center y {}\n", object.center.x, object.center.y);
     }
+
 
     float solve::returnYawAngle() {
         if(fabs(target.yaw) < 0.01) {
