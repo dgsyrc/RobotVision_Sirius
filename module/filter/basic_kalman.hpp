@@ -15,8 +15,8 @@ namespace basic_kalman {
 class firstKalman {
  public:
   firstKalman() {
-    Q_ = 0.01f;
-    R_ = 0.02f;
+    Q_ = 1.20f;// 0.01f
+    R_ = 0.01f;// 0.02f
     t_ = 1.0f;
     x_ = 0.0f;
     p_ = 0.01f;

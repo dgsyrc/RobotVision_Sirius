@@ -15,6 +15,7 @@
 #include <string>
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#define RELEASE
 using namespace std;
 
 

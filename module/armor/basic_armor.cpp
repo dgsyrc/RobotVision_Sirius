@@ -8,7 +8,7 @@
  *
  */
 #include "basic_armor.hpp"
-//#define RELEASE
+#define RELEASE
 namespace basic_armor {
 
 Detector::Detector(const std::string _armor_config) {
@@ -235,6 +235,7 @@ bool Detector::runBasicArmor(const cv::Mat&           _src_img,
   // 预处理
   runImage(_src_img, _receive_data.my_color);
   draw_img_ = _src_img.clone();
+  //cv::imshow("auto aim-armor", _src_img);
   if (findLight()) {
     
     if (fittingArmor()) {

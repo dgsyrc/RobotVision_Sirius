@@ -29,3 +29,5 @@
 auto idntifier = fmt::format(fg(fmt::color::green) | fmt::emphasis::bold, "RobotVision");
 time_t time_now = time(0);
 bool fire;
+long long rec_time=0;
+int rec_cnt=0;

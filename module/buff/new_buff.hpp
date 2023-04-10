@@ -23,6 +23,7 @@
 #include <cmath>
 
 #include "utils/fps.hpp"
+#include "module/filter/basic_kalman.hpp"
 
 
 
@@ -46,11 +47,33 @@ namespace new_buff {
     cv::RotatedRect armor_now_rects;
     cv::RotatedRect armor_last_rects;
 
+    basic_kalman::firstKalman kal;
+
     float tan_angle;
     
     bool isfindcircleR = false;
+    bool isFindTarget = false;
 
     fps::FPS new_buff_fps;
+
+    cv::Point2f circles;
+    cv::Point2f last_circles;
+    double area_circles = 0.0f;
+
+    int brx;
+    int bry;
+    int tlx;
+    int tly;
+
+    double now_r=0.0f;
+    double last_r=0.0f;
+
+    struct armor_check{
+        cv::Point2f cord[4];
+        cv::Point2f obj;
+        bool isPass = false;
+        float d;
+    };
 
     class buff {
         public:
@@ -72,11 +95,15 @@ namespace new_buff {
 
             void main_buff_checker(cv::Mat img, cv::Mat img_src,new_buff::Check_Moudle moudle);
 
+            cv::Point2f calculateCircleR(cv::Point2f P1,cv::Point2f P2,cv::Point2f P3);
+
             cv::Point2f returnCircleR();
 
             double returnDistance(cv::Point2f x,cv::Point2f y);
 
             cv::RotatedRect returnArmorRect();
+
+            bool returnCenterDistance();
 
         private:
 
@@ -89,7 +116,7 @@ namespace new_buff {
                 float armor_distance;
             } config;
 
-            cv::Point2f circles;
+            
             predict_status status = NONE;
 
             

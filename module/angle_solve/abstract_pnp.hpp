@@ -8,7 +8,7 @@
  */
 
 #pragma once
-//#define RELEASE
+#define RELEASE
 
 #include <algorithm>
 #include <vector>

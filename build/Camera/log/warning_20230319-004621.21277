@@ -1,4 +1,0 @@
-Log file created at: 2023/03/19 00:46:21
-Running on machine: ccong-ubuntu
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-W0319 00:46:21.453814 21281 MVCameraBase.cpp:98] Device:(name:MV-SUA134GC#0 sn:042051320364)Lost

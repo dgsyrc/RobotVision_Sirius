@@ -10,7 +10,7 @@
   - 2 Alpha
   记得调整原参数
   -->
-  <IS_PARAM_ADJUSTMENT>1</IS_PARAM_ADJUSTMENT>
+  <IS_PARAM_ADJUSTMENT>0</IS_PARAM_ADJUSTMENT>
 
   <!-- 
   IS_SHOW_BIN_IMG - 是否显示二值图像

@@ -180,6 +180,7 @@ class Detector {
 
   uart::Write_Data::node returnObjectforUart();
 
+  bool isfire();
 
  private:
   /**

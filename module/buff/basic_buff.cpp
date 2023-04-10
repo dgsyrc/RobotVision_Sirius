@@ -10,7 +10,7 @@
 
 #include "basic_buff.hpp"
 #include "new_buff.hpp"
-//#define RELEASE
+#define RELEASE
 
 namespace basic_buff {
 #ifdef DEBUG_STATIC
@@ -184,11 +184,12 @@ bool Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_i
   imageProcessing(src_img_, bin_img_action, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
   imageProcessing(src_img_, bin_img_inaction, my_color_, static_cast<Processing_Moudle>(buff_config_.ctrl.PROCESSING_MODE), static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
   // 查找目标
+  cv::imshow("inaction_img_d",bin_img_inaction);
   big_buff.main_buff_checker(bin_img_action, _input_img, static_cast<new_buff::Check_Moudle>(new_buff::CIRCLE_MODE));
   big_buff.main_buff_checker(bin_img_action, _input_img, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
-  big_buff.main_buff_checker(bin_img_action, _input_img, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
+  big_buff.main_buff_checker(bin_img_inaction, _input_img, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
 
-  findTarget(dst_img_, bin_img_action, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
+  //findTarget(dst_img_, bin_img_action, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
   //findTarget_new(dst_img_, bin_img_action, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::ACTION_MODE));
   //findTarget(dst_img_, bin_img_inaction, target_box_, static_cast<new_buff::Check_Moudle>(new_buff::INACTION_MODE));
   // 判断目标是否为空
@@ -209,7 +210,7 @@ bool Detector::runTask(cv::Mat& _input_img, const uart::Receive_Data& _receive_i
 
   fmt::print("[final object] {} {}\n",final_object.x,final_object.y);
 
-  if(final_object.x==0&&final_object.y==0){
+  if((int)final_object.x==0&&(int)final_object.y==0){
     return false;
   } else {
     
@@ -277,6 +278,13 @@ uart::Write_Data::node Detector::returnObjectforUart() {
   return (uart::Write_Data::node){final_object.x,final_object.y};
 }
 
+bool Detector::isfire(){
+    if(big_buff.returnCenterDistance()<2.5){
+      return true;
+    }else{
+      return false;
+    }
+}
 
 void Detector::readBuffConfig(const cv::FileStorage& _fs) {
   // ctrl
@@ -378,7 +386,7 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
   cvtColor(_input_img, gray_img_, cv::COLOR_BGR2GRAY);
 
   // 选择预处理的模式：BGR、HSV
-  switch (_process_moudle) {
+  switch (/*_process_moudle*/0) {
   case BGR_MODE: {
     fmt::print("[{}] Image pre-processing mode: +++ BGR_MODE +++\n", process_yellow);
 
@@ -403,12 +411,12 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
   }
 
 // 显示各部分的二值图
-#ifndef RELEASE
-  if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
+//#ifndef RELEASE
+  //if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
     cv::imshow("[basic_buff] imageProcessing() -> bin_img_color_", bin_img_color_);
     cv::imshow("[basic_buff] imageProcessing() -> bin_img_gray_", bin_img_gray_);
-  }
-#endif  // !RELEASE
+ // }
+//#endif  // !RELEASE
 
   // 求交集
   //bitwise_and(bin_img_color_, bin_img_gray_, bin_img_action);
@@ -433,8 +441,9 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
   
   case new_buff::INACTION_MODE:
     bitwise_and(bin_img_color_, bin_img_gray_, bin_img_inaction);
-    morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 2);
-    morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_ERODE, ele_, cv::Point(-1, -1), 2);
+    bin_img_inaction=bin_img_color_.clone();
+    //morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_DILATE, ele_, cv::Point(-1, -1), 2);
+    //morphologyEx(bin_img_inaction, bin_img_inaction, cv::MORPH_ERODE, ele_, cv::Point(-1, -1), 2);
     #ifndef RELEASE
     if (buff_config_.ctrl.IS_SHOW_BIN_IMG == 1 && buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
       cv::imshow("[basic_buff] imageProcessing() -> bin_img_inaction", bin_img_inaction);
@@ -445,6 +454,7 @@ void Detector::imageProcessing(cv::Mat& _input_img, cv::Mat& _output_img, const 
   default:
     break;
   }
+
 // 显示最终合并的二值图
 /*
 #ifndef RELEASE
@@ -468,19 +478,19 @@ void Detector::bgrProcessing(const int& _my_color) {
     // my_color 为红色，则处理红色的情况 灰度图与 RGB 同样做红色处理
     cv::subtract(split_img_[2], split_img_[0], bin_img_color_);  // r-b
 
-#ifndef RELEASE
-    if (buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
+//#ifndef RELEASE
+    //if (buff_config_.ctrl.IS_PARAM_ADJUSTMENT == 1) {
       std::string window_name = {"[basic_buff] bgrProcessing() -> trackbar"};
 
       cv::namedWindow(window_name);
       cv::createTrackbar("GRAY_TH_RED:", window_name, &buff_config_.param.RED_BUFF_GRAY_TH, 255, nullptr);
       cv::createTrackbar("COLOR_TH_RED:", window_name, &buff_config_.param.RED_BUFF_COLOR_TH, 255, nullptr);
 
-      cv::imshow(window_name, trackbar_img_);
+      //cv::imshow(window_name, trackbar_img_);
       fmt::print("[{}] BGR红色预处理调参面板已打开 \n", process_yellow);
-    }
+    //}
 
-#endif  // !RELEASE
+//#endif  // !RELEASE
 
     // 亮度部分
     cv::threshold(gray_img_, bin_img_gray_, buff_config_.param.RED_BUFF_GRAY_TH, 255, cv::THRESH_BINARY);
@@ -701,7 +711,7 @@ void Detector::findTarget(cv::Mat& _input_dst_img, cv::Mat& _input_bin_img, std:
     // 用于寻找小轮廓，没有父轮廓的跳过，以及不满足6点拟合椭圆
     if (hierarchy_[i][3] < 0 || contours_[i].size() < 6 || contours_[static_cast<uint>(hierarchy_[i][3])].size() < 6) {
       flag[0]=true;
-      fmt::print("[{}] hierarchy_[i][3]:{} contours_[i].size():{}\n", debug_info, hierarchy_[i][3], contours_[i].size());
+      //fmt::print("[{}] hierarchy_[i][3]:{} contours_[i].size():{}\n", debug_info, hierarchy_[i][3], contours_[i].size());
       continue;
     }
     else

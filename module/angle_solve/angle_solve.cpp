@@ -30,7 +30,7 @@ namespace angle_solve {
         target.predict.x = (object.center.x - col / 2.0) * target.predict.y / config.pic_distance;
         target.predict.z = ((row - object.center.y) - row / 2.0) * target.predict.y / config.pic_distance;
         fmt::print("[{}] L: {}  H: {} row: {} object_y: {}\n", angle_info,target.predict.y, target.predict.z, row, object.center.y);
-        target.time = target.predict.y / (14.5 * cos(-info.returnReceivePitch()/180*PI) * 100);
+        target.time = target.predict.y / (20.5 * cos(-info.returnReceivePitch()/180*PI) * 100);
         target.predict.z = target.predict.z + 0.5 * 9.8 * 100 * target.time * target.time;
         fmt::print("[angle info] p {} {} {}\n", 0.5 * 9.8 * 100 * target.time * target.time,target.time, info.returnReceiveBulletVelocity());
         //compensation.pitch = 

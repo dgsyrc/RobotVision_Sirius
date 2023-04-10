@@ -7,7 +7,7 @@
  */
 
 #include "camera_calibration.hpp"
-//#define RELEASE
+#define RELEASE
 
 namespace cam{
 
@@ -24,7 +24,7 @@ namespace cam{
     cv::drawChessboardCorners(img, cv::Size(7, 7), corners, ret);
     imagePoints.push_back(corners);
     objectPoints.push_back(obj);
-    cv::imshow("calibration-demo", img);
+    //cv::imshow("calibration-demo", img);
     if (ch == 'e') { // 获取图像
       cv::imwrite(fmt::format("{}/photos/{}.png",SAVE_FILE_PATH, std::to_string(index)) , frame);
       fmt::print("SUCCESS\n");
