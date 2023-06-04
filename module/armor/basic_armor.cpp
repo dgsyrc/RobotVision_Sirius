@@ -163,8 +163,8 @@ bool Detector::findLight() {
   // 调参开关
   if (light_config_.light_edit == 1) {
 #ifndef RELEASE
-    std::string window_name = {"[basic_armor] findLight() -> light_trackbar"};
-
+   // std::string window_name = {"[basic_armor] findLight() -> light_trackbar"};
+/*
     cv::namedWindow(window_name);
 
     cv::createTrackbar("angle_min", window_name,
@@ -183,6 +183,7 @@ bool Detector::findLight() {
                        &light_config_.ratio_w_h_max, 1000, NULL);
 
     cv::imshow(window_name, light_trackbar_);
+    */
 #endif
   }
 
@@ -335,6 +336,7 @@ void Detector::initialPredictionData(const float _gyro_speed_data,
                                      const float _yaw_angle) {
   if (armor_config_.armor_forecast) {
 #ifndef RELEASE
+/*
     std::string window_name = {"[basic_armor] sentryMode() -> sentry_trackbar"};
     cv::namedWindow(window_name);
     cv::createTrackbar("proportion_direction_", window_name, &proportion_direction_, 100, NULL);
@@ -344,7 +346,7 @@ void Detector::initialPredictionData(const float _gyro_speed_data,
     cv::createTrackbar("abrupt_variable_", window_name, &abrupt_variable_, 500, NULL);
     cv::createTrackbar("Q", window_name, &Q_, 100, NULL);
     cv::createTrackbar("R", window_name, &R_, 100, NULL);
-    cv::imshow(window_name, sentry_trackbar_);
+    cv::imshow(window_name, sentry_trackbar_);*/
 #endif
   }
 
@@ -427,6 +429,7 @@ void Detector::finalArmor() {
 bool Detector::fittingArmor() {
   if (armor_config_.armor_edit == 1) {
 #ifndef RELEASE
+/*
     std::string window_name = {"[basic_armor] fittingArmor() -> armor_trackbar"};
     cv::namedWindow(window_name);
 
@@ -452,6 +455,7 @@ bool Detector::fittingArmor() {
                        &armor_config_.big_armor_aspect_max, 100, NULL);
 
     cv::imshow(window_name, armor_trackbar_);
+    */
 #endif
   }
   for (size_t i = 0; i != light_.size(); ++i) {
@@ -641,16 +645,18 @@ inline cv::Mat Detector::grayPretreat(const cv::Mat& _src_img,
                                       const int      _my_color) {
   cv::cvtColor(_src_img, gray_img_, cv::COLOR_BGR2GRAY);
 
-  std::string window_name = {"[basic_armor] grayPretreat() -> gray_trackbar"};
+  //std::string window_name = {"[basic_armor] grayPretreat() -> gray_trackbar"};
   switch (_my_color) {
     case uart::RED:
       // my_color 为红色，则处理蓝色的情况
       if (image_config_.gray_edit) {
 #ifndef RELEASE
+/*
         cv::namedWindow(window_name);
         cv::createTrackbar("blue_gray_th", window_name,
                            &image_config_.blue_armor_gray_th, 255, NULL);
         cv::imshow(window_name, gray_trackbar_);
+        */
 #endif
       }
 
@@ -661,10 +667,12 @@ inline cv::Mat Detector::grayPretreat(const cv::Mat& _src_img,
       // my_color 为蓝色，则处理红色的情况
       if (image_config_.gray_edit) {
 #ifndef RELEASE
+/*
         cv::namedWindow(window_name);
         cv::createTrackbar("red_gray_th", window_name,
                            &image_config_.red_armor_gray_th, 255, NULL);
         cv::imshow(window_name, gray_trackbar_);
+        */
 #endif
       }
 
@@ -675,12 +683,13 @@ inline cv::Mat Detector::grayPretreat(const cv::Mat& _src_img,
       // my_color 为默认值，则处理红蓝双色的情况
       if (image_config_.gray_edit) {
 #ifndef RELEASE
+/*
         cv::namedWindow(window_name);
         cv::createTrackbar("red_gray_th", window_name,
                            &image_config_.red_armor_gray_th, 255, NULL);
         cv::createTrackbar("blue_gray_th", window_name,
                            &image_config_.blue_armor_gray_th, 255, NULL);
-        cv::imshow(window_name, gray_trackbar_);
+        cv::imshow(window_name, gray_trackbar_);*/
 #endif
       }
 
@@ -694,7 +703,7 @@ inline cv::Mat Detector::grayPretreat(const cv::Mat& _src_img,
 
   if (image_config_.gray_edit) {
 #ifndef RELEASE
-    cv::imshow(window_name, bin_gray_img);
+    //cv::imshow(window_name, bin_gray_img);
 #endif
   }
 
@@ -708,7 +717,7 @@ inline cv::Mat Detector::bgrPretreat(const cv::Mat& _src_img, const int _my_colo
 
   cv::split(_src_img, _split);
 
-  std::string window_name = {"[basic_armor] brgPretreat() -> color_trackbar"};
+  //std::string window_name = {"[basic_armor] brgPretreat() -> color_trackbar"};
   switch (_my_color) {
   case uart::RED:
     // my_color 为红色，则处理蓝色的情况
@@ -717,10 +726,11 @@ inline cv::Mat Detector::bgrPretreat(const cv::Mat& _src_img, const int _my_colo
 
     if (image_config_.color_edit) {
 #ifndef RELEASE
+/*
       cv::namedWindow(window_name);
       cv::createTrackbar("blue_color_th", window_name,
                          &image_config_.blue_armor_color_th, 255, NULL);
-      cv::imshow(window_name, this->bgr_trackbar_);
+      cv::imshow(window_name, this->bgr_trackbar_);*/
 #endif
     }
 
@@ -736,10 +746,11 @@ inline cv::Mat Detector::bgrPretreat(const cv::Mat& _src_img, const int _my_colo
 
     if (image_config_.color_edit) {
 #ifndef RELEASE
+/*
       cv::namedWindow(window_name);
       cv::createTrackbar("red_color_th", window_name,
                          &image_config_.red_armor_color_th, 255, NULL);
-      cv::imshow(window_name, this->bgr_trackbar_);
+      cv::imshow(window_name, this->bgr_trackbar_);*/
 #endif
     }
 
@@ -757,12 +768,13 @@ inline cv::Mat Detector::bgrPretreat(const cv::Mat& _src_img, const int _my_colo
 
     if (image_config_.color_edit) {
 #ifndef RELEASE
+/*
       cv::namedWindow(window_name);
       cv::createTrackbar("red_color_th", window_name,
                          &image_config_.red_armor_color_th, 255, NULL);
       cv::createTrackbar("blue_color_th", window_name,
                          &image_config_.blue_armor_color_th, 255, NULL);
-      cv::imshow(window_name, this->bgr_trackbar_);
+      cv::imshow(window_name, this->bgr_trackbar_);*/
 #endif
     }
     cv::threshold(bin_blue_color_img, bin_blue_color_img, image_config_.blue_armor_color_th, 255, cv::THRESH_BINARY);
@@ -777,7 +789,7 @@ inline cv::Mat Detector::bgrPretreat(const cv::Mat& _src_img, const int _my_colo
 
   if (image_config_.color_edit) {
 #ifndef RELEASE
-    cv::imshow(window_name, bin_color_img);
+    //cv::imshow(window_name, bin_color_img);
 #endif
   }
 
@@ -787,12 +799,13 @@ inline cv::Mat Detector::bgrPretreat(const cv::Mat& _src_img, const int _my_colo
 inline cv::Mat Detector::hsvPretreat(const cv::Mat& _src_img,
                                      const int      _my_color) {
   cv::cvtColor(_src_img, hsv_img, cv::COLOR_BGR2HSV_FULL);
-  std::string window_name = {"[basic_armor] hsvPretreat() -> hsv_trackbar"};
+  //std::string window_name = {"[basic_armor] hsvPretreat() -> hsv_trackbar"};
   switch (_my_color) {
     // my_color 为红色，则处理蓝色的情况
     case uart::RED:
       if (image_config_.color_edit) {
 #ifndef RELEASE
+/*
         cv::namedWindow(window_name);
         cv::createTrackbar("blue_h_min:", window_name,
                            &image_config_.h_blue_min, 255, NULL);
@@ -806,7 +819,7 @@ inline cv::Mat Detector::hsvPretreat(const cv::Mat& _src_img,
                            &image_config_.v_blue_min, 255, NULL);
         cv::createTrackbar("blue_v_max:", window_name,
                            &image_config_.v_red_max, 255, NULL);
-        cv::imshow(window_name, this->hsv_trackbar_);
+        cv::imshow(window_name, this->hsv_trackbar_);*/
 #endif
       }
 
@@ -823,6 +836,7 @@ inline cv::Mat Detector::hsvPretreat(const cv::Mat& _src_img,
       // my_color 为蓝色，则处理红色的情况
       if (image_config_.color_edit) {
 #ifndef RELEASE
+/*
         cv::namedWindow("hsv_trackbar");
         cv::createTrackbar("red_h_min:", window_name,
                            &image_config_.h_red_min, 255, NULL);
@@ -836,7 +850,7 @@ inline cv::Mat Detector::hsvPretreat(const cv::Mat& _src_img,
                            &image_config_.v_red_min, 255, NULL);
         cv::createTrackbar("red_v_max:", window_name,
                            &image_config_.v_red_max, 255, NULL);
-        cv::imshow(window_name, hsv_trackbar_);
+        cv::imshow(window_name, hsv_trackbar_);*/
 #endif
       }
 
@@ -853,6 +867,7 @@ inline cv::Mat Detector::hsvPretreat(const cv::Mat& _src_img,
       // my_color 为默认值，则处理红蓝双色的情况
       if (image_config_.color_edit) {
 #ifndef RELEASE
+/*
         cv::namedWindow("hsv_trackbar");
         cv::createTrackbar("red_h_min:", window_name,
                            &image_config_.h_red_min, 255, NULL);
@@ -880,7 +895,7 @@ inline cv::Mat Detector::hsvPretreat(const cv::Mat& _src_img,
         cv::createTrackbar("blue_v_max:", window_name, &image_config_.v_red_max,
                            255, NULL);
 
-        cv::imshow(window_name, hsv_trackbar_);
+        cv::imshow(window_name, hsv_trackbar_);*/
 #endif
       }
 
@@ -908,7 +923,7 @@ inline cv::Mat Detector::hsvPretreat(const cv::Mat& _src_img,
 
   if (image_config_.gray_edit) {
 #ifndef RELEASE
-    cv::imshow(window_name, bin_color_img);
+    //cv::imshow(window_name, bin_color_img);
 #endif
   }
 

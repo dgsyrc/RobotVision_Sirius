@@ -18,6 +18,7 @@ namespace angle_solve {
         conf["PIC_ARMOR_LENGHT"] >> config.pic_armor_lenght;
         conf["PIC_DISTANCE"] >> config.pic_distance;
         conf["ARMOR_DISTANCE"] >> config.armor_distance;
+        conf["SPEED_ARG"] >> config.speed_arg;
         fmt::print("[angle info] config st {}\n",config.pic_distance);
         conf.release();
     }
@@ -30,7 +31,8 @@ namespace angle_solve {
         target.predict.x = (object.center.x - col / 2.0) * target.predict.y / config.pic_distance;
         target.predict.z = ((row - object.center.y) - row / 2.0) * target.predict.y / config.pic_distance;
         fmt::print("[{}] L: {}  H: {} row: {} object_y: {}\n", angle_info,target.predict.y, target.predict.z, row, object.center.y);
-        target.time = target.predict.y / (20.5 * cos(-info.returnReceivePitch()/180*PI) * 100);
+        //fmt::print("[{}] velo: {}\n",angle_info,target.predict.y, info.returnReceiveBulletVelocity());
+        target.time = target.predict.y / ((info.returnReceiveBulletVelocity()*config.speed_arg) * cos(-info.returnReceivePitch()/180*PI) * 100);
         target.predict.z = target.predict.z + 0.5 * 9.8 * 100 * target.time * target.time;
         fmt::print("[angle info] p {} {} {}\n", 0.5 * 9.8 * 100 * target.time * target.time,target.time, info.returnReceiveBulletVelocity());
         //compensation.pitch = 
@@ -45,7 +47,7 @@ namespace angle_solve {
 
 
     float solve::returnYawAngle() {
-        if(fabs(target.yaw) < 0.01) {
+        if(fabs(target.yaw) < 0.02) {
             return 0;
 
             //return target.yaw;
@@ -56,7 +58,7 @@ namespace angle_solve {
     }
 
     float solve::returnPitchAngle() {
-        if(fabs(target.pitch) < 0.01) {
+        if(fabs(target.pitch) < 0.02) {
             return 0;
             //return target.pitch;
         } else {
@@ -64,4 +66,6 @@ namespace angle_solve {
         }
         
     }
+
+    
 } // namespace angle_solve

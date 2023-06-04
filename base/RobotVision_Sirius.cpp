@@ -26,7 +26,7 @@ int main()
   cv::VideoCapture cap_ = cv::VideoCapture(0);
 #else
   
-  cv::VideoCapture cap_(fmt::format("{}{}", SOURCE_PATH, "/video/newbuff.mp4"));
+  cv::VideoCapture cap_(fmt::format("{}{}", SOURCE_PATH, "/video/new-final-v2.mp4"));
   
 #endif
   fmt::print("pass\n");
@@ -34,7 +34,7 @@ int main()
   
   uart::SerialPort serial_ = uart::SerialPort(
     fmt::format("{}{}", CONFIG_FILE_PATH, "/serial/uart_serial_config.xml"));
-  
+
   basic_armor::Detector basic_armor_ = basic_armor::Detector(
     fmt::format("{}{}", CONFIG_FILE_PATH, "/armor/basic_armor_config.xml"));
 
@@ -70,6 +70,10 @@ int main()
   while (true) {
     rec_time++;
     fmt::print("[time] {}\n",rec_time);
+    if(rec_time>5000)
+    {
+      int i [[maybe_unused]] = std::system("reboot");
+    }
     global_fps_.getTick();
     new_buff::new_buff_fps.getTick();
 #ifndef VIDEO_DEBUG
@@ -91,7 +95,7 @@ int main()
       src_img = src_img*2;//*2
 
       //cv::line(src_img,{1024,0},{1024,1024},cv::Scalar(255,0,255),2);
-      cv::imshow("[new]",src_img);
+      //cv::imshow("[new]",src_img);
       fire = false;
       serial_.updateReceiveInformation();
       fmt::print("[MODE] {}\n",serial_.returnReceiveMode());
@@ -281,9 +285,9 @@ int main()
     mv_capture_->cameraReleasebuff();
 #endif
     basic_armor_.freeMemory(fmt::format("{}{}", CONFIG_FILE_PATH, "/armor/basic_armor_config_new.xml"));
-    if(cv::waitKey(1)=='q'){
+    /*if(cv::waitKey(1)=='q'){
       return 0;
-    }
+    }*/
     /*
     vw_src << src_img;
     if (rec_time>=300&&serial_.returnReceiveMode()==0) {
@@ -304,7 +308,8 @@ int main()
       static int counter_for_new {30};
       while (!utils::resetMVCamera()) {
         if (!--counter_for_dev) {
-          //int i [[maybe_unused]] = std::system("echo 1 | sudo -S reboot");
+          //return 0;
+          int i [[maybe_unused]] = std::system("reboot");
         }
         usleep(100);
       }
@@ -314,7 +319,8 @@ int main()
           0, mindvision::RESOLUTION_1280_X_800, mindvision::EXPOSURE_40000));
 #endif
       if (!--counter_for_new) {
-        //int i [[maybe_unused]] = std::system("echo 1 | sudo -S reboot");
+        //return 0;
+        int i [[maybe_unused]] = std::system("reboot");
       }
     }
     

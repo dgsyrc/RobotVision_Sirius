@@ -18,13 +18,17 @@
 
 #include <fmt/core.h>
 #include <fmt/color.h>
-
+#include "module/filter/basic_kalman.hpp"
 #include <opencv2/opencv.hpp>
+
+
 
 namespace uart {
 
 auto idntifier_green = fmt::format(fg(fmt::color::green) | fmt::emphasis::bold, "uart_serial");
 auto idntifier_red   = fmt::format(fg(fmt::color::red)   | fmt::emphasis::bold, "uart_serial");
+
+basic_kalman::firstKalman kal;
 
 enum BufferLength {
   // 接收数据字节数
@@ -206,7 +210,7 @@ class SerialPort {
    * 
    * @return int 
    */
-  inline int   returnReceiveMode()           { return /*receive_data_.now_run_mode;*/2; }
+  inline int   returnReceiveMode()           { return /*receive_data_.now_run_mode;*/1; }
   /**
    * @brief 返回陀螺仪 Pitch 轴数据
    * 

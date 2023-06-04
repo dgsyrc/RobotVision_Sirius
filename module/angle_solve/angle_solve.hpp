@@ -47,6 +47,7 @@ namespace angle_solve {
                 float pic_armor_lenght;
                 float pic_distance;
                 float armor_distance;
+                float speed_arg;
             } config;
 
             struct cord {

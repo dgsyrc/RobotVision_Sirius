@@ -8,7 +8,8 @@
  */
 
 #include "uart_serial.hpp"
-//#define RELEASE
+
+#define RELEASE
 
 
 namespace uart {
@@ -168,6 +169,7 @@ void SerialPort::writeData() {
             write_data_.depth);
 }
 
+//this active
 void SerialPort::updataWriteData(const int   _data_type,
                                  const int   _is_shooting,
                                  const float _yaw,
@@ -176,8 +178,24 @@ void SerialPort::updataWriteData(const int   _data_type,
                                  const int   _depth) {
   write_data_.data_type    = _data_type > 1 ? 1 : _data_type;
   write_data_.is_shooting  = _is_shooting;
-  write_data_.yaw    = _yaw * 100;
-  write_data_.pitch  = _pitch * 100;
+  /*if(fabs(_yaw) < 2.0)
+  {
+    write_data_.yaw = 0.0;
+  }
+  else
+  {
+    write_data_.yaw    = _yaw * 100;
+  }
+  if(fabs(_pitch) < 2.0)
+  {
+    write_data_.pitch = 0.0;
+  }
+  else
+  {
+    write_data_.pitch  = -_pitch * 100;
+  }*/
+  write_data_.yaw = kal.run(_yaw)*100;
+  write_data_.pitch = kal.run(-_pitch)*100;
   write_data_.cord   = _cord;
   write_data_.depth  = _depth;
   writeData();
@@ -396,7 +414,12 @@ void SerialPort::updateReceiveInformation() {
   //fmt::print("[info] pitch_velocity:{}\n",receive_data_.raw_pitch_velocity.veloctiy);
 
   receive_data_.raw_bullet_velocity.arr_veloctiy = receive_buff_[12];
+  if(receive_data_.raw_bullet_velocity.veloctiy==0)
+  {
+    receive_data_.raw_bullet_velocity.veloctiy=200;
+  }
   fmt::print("[rec info] bullet_velocity:{}\n",receive_data_.raw_bullet_velocity.arr_veloctiy);
   receive_data_.bullet_velocity = receive_data_.raw_bullet_velocity.veloctiy / 10.0;
+
 }
 }  // namespace uart
