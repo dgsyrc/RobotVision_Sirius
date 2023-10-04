@@ -3,9 +3,9 @@
  * @author dgsyrc (yrcminecraft@foxmail.com)
  * @brief 能量机关检测
  * @date 2023-01-15
- * 
+ *
  * @copyright Copyright (c) 2023 Sirius
- * 
+ *
  */
 
 #pragma once
@@ -18,10 +18,11 @@
 
 #include "new_buff.hpp"
 
-
-namespace abstract_target {
-  auto debug_info          = fmt::format(fg(fmt::color::red) | fmt::emphasis::bold, "debug_info");
-  class Target {
+namespace abstract_target
+{
+  auto debug_info = fmt::format(fg(fmt::color::red) | fmt::emphasis::bold, "debug_info");
+  class Target
+  {
   public:
     // 构造函数 析构函数
     Target();
@@ -32,21 +33,21 @@ namespace abstract_target {
      * @param[in]  _fan_blade       外轮廓（扇叶）
      * @param[in]  _fan_armor       内轮廓（装甲板）
      */
-    void inputParams(const abstract_blade::FanBlade& _fan_blade, const fan_armor::Detector& _fan_armor);
+    void inputParams(const abstract_blade::FanBlade &_fan_blade, const fan_armor::Detector &_fan_armor);
 
     /**
      * @brief 更新装甲板的四个顶点编号
      * @param[in]  _img             输入绘制图像
      * @note 将各个顶点绘制在输入图像上
      */
-    void updateVertex(cv::Mat& _img);
+    void updateVertex(cv::Mat &_img);
 
     /**
      * @brief 设置运转类型
      * @details 强制
      * @param[in]  _type            类型
      */
-    void setType(const abstract_object::ObjectType& _type);
+    void setType(const abstract_object::ObjectType &_type);
 
     void setType(const new_buff::Check_Moudle &check_moudle);
 
@@ -58,7 +59,7 @@ namespace abstract_target {
      * @param[in]  _img             输入绘制图像
      * @note 装甲板为绿框，扇叶为黄框
      */
-    void displayInactionTarget(cv::Mat& _img);
+    void displayInactionTarget(cv::Mat &_img);
 
     /**
      * @brief 返回扇叶大轮廓
@@ -109,7 +110,7 @@ namespace abstract_target {
      * @param  _i               顶点编号
      * @return Point2f
      */
-    cv::Point2f vector2DPoint(const int& _i);
+    cv::Point2f vector2DPoint(const int &_i);
 
     /**
      * @brief 返回装甲板高度点差
@@ -136,16 +137,15 @@ namespace abstract_target {
     std::vector<cv::Point2f> points_2d_;
     // 装甲板高度点差
     cv::Point2f delta_height_point_;
-
-    
   };
 
-  Target::Target() {
-    fan_blade_        = abstract_blade::FanBlade();
-    fan_armor_        = fan_armor::Detector();
-    angle_      = 0.f;
+  Target::Target()
+  {
+    fan_blade_ = abstract_blade::FanBlade();
+    fan_armor_ = fan_armor::Detector();
+    angle_ = 0.f;
     diff_angle_ = 0.f;
-    type_       = abstract_object::UNKNOW;
+    type_ = abstract_object::UNKNOW;
     area_ratio_ = 0.f;
     points_2d_.reserve(4);
     delta_height_point_ = cv::Point2f(0.f, 0.f);
@@ -153,7 +153,8 @@ namespace abstract_target {
 
   Target::~Target() {}
 
-  void Target::inputParams(const abstract_blade::FanBlade& _fan_blade, const fan_armor::Detector& _fan_armor) {
+  void Target::inputParams(const abstract_blade::FanBlade &_fan_blade, const fan_armor::Detector &_fan_armor)
+  {
     // 内轮廓
     fan_armor_ = _fan_armor;
 
@@ -166,7 +167,8 @@ namespace abstract_target {
     // 扇叶角度= 扇叶和装甲板的连线 TODO:未使用
     angle_ = atan2((fan_armor_.Rect().center.y - fan_blade_.Rect().center.y), (fan_armor_.Rect().center.x - fan_blade_.Rect().center.x)) * 180 / static_cast<float>(CV_PI);
     // 过零处理
-    if (angle_ < 0.f) {
+    if (angle_ < 0.f)
+    {
       angle_ += 360.f;
     }
 
@@ -180,23 +182,27 @@ namespace abstract_target {
     // area_ratio_ = fan_armor_.Area() / fan_blade_.Area();
   }
 
-  void Target::updateVertex(cv::Mat& _img) {
+  void Target::updateVertex(cv::Mat &_img)
+  {
     points_2d_.clear();
 
-    cv::Point2f point_up_center   = (fan_armor_.Vertex(0) + fan_armor_.Vertex(1)) * 0.5;
+    cv::Point2f point_up_center = (fan_armor_.Vertex(0) + fan_armor_.Vertex(1)) * 0.5;
     cv::Point2f point_down_center = (fan_armor_.Vertex(2) + fan_armor_.Vertex(3)) * 0.5;
 
-    float up_distance   = abstract_object::centerDistance(point_up_center, fan_blade_.Rect().center);
+    float up_distance = abstract_object::centerDistance(point_up_center, fan_blade_.Rect().center);
     float down_distance = abstract_object::centerDistance(point_down_center, fan_blade_.Rect().center);
 
-    if (up_distance > down_distance) {
+    if (up_distance > down_distance)
+    {
       // 0 1
       // 3 2
       points_2d_.emplace_back(fan_armor_.Vertex(0));
       points_2d_.emplace_back(fan_armor_.Vertex(1));
       points_2d_.emplace_back(fan_armor_.Vertex(2));
       points_2d_.emplace_back(fan_armor_.Vertex(3));
-    } else {
+    }
+    else
+    {
       // 2 3
       // 1 0
       points_2d_.emplace_back(fan_armor_.Vertex(2));
@@ -212,34 +218,38 @@ namespace abstract_target {
     cv::circle(_img, points_2d_[3], 2, cv::Scalar(0, 255, 0), -1);
   }
 
-  void Target::setType(const abstract_object::ObjectType& _type) { type_ = _type; }
+  void Target::setType(const abstract_object::ObjectType &_type) { type_ = _type; }
 
-  void Target::setType(const new_buff::Check_Moudle& check_moudle) {
+  void Target::setType(const new_buff::Check_Moudle &check_moudle)
+  {
     // 上层中心点 和 下层中心点
-    cv::Point2f point_up_center   = (fan_armor_.Vertex(0) + fan_armor_.Vertex(1)) * 0.5;
+    cv::Point2f point_up_center = (fan_armor_.Vertex(0) + fan_armor_.Vertex(1)) * 0.5;
     cv::Point2f point_down_center = (fan_armor_.Vertex(2) + fan_armor_.Vertex(3)) * 0.5;
 
     // 上层离外轮廓中点距离
     // 下册离外轮廓中点距离
     // TODO(fqjun) ：待修改为优化方案，不用重复判断方向
-    float up_distance   = abstract_object::centerDistance(point_up_center, fan_blade_.Rect().center);
+    float up_distance = abstract_object::centerDistance(point_up_center, fan_blade_.Rect().center);
     float down_distance = abstract_object::centerDistance(point_down_center, fan_blade_.Rect().center);
 
     // 计算装甲板的高度差，且方向朝向圆心
     cv::Point2f vector_height;
-    if (up_distance > down_distance) {
+    if (up_distance > down_distance)
+    {
       vector_height = fan_armor_.Vertex(0) - fan_armor_.Vertex(3);
-    } else {
+    }
+    else
+    {
       vector_height = fan_armor_.Vertex(3) - fan_armor_.Vertex(0);
     }
 
     // 这里记得分清楚应该是在哪个点往哪个方向移动多少距离进行框取小ROI
     // 计算两个小roi的中心点
-    cv::Point left_center  = vector2DPoint(3) - vector_height;
+    cv::Point left_center = vector2DPoint(3) - vector_height;
     cv::Point right_center = vector2DPoint(2) - vector_height;
 
     // 创建roi并绘制
-    int width  = 10;
+    int width = 10;
     int height = 5;
 
     cv::Point left1 = cv::Point(left_center.x - width, left_center.y - height);
@@ -248,12 +258,12 @@ namespace abstract_target {
     cv::Point right1 = cv::Point(right_center.x - width, right_center.y - height);
     cv::Point right2 = cv::Point(right_center.x + width, right_center.y + height);
 
-    cv::Rect left_rect(left1, left2);     // 画出左边小roi
-    cv::Rect right_rect(right1, right2);  // 画出右边小roi
+    cv::Rect left_rect(left1, left2);    // 画出左边小roi
+    cv::Rect right_rect(right1, right2); // 画出右边小roi
 
     // 计算光线强度
-    //int left_intensity  = abstract_object::getRectIntensity(_bin_img, left_rect);
-    //int right_intensity = abstract_object::getRectIntensity(_bin_img, right_rect);
+    // int left_intensity  = abstract_object::getRectIntensity(_bin_img, left_rect);
+    // int right_intensity = abstract_object::getRectIntensity(_bin_img, right_rect);
     /*
     fmt::print("[{}] left_intensity:{} right_intensity:{}\n", debug_info, left_intensity, right_intensity);
     if (left_intensity <= 110 && right_intensity <= 110) { //15 15
@@ -264,23 +274,25 @@ namespace abstract_target {
     */
     switch (check_moudle)
     {
-      case new_buff::ACTION_MODE:
-        type_ = abstract_object::ACTION;
-        break;
-      case new_buff::INACTION_MODE:
-        type_ = abstract_object::INACTION;
-        new_buff::armor_last = new_buff::armor_now;
-        new_buff::armor_now =          fan_armor_.Rect().center;
-        break;
-      default:
-        break;
+    case new_buff::ACTION_MODE:
+      type_ = abstract_object::ACTION;
+      break;
+    case new_buff::INACTION_MODE:
+      type_ = abstract_object::INACTION;
+      new_buff::armor_last = new_buff::armor_now;
+      new_buff::armor_now = fan_armor_.Rect().center;
+      break;
+    default:
+      break;
     }
-
   }
 
-  void Target::displayInactionTarget(cv::Mat& _img) {
-    if (type_ == abstract_object::INACTION) {
-      for (int k = 0; k < 4; ++k) {
+  void Target::displayInactionTarget(cv::Mat &_img)
+  {
+    if (type_ == abstract_object::INACTION)
+    {
+      for (int k = 0; k < 4; ++k)
+      {
         cv::line(_img, fan_armor_.Vertex(k), fan_armor_.Vertex((k + 1) % 4), cv::Scalar(0, 255, 0), 2);
         cv::line(_img, fan_blade_.Vertex(k), fan_blade_.Vertex((k + 1) % 4), cv::Scalar(0, 255, 255), 2);
       }
@@ -301,8 +313,8 @@ namespace abstract_target {
 
   inline std::vector<cv::Point2f> Target::vector2DPoint() { return points_2d_; }
 
-  inline cv::Point2f Target::vector2DPoint(const int& _i) { return points_2d_[_i]; }
+  inline cv::Point2f Target::vector2DPoint(const int &_i) { return points_2d_[_i]; }
 
   inline cv::Point2f Target::deltaPoint() { return points_2d_[0] - points_2d_[3]; }
 
-}  // namespace abstract_target
+} // namespace abstract_target

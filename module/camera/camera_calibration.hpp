@@ -16,73 +16,72 @@
 #include <fmt/color.h>
 #include <fmt/core.h>
 
-namespace cam{
+namespace cam
+{
 
-cv::Mat intrinsic = cv::Mat(3, 3, CV_32FC1);
-cv::Mat distCoeffs;
-cv::Mat img;
-cv::Mat gray;
-cv::Mat rectify;
-cv::Size s;
+    cv::Mat intrinsic = cv::Mat(3, 3, CV_32FC1);
+    cv::Mat distCoeffs;
+    cv::Mat img;
+    cv::Mat gray;
+    cv::Mat rectify;
+    cv::Size s;
 
-std::vector<cv::Mat> rvecs;
-std::vector<cv::Mat> tvecs;
-std::vector<cv::Point2f> corners;
-std::vector<std::vector<cv::Point2f>> corners_;
-std::vector<cv::Point3f> obj;
-std::vector<std::string> files;
+    std::vector<cv::Mat> rvecs;
+    std::vector<cv::Mat> tvecs;
+    std::vector<cv::Point2f> corners;
+    std::vector<std::vector<cv::Point2f>> corners_;
+    std::vector<cv::Point3f> obj;
+    std::vector<std::string> files;
 
-std::vector<std::vector<cv::Point2f>> imagePoints;
-std::vector<std::vector<cv::Point3f>> objectPoints;
+    std::vector<std::vector<cv::Point2f>> imagePoints;
+    std::vector<std::vector<cv::Point3f>> objectPoints;
 
-cv::TermCriteria criteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.001);
+    cv::TermCriteria criteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.001);
 
-int numCornersHor = 7;
-int numCornersVer = 7;
-int numSquares = 50;
+    int numCornersHor = 7;
+    int numCornersVer = 7;
+    int numSquares = 50;
 
-int index = 0; // 网格拍照计数
+    int index = 0; // 网格拍照计数
 
-bool ret;
+    bool ret;
 
-char ch;
+    char ch;
 
+    /**
+     * @brief 获取标定用图（手动）
+     *
+     * @param frame 当前帧
+     */
+    void create_images(cv::Mat &frame);
 
-/**
-* @brief 获取标定用图（手动）
-* 
-* @param frame 当前帧
-*/
-void create_images(cv::Mat& frame);
+    /**
+     * @brief 获取标定用图（自动）
+     *
+     * @param image 当前帧
+     */
+    void auto_create_images(cv::Mat &image);
 
-/**
-* @brief 获取标定用图（自动）
-* 
-* @param image 当前帧
-*/
-void auto_create_images(cv::Mat& image);
+    /**
+     * @brief 计算参数矩阵
+     */
+    void calibrate();
 
-/**
-* @brief 计算参数矩阵
-*/
-void calibrate();
+    /**
+     * @brief 评估标定文件
+     *
+     * @param image 当前帧
+     */
+    void assess(cv::Mat &image);
 
-/**
-* @brief 评估标定文件
-* 
-* @param image 当前帧
-*/
-void assess(cv::Mat& image);
+    /**
+     * @brief 评估标定文件（未使用）
+     */
+    void CalibrationEvaluate();
 
-/**
-* @brief 评估标定文件（未使用）
-*/
-void CalibrationEvaluate();
+    /**
+     * @brief 计算坐标（未使用）
+     */
+    void calRealPoint(std::vector<std::vector<cv::Point3f>> &obj, int boardwidth, int boardheight, int imgNumber, int squaresize);
 
-/**
-* @brief 计算坐标（未使用）
-*/
-void calRealPoint(std::vector<std::vector<cv::Point3f>>& obj, int boardwidth, int boardheight, int imgNumber, int squaresize);
-
-    
 }
